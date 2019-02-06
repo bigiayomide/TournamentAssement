@@ -1,0 +1,14 @@
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament\bin\Debug\netcoreapp2.0\HWDTournament.API.deps.json
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament\bin\Debug\netcoreapp2.0\HWDTournament.API.runtimeconfig.json
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament\bin\Debug\netcoreapp2.0\HWDTournament.API.runtimeconfig.dev.json
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament\bin\Debug\netcoreapp2.0\HWDTournament.API.dll
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament\obj\Debug\netcoreapp2.0\HWDTournament.API.csprojAssemblyReference.cache
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament\obj\Debug\netcoreapp2.0\HWDTournament.API.csproj.CoreCompileInputs.cache
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament\obj\Debug\netcoreapp2.0\HWDTournament.API.AssemblyInfoInputs.cache
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament\obj\Debug\netcoreapp2.0\HWDTournament.API.AssemblyInfo.cs
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament\obj\Debug\netcoreapp2.0\HWDTournament.API.RazorAssemblyInfo.cache
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament\obj\Debug\netcoreapp2.0\HWDTournament.API.RazorAssemblyInfo.cs
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament\obj\Debug\netcoreapp2.0\HWDTournament.API.RazorTargetAssemblyInfo.cache
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament\bin\Debug\netcoreapp2.0\HWDTournament.API.pdb
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament\obj\Debug\netcoreapp2.0\HWDTournament.API.dll
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament\obj\Debug\netcoreapp2.0\HWDTournament.API.pdb

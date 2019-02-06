@@ -1,0 +1,12 @@
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\bin\Debug\netcoreapp2.1\HWBTournament.Data.deps.json
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\bin\Debug\netcoreapp2.1\HWBTournament.Data.dll
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\bin\Debug\netcoreapp2.1\HWBTournament.Data.pdb
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\bin\Debug\netcoreapp2.1\HWBTournament.Model.dll
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\bin\Debug\netcoreapp2.1\HWBTournament.Model.pdb
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\obj\Debug\netcoreapp2.1\HWBTournament.Data.csprojAssemblyReference.cache
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\obj\Debug\netcoreapp2.1\HWBTournament.Data.csproj.CoreCompileInputs.cache
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\obj\Debug\netcoreapp2.1\HWBTournament.Data.AssemblyInfoInputs.cache
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\obj\Debug\netcoreapp2.1\HWBTournament.Data.AssemblyInfo.cs
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\obj\Debug\netcoreapp2.1\HWBTournament.Data.csproj.CopyComplete
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\obj\Debug\netcoreapp2.1\HWBTournament.Data.dll
+C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\obj\Debug\netcoreapp2.1\HWBTournament.Data.pdb
