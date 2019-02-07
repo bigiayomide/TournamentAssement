@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +11,7 @@ namespace HWBTournament.Model.Entities
     [Table("EventDetailStatus", Schema = "hwb")]
     public class eventdetailstatus:IEntityBase
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         [Column("EventDetailsStatusID")]
         public int Id { get; set; }
@@ -18,5 +20,16 @@ namespace HWBTournament.Model.Entities
         [Required]
         [MaxLength(50, ErrorMessage = "Too Much characters for field Event Detail Name")]
         public string event_detail_status_name { get; set; }
+        public List<eventdetail> eventdetails { get; set; }
+    }
+    public class eventdetailstatusConfiguration : IEntityTypeConfiguration<eventdetailstatus>
+    {
+        public void Configure(EntityTypeBuilder<eventdetailstatus> builder)
+        {
+            builder.HasMany(x => x.eventdetails)
+                .WithOne(x => x.event_detail_status)
+                .HasForeignKey(x => x.event_status_id)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

@@ -16,9 +16,12 @@ namespace HWBTournament.Model.Entities
             event_details = new List<eventdetail>();
         }
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("EventID")]
         public int Id { get; set; }
+
+        [Column("FK_TournamentID")]
+        public int tournament_id { get; set; }
 
         [Column("EventName")]
         [Required]
@@ -48,7 +51,14 @@ namespace HWBTournament.Model.Entities
     {
         public void Configure(EntityTypeBuilder<@event> builder)
         {
-          
+            builder.HasMany(x => x.event_details)
+                  .WithOne(x => x.@event)
+                  .HasForeignKey(x => x.event_id)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(x => x.tournament)
+                .WithMany(x => x.@events)
+                .HasForeignKey(x => x.tournament_id);
         }
     }
 }

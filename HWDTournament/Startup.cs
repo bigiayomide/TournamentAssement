@@ -22,6 +22,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace HWBTournament
 {
@@ -29,12 +30,11 @@ namespace HWBTournament
     {
         private static string _applicationPath = string.Empty;
         string sqlConnectionString = string.Empty;
-        //bool useInMemoryProvider = false;
+
         public IConfigurationRoot Configuration { get; }
         public Startup(IHostingEnvironment env)
         {
             _applicationPath = env.WebRootPath;
-            // Setup configuration sources.
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -42,12 +42,6 @@ namespace HWBTournament
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
 
-            //if (env.IsDevelopment())
-            //{
-            //    // This reads the configuration keys from the secret store.
-            //    // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-            //    builder.AddUserSecrets<Startup>();
-            //}
 
             Configuration = builder.Build();
         }
@@ -61,19 +55,20 @@ namespace HWBTournament
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<ILoggingRepository, LoggingRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
-
+            services.AddScoped<ITournamentRepository, TournamentRepository>();
+            services.AddScoped<IEventDetailRepository, EventDetailRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<IEventDetailStatusRepository, EventDetailStatusRepository>();
+            services.AddScoped<IDbDataSeeder, DbDataSeeder>();
             services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<IEncryptionService, EncryptionService>();
+            
 
 
-            //// Enable Cors
-            services.AddCors();
-
-            // Add MVC services to the services container.
             services.AddMvc().AddJsonOptions(opts =>
-            {    // Force Camel Case to JSON
+            {  
                 opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            });
+            }).AddFluentValidation();
 
             services
             .AddAuthentication(o =>
@@ -86,9 +81,7 @@ namespace HWBTournament
             {
                 o.LoginPath = "/api/user/authenticate";
                 o.LogoutPath = "/api/user/logout";
-                // additional config options here
             });
-            services.AddAuthentication();
 
             // Polices
             services.AddAuthorization(options =>
@@ -100,21 +93,26 @@ namespace HWBTournament
                 });
             });
 
-            services.AddAutoMapper();
-            // Enable Cors
-            services.AddCors();
-
-            // Add MVC services to the services container.
-            services.AddMvc()
-            .AddJsonOptions(opts =>
+            services.AddSwaggerGen(c =>
             {
-                // Force Camel Case to JSON
-                opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                c.SwaggerDoc("v1", 
+                    new Info {
+                        Title = "HWBTournament API",
+                        Version = "v1",
+                        Description = "Tournament Application API",
+                        TermsOfService = "None",
+                        Contact = new Contact
+                        {
+                            Name = "Ayomide Fajobi",
+                            Email = string.Empty,
+                            Url = "https://www.instagram.com/iamayof/"
+                        }
+                    });
             });
 
-            services.AddMvc(setup => {
-                //...mvc setup...
-            }).AddFluentValidation();
+            services.AddAutoMapper();
+
+            services.AddCors();
 
             return services.BuildServiceProvider();
         }
@@ -122,6 +120,13 @@ namespace HWBTournament
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyAPI V1");
+            });
+
             app.UseAuthentication();
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseExceptionHandler(

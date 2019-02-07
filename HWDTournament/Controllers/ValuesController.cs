@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace HWBTournament.Controllers
 {
     [Route("api/[controller]")]
+    [ProducesResponseType(201)]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
     public class ValuesController : Controller
     {
         // GET api/values

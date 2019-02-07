@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HWBTournament.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,11 @@ namespace HWBTournament.API.ViewModels.Mappings
     {
         public DomainToViewModelMappingProfile()
         {
-            //CreateMap<rejectreason, RejectReasonViewModel>();
+            CreateMap<@event, EventViewModel>();
+            CreateMap<eventdetail, EventDetailViewModel>();
+            CreateMap<eventdetailstatus, EventStatusViewModel>();
+            CreateMap<tournament, TournamentViewModel>();
+            CreateMap<user, UserViewModel>();
 
         }
     }

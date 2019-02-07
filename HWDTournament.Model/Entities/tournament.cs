@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,7 +15,7 @@ namespace HWBTournament.Model.Entities
         {
             @events = new List<@event>();
         }
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         [Column("TournamentID")]
         public int Id { get; set; }
@@ -22,5 +24,15 @@ namespace HWBTournament.Model.Entities
         [MaxLength(200, ErrorMessage = "Too Much characters for field Tournament Name")]
         public string tournament_name {get;set;}
         public List<@event> @events { get; set; }
+    }
+    public class tournamentConfiguration : IEntityTypeConfiguration<tournament>
+    {
+        public void Configure(EntityTypeBuilder<tournament> builder)
+        {
+            builder.HasMany(x => x.events)
+                .WithOne(x => x.tournament)
+                .HasForeignKey(x => x.tournament_id)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

@@ -24,24 +24,29 @@ namespace HWBTournament.API.Controllers
         //  private readonly emailadminconfig _eadc;
         private readonly IUserRepository _userRepository;
         private readonly ILoggingRepository _loggingRepository;
+        private readonly IMapper _mapper;
         //int page = 1;
         //int pageSize = 10;
 
         public UserController(IEncryptionService encryptionService,IUserRepository userRepository, 
-                         ILoggingRepository _errorRepository)
+                         ILoggingRepository _errorRepository, IMapper mapper)
         {
 
             _userRepository = userRepository;
             _loggingRepository = _errorRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("{id}", Name = "GetUser")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public IActionResult Get(long id)
         {
             user _user = _userRepository.GetSingle(u => u.Id == id);
             if (_user != null)
             {
-                UserViewModel _userVM = Mapper.Map<user, UserViewModel>(_user);
+                UserViewModel _userVM = _mapper.Map<user, UserViewModel>(_user);
                 return new OkObjectResult(_userVM);
             }
             else
@@ -51,13 +56,15 @@ namespace HWBTournament.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public IActionResult Create([FromBody] UserViewModel uservm)
         {
             if (!ModelState.IsValid || uservm == null)
             {
                 return BadRequest(ModelState);
             }
-            //var companydetail = _companyDetailRepository.GetSingle(uservm.company_detail_id);
 
             user _newuser = new user
             {
@@ -95,6 +102,9 @@ namespace HWBTournament.API.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("resetpassword")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public IActionResult ResetPassword([FromBody]  UserViewModel uservm)
         {
             if (!ModelState.IsValid || uservm == null)
@@ -132,6 +142,9 @@ namespace HWBTournament.API.Controllers
 
         [HttpPost]
         [Route("getaccount")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public IActionResult getAccount([FromBody] LoginViewModel user)
         {
             if (!ModelState.IsValid || user == null)
@@ -143,7 +156,7 @@ namespace HWBTournament.API.Controllers
 
             if (_user != null)
             {
-                UserViewModel _userVM = Mapper.Map<user, UserViewModel>(_user);
+                UserViewModel _userVM = _mapper.Map<user, UserViewModel>(_user);
                 return new OkObjectResult(_userVM);
             }
             else
@@ -155,6 +168,9 @@ namespace HWBTournament.API.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("authenticate")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Login([FromBody] LoginViewModel objuser)
         {
             IActionResult _result = new ObjectResult(false);
@@ -217,6 +233,9 @@ namespace HWBTournament.API.Controllers
 
         [HttpPost]
         [Route("logout")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> Logout()
         {
             try

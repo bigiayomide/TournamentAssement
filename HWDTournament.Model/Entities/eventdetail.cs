@@ -12,13 +12,15 @@ namespace HWBTournament.Model.Entities
     public class eventdetail : IEntityBase
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("EventDetailID")]
         public int Id { get; set; }
 
-        [Required]
-        [Column("EventDetailID")]
-        public int event_detail_id { get; set; }
+        [Column("FK_EventID")]
+        public int event_id { get; set; }
+
+        [Column("FK_EventDetailStatusID")]
+        public int event_status_id { get; set; }
 
         [Required]
         [Column("EventDetailName")]
@@ -30,8 +32,7 @@ namespace HWBTournament.Model.Entities
         public short event_detail_number { get; set; }
 
         [Required]
-        [Column("EventDetailOdd")]
-        [PrecisionAndScale(8, 2, ErrorMessage = "Total Cost must not exceed $9999.99")]
+        [Column("EventDetailOdd", TypeName = "decimal(18, 2)")]
         public decimal event_detail_odd { get; set; }
 
         [Required]
@@ -46,11 +47,17 @@ namespace HWBTournament.Model.Entities
 
     }
 
-    public class PrecisionAndScaleAttribute : RegularExpressionAttribute
+    public class eventdetailConfiguration : IEntityTypeConfiguration<eventdetail>
     {
-        public PrecisionAndScaleAttribute(int precision, int scale) : base($@"^(0|-?\d{{0,{precision - scale}}}(\.\d{{0,{scale}}})?)$")
+        public void Configure(EntityTypeBuilder<eventdetail> builder)
         {
+            builder.HasOne(x => x.@event)
+                .WithMany(x => x.event_details)
+                .HasForeignKey(x => x.event_id);
 
+            builder.HasOne(x => x.event_detail_status)
+                .WithMany(x => x.eventdetails)
+                .HasForeignKey(x => x.event_status_id);
         }
     }
 

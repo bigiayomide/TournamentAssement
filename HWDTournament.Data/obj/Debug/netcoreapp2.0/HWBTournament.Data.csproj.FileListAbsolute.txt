@@ -10,3 +10,17 @@ C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\obj\Debug\netcoreap
 C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\obj\Debug\netcoreapp2.0\HWBTournament.Data.csproj.CopyComplete
 C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\obj\Debug\netcoreapp2.0\HWBTournament.Data.dll
 C:\Users\ayomi\source\repos\HWDTournament\HWDTournament.Data\obj\Debug\netcoreapp2.0\HWBTournament.Data.pdb
+C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Data\bin\Debug\netcoreapp2.0\HWBTournament.Data.deps.json
+C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Data\bin\Debug\netcoreapp2.0\HWBTournament.Data.dll
+C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Data\bin\Debug\netcoreapp2.0\HWBTournament.Data.pdb
+C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Data\bin\Debug\netcoreapp2.0\HWBTournament.Model.dll
+C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Data\bin\Debug\netcoreapp2.0\HWBTournament.Model.pdb
+C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Data\obj\Debug\netcoreapp2.0\HWBTournament.Data.csprojAssemblyReference.cache
+C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Data\obj\Debug\netcoreapp2.0\HWBTournament.Data.csproj.CoreCompileInputs.cache
+C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Data\obj\Debug\netcoreapp2.0\HWBTournament.Data.AssemblyInfoInputs.cache
+C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Data\obj\Debug\netcoreapp2.0\HWBTournament.Data.AssemblyInfo.cs
+C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Data\obj\Debug\netcoreapp2.0\HWBTournament.Data.csproj.CopyComplete
+C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Data\obj\Debug\netcoreapp2.0\HWBTournament.Data.dll
+C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Data\obj\Debug\netcoreapp2.0\HWBTournament.Data.pdb
+C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Data\bin\Debug\netcoreapp2.0\HWBTournament.Data.runtimeconfig.json
+C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Data\bin\Debug\netcoreapp2.0\HWBTournament.Data.runtimeconfig.dev.json
