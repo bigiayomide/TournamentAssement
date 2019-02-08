@@ -154,6 +154,8 @@ namespace HWBTournament.Data.Repositories
 
         private bool isPasswordValid(user newuser, string password)
         {
+            string pass = _encryptionService.EncryptPassword(password, newuser.salt);
+            string pass2 = newuser.hashed_password;
             return string.Equals(_encryptionService.EncryptPassword(password, newuser.salt), newuser.hashed_password);
         }
 

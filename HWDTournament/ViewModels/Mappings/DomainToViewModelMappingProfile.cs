@@ -15,7 +15,7 @@ namespace HWBTournament.API.ViewModels.Mappings
             CreateMap<eventdetail, EventDetailViewModel>();
             CreateMap<eventdetailstatus, EventStatusViewModel>();
             CreateMap<tournament, TournamentViewModel>();
-            CreateMap<user, UserViewModel>();
+            //CreateMap<user, UserViewModel>();
 
         }
     }

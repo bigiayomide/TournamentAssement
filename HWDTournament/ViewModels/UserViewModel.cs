@@ -1,19 +1,79 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace HWBTournament.API.ViewModels
 {
-    public class UserViewModel
+    class AccountViewModels
     {
-        public int Id { get; set; }
-        public int company_detail_id { get; set; }
-        public int b2btype_id { get; set; }
-        public int usr_code { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
-        public string confirmpassword { get; set; }
-        public string salt { get; set; }
-        public bool isactive { get; set; }
-        public DateTime date_created { get; set; }
-        public DateTime? date_updated { get; set; }
+    }
+    public class ResultVM
+    {
+        public Status Status { get; set; }
+        public string Message { get; set; }
+        public string Token { get; set; }
+        public string Username { get; set; }
+        public IEnumerable<string> Roles { get; set; }
+        public object Data { get; set; }
+
+    }
+
+    public enum Status
+    {
+        Success = 1,
+        Error = 2
+    }
+
+    public class ClaimVM
+    {
+        public string Type { get; set; }
+        public string Value { get; set; }
+    }
+
+    public class UserClaims
+    {
+        public IEnumerable<ClaimVM> Claims { get; set; }
+        public string UserName { get; set; }
+    }
+
+    public class LoginVM
+    {
+        public string UserName { get; set; }
+
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+    }
+
+    public class RegisterVM
+    {
+        public string Id { get; set; }
+        public string UserName { get; set; }
+
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        [Compare("Password")]
+        [DataType(DataType.Password)]
+        public string ConfirmPassword { get; set; }
+
+        public bool IsAdmin { get; set; }
+    }
+
+    public class UserStateVM
+    {
+        public bool IsAuthenticated { get; set; }
+        public string Username { get; set; }
+    }
+
+    public class PasswordResetModel
+    {
+        public string Id { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
+        public string ResetToken { get; set; }
     }
 }

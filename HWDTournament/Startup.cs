@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using HWBTournament.API.Core;
@@ -11,16 +8,14 @@ using HWBTournament.Data;
 using HWBTournament.Data.Contracts;
 using HWBTournament.Data.Repositories;
 using HWBTournament.Data.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -54,7 +49,7 @@ namespace HWBTournament
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<ILoggingRepository, LoggingRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
+
             services.AddScoped<ITournamentRepository, TournamentRepository>();
             services.AddScoped<IEventDetailRepository, EventDetailRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
@@ -70,18 +65,16 @@ namespace HWBTournament
                 opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             }).AddFluentValidation();
 
-            services
-            .AddAuthentication(o =>
-            {
-                o.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                o.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                o.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddCookie(o =>
-            {
-                o.LoginPath = "/api/user/authenticate";
-                o.LogoutPath = "/api/user/logout";
-            });
+            var securitykey = Configuration["SecurityKey"];
+            services.ConfigurejwtAuth(securitykey);
+
+
+            services.AddIdentity<IdentityUser, IdentityRole>(
+                    op => { op.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider; })
+              .AddDefaultTokenProviders()
+              .AddSignInManager()
+              .AddEntityFrameworkStores<HWBTournamentContext>()
+              .AddDefaultTokenProviders();
 
             // Polices
             services.AddAuthorization(options =>
@@ -108,6 +101,13 @@ namespace HWBTournament
                             Url = "https://www.instagram.com/iamayof/"
                         }
                     });
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
             });
 
             services.AddAutoMapper();
@@ -128,7 +128,12 @@ namespace HWBTournament
             });
 
             app.UseAuthentication();
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            app.UseCors(builder => builder.AllowAnyOrigin()
+             .AllowAnyMethod()
+             .AllowAnyHeader()
+             .AllowCredentials());
+
+
             app.UseExceptionHandler(
               builder =>
               {

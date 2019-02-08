@@ -1,255 +1,329 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using AutoMapper;
-using HWBTournament.Data.Contracts;
 using HWBTournament.API.Core;
 using HWBTournament.API.ViewModels;
-using HWBTournament.Data.Services;
 using Microsoft.AspNetCore.Authorization;
-using HWBTournament.Model.Entities;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
 
 namespace HWBTournament.API.Controllers
 {
     [Produces("application/json")]
-    [Route("api/User")]
+    [Route("api/[controller]/[action]")]
     public class UserController : Controller
     {
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IConfiguration _configuration;
 
-        //  private readonly emailadminconfig _eadc;
-        private readonly IUserRepository _userRepository;
-        private readonly ILoggingRepository _loggingRepository;
-        private readonly IMapper _mapper;
-        //int page = 1;
-        //int pageSize = 10;
 
-        public UserController(IEncryptionService encryptionService,IUserRepository userRepository, 
-                         ILoggingRepository _errorRepository, IMapper mapper)
+        public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration)
         {
-
-            _userRepository = userRepository;
-            _loggingRepository = _errorRepository;
-            _mapper = mapper;
-        }
-
-        [HttpGet("{id}", Name = "GetUser")]
-        [ProducesResponseType(201)]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        public IActionResult Get(long id)
-        {
-            user _user = _userRepository.GetSingle(u => u.Id == id);
-            if (_user != null)
-            {
-                UserViewModel _userVM = _mapper.Map<user, UserViewModel>(_user);
-                return new OkObjectResult(_userVM);
-            }
-            else
-            {
-                return NotFound();
-            }
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _configuration = configuration;
         }
 
         [HttpPost]
-        [ProducesResponseType(201)]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        public IActionResult Create([FromBody] UserViewModel uservm)
+        public async Task<IActionResult> Create([FromBody] RegisterVM model)
         {
-            if (!ModelState.IsValid || uservm == null)
+            // logic could be moved into a service
+            if (ModelState.IsValid)
             {
-                return BadRequest(ModelState);
-            }
+                IdentityResult result;
+                var user = await _userManager.FindByNameAsync(model.UserName);
 
-            user _newuser = new user
-            {
-                username = uservm.username,
-                usr_code = 0,
-                hashed_password = uservm.password,
-                salt = "",
-                isactive = uservm.isactive,
-                date_created = DateTime.Now,
-            };
-
-            user _newUser = _userRepository.CreateUser(_newuser, new int[] { 2 });
-
-
-            if (_newUser == null)
-            {
-                return new OkObjectResult(uservm);
-            }
-
-            uservm = new UserViewModel
-            {
-                Id = _newUser.Id,
-                usr_code = _newUser.usr_code,
-                username = _newUser.username,
-                password = _newUser.hashed_password,
-                salt = "",
-                isactive = _newUser.isactive,
-                date_created = _newUser.date_created,
-                date_updated = _newuser.date_updated
-            };
-
-            return new OkObjectResult(uservm);
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        [Route("resetpassword")]
-        [ProducesResponseType(201)]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        public IActionResult ResetPassword([FromBody]  UserViewModel uservm)
-        {
-            if (!ModelState.IsValid || uservm == null)
-            {
-                return BadRequest(ModelState);
-            }
-
-            user _updateuser = new user
-            {
-                Id = uservm.Id,
-                usr_code = uservm.usr_code,
-                username = uservm.username,
-                hashed_password = uservm.password,
-                salt = "",
-                isactive = uservm.isactive,
-                date_created = DateTime.Now
-            };
-
-            user _newUser = _userRepository.UpdateUserPasswordUser(_updateuser);
-
-            uservm = new UserViewModel
-            {
-                Id = _newUser.Id,
-                username = _newUser.username,
-                usr_code = _newUser.usr_code,
-                password = "",
-                salt = "",
-                isactive = _newUser.isactive,
-                date_created = DateTime.Now,
-                date_updated = DateTime.Now
-            };
-
-            return new OkObjectResult(uservm);
-        }
-
-        [HttpPost]
-        [Route("getaccount")]
-        [ProducesResponseType(201)]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        public IActionResult getAccount([FromBody] LoginViewModel user)
-        {
-            if (!ModelState.IsValid || user == null)
-            {
-                return BadRequest(ModelState);
-            }
-
-            user _user = _userRepository.GetSingle(u => u.username == user.username);
-
-            if (_user != null)
-            {
-                UserViewModel _userVM = _mapper.Map<user, UserViewModel>(_user);
-                return new OkObjectResult(_userVM);
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        [Route("authenticate")]
-        [ProducesResponseType(201)]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        public async Task<IActionResult> Login([FromBody] LoginViewModel objuser)
-        {
-            IActionResult _result = new ObjectResult(false);
-            GenericResult _authenticationResult = null;
-            LoginViewModel _objlogin = new LoginViewModel();
-            if (objuser == null)
-            {
-                _authenticationResult = new GenericResult()
+                if (user != null)
                 {
-                    Succeeded = false,
-                    Message = ""
+                    return Ok(new ResultVM
+                    {
+                        Status = Status.Error,
+                        Message = "Invalid data",
+                        Data = "<li>User already exists</li>"
+                    });
+                }
+
+                user = new IdentityUser
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserName = model.UserName,
+                    Email = model.Email
                 };
 
-                _result = new ObjectResult(_authenticationResult);
-                return _result;
-            }
-            try
-            {
-                MembershipContext _userContext = _userRepository.ValidateUser(objuser.username, objuser.password);
+                result = await _userManager.CreateAsync(user, model.Password);
 
-                if (_userContext.objuser != null)
+                if (result.Succeeded)
                 {
-                    IEnumerable<role> _roles = _userRepository.GetUserRoles(objuser.username);
-                    List<Claim> _claims = new List<Claim>();
-                    objuser.Id = _userContext.objuser.Id;
+                   await _userManager.AddToRoleAsync(user, "Admin");
 
-                    foreach (role role in _roles)
+                    return Ok(new ResultVM
                     {
-                        if (_objlogin.myrole == 0)
-                            _objlogin.myrole = role.Id;
-                        Claim _claim = new Claim(ClaimTypes.Role, role.description, ClaimValueTypes.String, objuser.username);
-                        _claims.Add(_claim);
-                    }
-
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(new ClaimsIdentity(_claims, CookieAuthenticationDefaults.AuthenticationScheme)),
-                    new Microsoft.AspNetCore.Authentication.AuthenticationProperties { IsPersistent = objuser.rememberMe });
-
-                    _objlogin.username = _userContext.objuser.username;
-                    _objlogin.Id = _userContext.objuser.Id;
+                        Status = Status.Success,
+                        Message = "User Created",
+                        Data = user
+                    });
                 }
                 else
                 {
-                    _objlogin.Id = 0;
-                    _objlogin.myrole = 0;
-                    _objlogin.username = objuser.username;
+                    var resultErrors = result.Errors;
+                    return BadRequest(new ResultVM
+                    {
+                        Status = Status.Error,
+                        Message = "User Created",
+                        Data = resultErrors
+                    });
+                    //return BadRequest(resultErrors);
                 }
             }
-            catch (Exception ex)
-            {
-                _objlogin.Id = 0;
-                _objlogin.myrole = 0;
-                _objlogin.username = objuser.username;
-                _loggingRepository.Add(new error() { message = ex.Message, stacktrace = ex.StackTrace, date_created = DateTime.Now });
-                _loggingRepository.Commit();
-            }
-            // SendMailtoAdmin(_eadc.emailaddress, objuser.username);
-            return new ObjectResult(_objlogin);
+
+            var errors = ModelState.Keys.Select(e => "<li>" + e + "</li>");
+            return BadRequest(errors);
         }
 
-        [HttpPost]
-        [Route("logout")]
-        [ProducesResponseType(201)]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        public async Task<IActionResult> Logout()
+        //[HttpPost]
+        //public async Task<ResultVM> EditUser([FromBody] RegisterVM model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        // logic could be moved into a service
+        //        var user = await _userManager.FindByIdAsync(model.Id);
+        //        user.UserName = model.UserName;
+        //        user.Email = model.Email;
+        //        await _userManager.UpdateAsync(user);
+        //        var roles = await _userManager.GetRolesAsync(user);
+        //        if (model.IsAdmin)
+        //        {
+        //            if (!roles.Contains("Admin"))
+        //            {
+        //                await _userManager.AddToRoleAsync(user, "Admin");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (roles.Contains("Admin"))
+        //            {
+        //                await _userManager.RemoveFromRoleAsync(user, "Admin");
+        //            }
+        //        }
+        //        return new ResultVM
+        //        {
+        //            Status = Status.Success,
+        //            Message = "User Updated",
+        //            Data = user
+        //        };
+        //    }
+        //    return new ResultVM
+        //    {
+        //        Status = Status.Success,
+        //        Message = "Invalid data",
+        //        Data = "Could not verify the user model"
+        //    };
+        //}
+
+        //[HttpPost]
+        //public async Task<ResultVM> DeleteUser([FromBody] string userId)
+        //{
+        //    // logic could be moved into a service
+        //    var user = await _userManager.FindByIdAsync(userId);
+        //    if (user != null)
+        //    {
+        //        try
+        //        {
+        //            var roles = await _userManager.GetRolesAsync(user);
+        //            if (roles.Count > 0)
+        //            {
+        //                await _userManager.RemoveFromRolesAsync(user, roles);
+        //            }
+        //            await _userManager.DeleteAsync(user);
+        //            return new ResultVM
+        //            {
+        //                Status = Status.Success,
+        //                Message = "User Deleted",
+        //                Data = user
+        //            };
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return new ResultVM
+        //            {
+        //                Status = Status.Error,
+        //                Message = ex.Message,
+        //                Data = user
+        //            };
+        //        }
+        //    }
+        //    return new ResultVM
+        //    {
+        //        Status = Status.Error,
+        //        Message = $"Could not find user with id {userId}",
+        //        Data = ""
+        //    };
+
+        //}
+
+        [HttpPost(Name ="token")]
+        public async Task<IActionResult> Token([FromBody] LoginVM model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                await HttpContext.Authentication.SignOutAsync("Cookies");
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _loggingRepository.Add(new error() { message = ex.Message, stacktrace = ex.StackTrace, date_created = DateTime.Now });
-                _loggingRepository.Commit();
+                try
+                {
+                    var user = await _userManager.FindByNameAsync(model.UserName);
 
-                return BadRequest();
+                    if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+                    {
+                        await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, lockoutOnFailure: false);
+                        var userRoles = await _userManager.GetRolesAsync(user);
+                        var claims = await GetValidClaims(user, userRoles?.ToList());
+
+                        var key = _configuration["SecurityKey"];
+                        var token = TokenGenerator.GetToken(claims, key);
+
+                        return Ok(new ResultVM
+                        {
+                            Status = Status.Success,
+                            Message = "Succesfull login",
+                            Token = token,
+                            Username = user.UserName,
+                            Roles = userRoles,
+                            Data = model
+                        });
+                    }
+
+                    return BadRequest(new ResultVM
+                    {
+                        Status = Status.Error,
+                        Message = "Invalid data",
+                        Data = "<li>Could not verify username and password</li>"
+                    });
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Could not verify username and password " + ex.Message);
+                }
             }
+
+            var errors = ModelState.Keys.Select(e => "<li>" + e + "</li>");
+            return BadRequest(new ResultVM
+            {
+                Status = Status.Error,
+                Message = "Invalid data",
+                Data = string.Join("", errors)
+            });
         }
+
+        [HttpGet (Name ="Claims")]
+        [Authorize]
+        public async Task<UserClaims> Claims()
+        {
+            var loggedInUser = await _userManager.GetUserAsync(User);
+            var userClaims = await _userManager.GetClaimsAsync(loggedInUser);
+
+            var claims = userClaims.Union(User.Claims).Select(c => new ClaimVM
+            {
+                Type = c.Type,
+                Value = c.Value
+            });
+
+            return new UserClaims
+            {
+                UserName = User.Identity.Name,
+                Claims = claims
+            };
+        }
+
+        [HttpGet(Name = "IsAuthenticated")]
+        public UserStateVM Authenticated()
+        {
+            return new UserStateVM
+            {
+                IsAuthenticated = User.Identity.IsAuthenticated,
+                Username = User.Identity.IsAuthenticated ? User.Identity.Name : string.Empty
+            };
+        }
+
+        //[HttpGet]
+        //public async Task<List<AppUser>> GetUsers()
+        //{
+        //    var users = await _userManager.Users.ToListAsync();
+        //    var result = users.Select(x => new AppUser()
+        //    {
+        //        Id = x.Id,
+        //        UserName = x.UserName,
+        //        Email = x.Email,
+        //        IsAdmin = _userManager.GetRolesAsync(x).Result.Contains("Admin")
+        //    });
+
+        //    return result.ToList();
+        //}
+
+        [HttpPost(Name ="Signout")]
+        public async Task SignOut()
+        {
+            await _signInManager.SignOutAsync();
+        }
+
+        //[HttpGet]
+        //public async Task<IActionResult> ResetPassword(string email)
+        //{
+        //    var user = await _userManager.FindByEmailAsync(email);
+        //    if (user != null)
+        //    {
+        //        var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+        //        var resetLink = _configuration["clientUrl"] + $"#/reset-password?resetToken={resetToken}&&userId={user.Id}";
+        //        var body = MailMessageHelper.PasswordResertMessage(user.UserName, resetLink);
+        //        _emailService.sendEmail(user.Email, user.UserName, "Password Reset", body);
+        //        return Ok("Reset email sent");
+        //    }
+        //    return BadRequest($"No user found for {email}");
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> ResetPassword([FromBody] PasswordResetModel model)
+        //{
+        //    var user = await _userManager.FindByIdAsync(model.Id);
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (user != null)
+        //        {
+        //            var result = await _userManager.ResetPasswordAsync(user, model.ResetToken, model.Password);
+        //            if (result.Succeeded)
+        //            {
+        //                return Ok("Password reset successful");
+        //            }
+        //            else
+        //            {
+        //                BadRequest(result.Errors.ToString());
+        //            }
+        //        }
+        //        return BadRequest($"Could not find user email {model.Email}");
+        //    }
+        //    return BadRequest("model state invalid");
+        //}
+
+
+        private async Task<List<Claim>> GetValidClaims(IdentityUser user, List<string> roles)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id)
+				// new Claim(_options.ClaimsIdentity.UserNameClaimType, user.UserName)
+			};
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            claims.AddRange(userClaims);
+            foreach (var userRole in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, userRole));
+            }
+            return claims;
+        }
+
     }
 }

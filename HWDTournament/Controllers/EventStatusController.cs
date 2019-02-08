@@ -2,6 +2,7 @@
 using HWBTournament.API.ViewModels;
 using HWBTournament.Data.Contracts;
 using HWBTournament.Model.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace HWBTournament.API.Controllers
     [ProducesResponseType(201)]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
+    [Authorize]
     public class EventStatusController : Controller
     {
         
@@ -95,8 +97,8 @@ namespace HWBTournament.API.Controllers
             }
         }
 
-        [HttpGet(Name = "GetAllEventStatusDetails")]
-        public IActionResult Update()
+        [HttpGet]
+        public IActionResult GetAll()
         {
             IEnumerable<eventdetailstatus> _event = _eventStatusRepository.GetEventStatusDetails();
             if (_event != null)

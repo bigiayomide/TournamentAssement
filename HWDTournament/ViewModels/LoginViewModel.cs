@@ -8,6 +8,7 @@
         public string password { get; set; }
         public bool rememberMe { get; set; }
         public int myrole { get; set; }
+        public string token { get; set; }
         public int b2btype_id { get; set; }
     }
 }

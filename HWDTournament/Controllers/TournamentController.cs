@@ -2,6 +2,7 @@
 using HWBTournament.API.ViewModels;
 using HWBTournament.Data.Contracts;
 using HWBTournament.Model.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace HWBTournament.API.Controllers
     [ProducesResponseType(201)]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
+    [Authorize]
     public class TournamentController : Controller
     {
         private readonly ITournamentRepository _tournamentRepository;
@@ -32,7 +34,7 @@ namespace HWBTournament.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{id}", Name = "GetTournament")]
+        [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
             tournament _tournament = _tournamentRepository.GetSingle(u => u.Id == id);
@@ -94,7 +96,7 @@ namespace HWBTournament.API.Controllers
             }
         }
 
-        [HttpGet(Name = "GetAllTournaments")]
+        [HttpGet]
         public IActionResult GetAllTournaments()
         {
             IEnumerable<tournament> _tournament = _tournamentRepository.GetTournaments();

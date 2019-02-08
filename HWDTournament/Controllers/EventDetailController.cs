@@ -2,6 +2,7 @@
 using HWBTournament.API.ViewModels;
 using HWBTournament.Data.Contracts;
 using HWBTournament.Model.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace HWBTournament.API.Controllers
     [ProducesResponseType(201)]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
+    [Authorize]
     public class EventDetailController : Controller
     {
         private readonly IEventDetailRepository _eventDetailRepository;
@@ -32,7 +34,7 @@ namespace HWBTournament.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{id}", Name = "GetEventDetail")]
+        [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
             eventdetail _eventdetail = _eventDetailRepository.GetSingle(u => u.Id == id);
@@ -105,8 +107,8 @@ namespace HWBTournament.API.Controllers
             }
         }
 
-        [HttpGet(Name = "GetAllEventDetails")]
-        public IActionResult Update()
+        [HttpGet]
+        public IActionResult GetAll()
         {
             IEnumerable<eventdetail> _event = _eventDetailRepository.GetEventDetails();
             if (_event != null)

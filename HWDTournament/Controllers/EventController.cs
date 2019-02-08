@@ -2,6 +2,7 @@
 using HWBTournament.API.ViewModels;
 using HWBTournament.Data.Contracts;
 using HWBTournament.Model.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace HWBTournament.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/Event")]
+    [Authorize]
     public class EventController : Controller
     {
         private readonly IEventRepository _eventRepository;
@@ -29,7 +31,7 @@ namespace HWBTournament.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{id}", Name = "GetEvent")]
+        [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
             @event _event = _eventRepository.GetSingle(u => u.Id == id);
@@ -97,7 +99,7 @@ namespace HWBTournament.API.Controllers
             }
         }
 
-        [HttpGet(Name = "GetAllEvents")]
+        [HttpGet]
         public IActionResult Update()
         {
             IEnumerable<@event> _event = _eventRepository.GetEvents();
@@ -112,7 +114,7 @@ namespace HWBTournament.API.Controllers
             }
         }
 
-        [HttpPatch(Name = "Update")]
+        [HttpPatch]
         public IActionResult Update([FromBody] EventViewModel eventvm)
         {
             @event _event = _eventRepository.GetSingle(u => u.Id == eventvm.Id);
@@ -135,4 +137,5 @@ namespace HWBTournament.API.Controllers
             }
         }
     }
+
 }

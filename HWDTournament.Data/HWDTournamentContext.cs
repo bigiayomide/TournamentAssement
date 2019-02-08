@@ -9,6 +9,8 @@ using HWBTournament.Data.Contracts;
 using HWBTournament.Data.Repositories;
 using HWBTournament.Data.Services;
 using HWBTournament.Model.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +18,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 namespace HWBTournament.Data
 {
-    public class HWBTournamentContext : DbContext
+    public class HWBTournamentContext : IdentityDbContext<IdentityUser>
     {
 
         public HWBTournamentContext() { }
@@ -29,6 +31,7 @@ namespace HWBTournament.Data
         public DbSet<@event> Events { get; set; }
         public DbSet<eventdetail> EventDetails { get; set; }
         public DbSet<eventdetailstatus> EventDetailStatuses { get; set; }
+        public DbSet<user> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
