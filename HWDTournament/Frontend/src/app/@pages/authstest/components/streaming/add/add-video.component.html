@@ -1,0 +1,88 @@
+
+
+<br/> 
+<div>   
+<mat-card (mouseenter)='mouseenter($event)' (mouseleave)="mouseleave($event)" >
+        <mat-card-title>                       
+            <div class="row">
+                <div class="">
+                    <a href="#" class="active" id="register-form-link">Add New Video</a>
+                </div>
+            </div>
+            <hr>
+        </mat-card-title> 
+        <mat-card-content>
+                <!-- <div class="row">
+                    <div class="col-lg-12"> -->
+                        <!-- <form id="register-form" method="post" role="form"> -->
+
+                            <!-- <mat-form-field class="width">
+                                <input type="text" name="title" id="title" [(ngModel)]="newVideo.title" tabindex="1" class="form-control" placeholder="Title"
+                                value="">
+                                
+                            </mat-form-field> -->
+                            <!-- <mat-form-field class="width">
+                                <input type="text" matInput placeholder="Enter Username"  formControlName="username" required>
+                                    
+                            </mat-form-field>
+                 -->
+
+                            <!-- <div class="form-group">
+                                <input type="text" name="title" id="title" [(ngModel)]="newVideo.title" tabindex="1" class="form-control" placeholder="Title"
+                                    value="">
+                            </div> -->
+                            <!-- <div class="form-group">
+                                <input type="text" name="description" id="description" [(ngModel)]="newVideo.description" tabindex="2" class="form-control"
+                                    placeholder="Description" value="">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="url" id="url" [(ngModel)]="newVideo.url" tabindex="3" class="form-control" placeholder="Embed URL from YouTube"
+                                    value="">
+                            </div>
+                            <div class="form-group">
+                                <select class="selectpicker" name="category" [(ngModel)]="newVideo.category">
+                                    <option *ngFor="let category of categories">{{category.category}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-6 col-sm-offset-3">
+                                        <input type="text" name="register-submit" id="register-submit" (click)="addVideo()" class="form-control btn btn-register"
+                                            value="Save">
+                                    </div>
+                                </div>
+                            </div> -->
+                        <!-- </form> -->
+                    <!-- </div>
+                </div> -->
+
+                <form #registerForm="ngForm" fxLayout="column" fxLayoutAlign="start stretch" >
+                        <mat-form-field class="full-width">
+                            <input type="text" name="title" id="title" [(ngModel)]="newVideo.title" tabindex="1"
+                            class="form-control" placeholder="Title" value="" required matInput>
+                        </mat-form-field>
+                        <mat-form-field class="width">
+                            <input type="text" name="description" id="description" [(ngModel)]="newVideo.description" tabindex="2"
+                             class="form-control"  placeholder="Description" value="" matInput>
+                        </mat-form-field>
+                        <mat-form-field class="width">
+                                <input type="text" name="url" id="url" [(ngModel)]="newVideo.url" tabindex="3" class="form-control" placeholder="Embed URL from YouTube"
+                                value="" matInput >                                
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Category" [(ngModel)]="newVideo.category" name="category">
+                                <mat-option *ngFor="let category of categories"[value]="category.category">
+                                    {{category.category}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                
+                        <button mat-raised-button color="primary" type="submit"  name="register-submit" id="register-submit" (click)="addVideo()">Save</button> 
+                    
+                    </form>
+        </mat-card-content>
+        <mat-card-footer>
+             
+        </mat-card-footer>
+    </mat-card>
+</div>

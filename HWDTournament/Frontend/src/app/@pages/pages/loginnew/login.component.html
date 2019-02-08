@@ -1,0 +1,40 @@
+<particles [params]="myParams" [style]="myStyle" [width]="width" [height]="height"></particles>
+
+<div fxLayout="column" fxFlexFill fxLayoutAlign="center center" style="
+height: 100%;
+background-repeat: no-repeat;
+background-position: center;
+background-size: cover; ">
+    <toaster-container [toasterconfig]="config"></toaster-container>
+<!-- <div fxLayout="column" fxFlexFill fxLayoutAlign="center center"> -->
+    <div fxLayout="column" style="width:25%;">
+
+        <div class="mat-elevation-z4" (mouseenter)='mouseenter($event)' (mouseleave)="mouseleave($event)">
+            <mat-card>
+                <mat-card-title style="text-align: center;">User login
+                    <!-- <a class="redirect" [routerLink]="['/registers']">Register an account</a> -->
+                </mat-card-title>
+                <mat-card-content>
+                    <div style="text-align:center;">
+                       <img src="./assets/recall.png" alt="Logo" width="150px" height="60px">
+                    </div>
+                    <form #userForm="ngForm" fxLayout="column" fxLayoutAlign="start stretch" >
+                        <mat-form-field class="full-width">
+                          <input type="email" name="username" id="username" [(ngModel)]="user.userName" tabindex="1" class="form-control" placeholder="Username" value="" required matInput>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input type="password"  name="password" id="password" [(ngModel)]="user.password" tabindex="2" class="form-control" placeholder="Password" required matInput>
+                        </mat-form-field>
+
+                        <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid" (click)="login()">log in</button>
+                    </form>
+                    <br>
+                    <a class="redirect" [routerLink]="['/registers']">Register</a>
+                </mat-card-content>
+                <mat-progress-bar mode="indeterminate" *ngIf="spinnerOn"></mat-progress-bar>
+            </mat-card>
+        </div>
+    </div>
+</div>
+

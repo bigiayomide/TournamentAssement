@@ -1,0 +1,82 @@
+﻿[
+  {
+    "from": {
+      "name": "Taona",
+      "mail": "taona.madawo@interactivesa.co.za"
+    },
+    "subject": "Test",
+    "content": "This is a test mail",
+    "when": "20170405",
+    "read": true,
+    "starred": true,
+    "labels": [
+      {
+        "name": "Private",
+        "color": "darkgrey"
+      }
+    ],
+    "group": "promotions",
+    "type": "sent",
+    "attachments": ["assets/user-image.jpg"]
+  },
+  {
+    "from": {
+      "name": "Tessa",
+      "mail": "tessa.moodley@interactivesa.co.za"
+    },
+    "subject": "Test?",
+    "content": "This is a test mail",
+    "when": "20170405",
+    "read": true,
+    "starred": true,
+    "labels": [
+      {
+        "name": "Private",
+        "color": "darkgrey"
+      }
+    ],
+    "group": "promotions",
+    "type": "sent",
+    "attachments": ["assets/profile.jpg"]
+  },
+  {
+    "from": {
+      "name": "Ayomide",
+      "mail": "ayomide.fajobi@interactivesa.co.za"
+    },
+    "subject": "new",
+    "content": "This is a test mail",
+    "when": "20170405",
+    "read": true,
+    "starred": true,
+    "labels": [
+      {
+        "name": "Private",
+        "color": "darkgrey"
+      }
+    ],
+    "group": "promotions",
+    "type": "sent",
+    "attachments": ["assets/man.jpg"]
+  },
+  {
+    "from": {
+      "name": "Mohammed",
+      "mail": "Mohammed.Shah@interactivesa.co.za"
+    },
+    "subject": "hai",
+    "content": "This is a test mail",
+    "when": "20170405",
+    "read": true,
+    "starred": true,
+    "labels": [
+      {
+        "name": "Private",
+        "color": "darkgrey"
+      }
+    ],
+    "group": "promotions",
+    "type": "sent",
+    "attachments": ["assets/noavatar.png"]
+  }
+]

@@ -1,0 +1,37 @@
+<div fxLayout="row" fxLayout="row wrap">
+    <div *ngFor="let dash of dashCard" fxFlex.lt-sm="100" fxFlex.sm="50" fxFlex.md="25">
+        <hwb-dashcard [dashData]="dash"></hwb-dashcard>
+    </div>
+</div>
+<div fxLayout="row" fxLayout="row wrap">
+    <hwb-bar-graph fxFlex="37.5" fxFlex.lt-sm="100" fxFlex.sm="50"></hwb-bar-graph>
+    <hwb-doughnut-graph fxFlex="37.5" fxFlex.lt-sm="100" fxFlex.sm="50"></hwb-doughnut-graph>
+    <hwb-weather fxFlex="25" fxFlex.lt-sm="100" fxFlex.sm="100"></hwb-weather>
+</div>
+<div fxLayout="row" fxLayout="row wrap">
+    <hwb-line-graph fxFlex="75" fxFlex.lt-sm="100" fxFlex.sm="50"></hwb-line-graph>
+    <hwb-share-price fxFlex="25" fxFlex.lt-sm="100" fxFlex.sm="50"></hwb-share-price>
+</div>
+<div fxLayout="row" fxLayout="row wrap">
+    <hwb-sales-list fxFlex="60" fxFlex.lt-sm="100" fxFlex.sm="100" fxFlex.md="70"></hwb-sales-list>
+    <hwb-profile-card fxFlex="40" fxFlex.lt-sm="100" fxFlex.sm="100" fxFlex.md="30"></hwb-profile-card>
+</div>
+
+<div fxLayout="row" fxLayout="row wrap">
+    <div fxFlex.lt-sm="100" fxFlex.sm="50" fxFlex.md="25">
+        <hwb-round-progressbar [title]="'SALES'" [current]="'23'" [max]="'100'" [background]="'#FFF968'" [color]="'#B1A7FF'" [boxcolor]="'#7986CB'"></hwb-round-progressbar>
+    </div>
+    <div fxFlex.lt-sm="100" fxFlex.sm="50" fxFlex.md="25">
+        <hwb-round-progressbar [title]="'LEADS'" [current]="'33'" [max]="'100'" [background]="'#FFE268'" [color]="'#A7C1FF'" [boxcolor]="'#42A5F5'"></hwb-round-progressbar>
+    </div>
+    <div fxFlex.lt-sm="100" fxFlex.sm="50" fxFlex.md="25">
+        <hwb-round-progressbar [title]="'ASSETS'" [current]="'78'" [max]="'100'" [background]="'#FFC368'" [color]="'#A7F0FF'" [boxcolor]="'#26A69A'"></hwb-round-progressbar>
+    </div>
+    <div fxFlex.lt-sm="100" fxFlex.sm="50" fxFlex.md="25">
+        <hwb-round-progressbar [title]="'BANKING'" [current]="'90'" [max]="'100'" [background]="'#FFCF68'" [color]="'#A7DEFF'" [boxcolor]="'#26C6DA'"></hwb-round-progressbar>
+    </div>
+</div>
+
+<div fxLayout="row" fxLayout="row wrap" >
+    <hwb-world-map  fxFlex="100" [tableData]="tableData"></hwb-world-map>
+</div>

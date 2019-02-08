@@ -1,0 +1,7 @@
+<h2 mat-dialog-title style="color:red;">Delete User</h2>
+<mat-dialog-content>Are you sure you want to remove {{ appUser.userName }}?</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>No</button>
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  <button mat-button color ="warn" (click) = "deleteUser()">Yes</button>
+</mat-dialog-actions>

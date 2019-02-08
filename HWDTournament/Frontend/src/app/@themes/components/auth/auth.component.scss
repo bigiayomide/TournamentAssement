@@ -1,0 +1,45 @@
+
+@mixin auth($theme) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, warn);
+    
+    .sidenav,.drawer{
+        background: 	#2b2f3e;//mat-color($primary,400);    
+        overflow: hidden;
+        position: relative;
+        width: 250px;       
+    }
+   
+    [no-over-flow] {
+        overflow: hidden;
+    }
+    .router-outlet{
+        position: relative;padding: 0px 5px;
+    }
+    .spacer {
+        width: 100%;
+    }
+
+    .logo{
+        font-size: 26px;font-family: Roboto;color:white;margin-top: 8px;
+    }
+
+    .mat-drawer-inner-container {
+         width: 100%;
+         height: calc(100% + 10px);
+         overflow: none; 
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .ps__rail-y {
+        display: none;
+        opacity: 0;
+        transition: background-color .2s linear, opacity .2s linear;
+        -webkit-transition: background-color .2s linear, opacity .2s linear;
+        width: 30px;
+        right: 0;
+        position: absolute;
+    }
+}
+
