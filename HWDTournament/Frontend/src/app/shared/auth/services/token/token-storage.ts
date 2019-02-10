@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
-import { TraqAuthToken } from './token';
-import { TraqAuthTokenParceler } from './token-parceler';
+import { HwbAuthToken } from './token';
+import { HwbAuthTokenParceler } from './token-parceler';
 
-export abstract class TraqTokenStorage {
+export abstract class HwbTokenStorage {
 
-  abstract get(): TraqAuthToken;
-  abstract set(token: TraqAuthToken);
+  abstract get(): HwbAuthToken;
+  abstract set(token: HwbAuthToken);
   abstract clear();
 }
 
@@ -15,39 +15,39 @@ export abstract class TraqTokenStorage {
  *
  * The token storage is provided into auth module the following way:
  * ```ts
- * { provide: TraqTokenStorage, useClass: TraqTokenLocalStorage },
+ * { provide: HwbTokenStorage, useClass: HwbTokenLocalStorage },
  * ```
  *
- * If you need to change the storage behaviour or provide your own - just extend your class from basic `TraqTokenStorage`
- * or `TraqTokenLocalStorage` and provide in your `app.module`:
+ * If you need to change the storage behaviour or provide your own - just extend your class from basic `HwbTokenStorage`
+ * or `HwbTokenLocalStorage` and provide in your `app.module`:
  * ```ts
- * { provide: TraqTokenStorage, useClass: TraqTokenCustomStorage },
+ * { provide: HwbTokenStorage, useClass: HwbTokenCustomStorage },
  * ```
  *
  */
 @Injectable()
-export class TraqTokenLocalStorage extends TraqTokenStorage {
+export class HwbTokenLocalStorage extends HwbTokenStorage {
 
   protected key = 'auth_app_token';
 
-  constructor(private parceler: TraqAuthTokenParceler) {
+  constructor(private parceler: HwbAuthTokenParceler) {
     super();
   }
 
   /**
    * Returns token from localStorage
-   * @returns {TraqAuthToken}
+   * @returns {HwbAuthToken}
    */
-  get(): TraqAuthToken {
+  get(): HwbAuthToken {
     const raw = localStorage.getItem(this.key);
     return this.parceler.unwrap(raw);
   }
 
   /**
    * Sets token to localStorage
-   * @param {TraqAuthToken} token
+   * @param {HwbAuthToken} token
    */
-  set(token: TraqAuthToken) {
+  set(token: HwbAuthToken) {
     const raw = this.parceler.wrap(token);
     localStorage.setItem(this.key, raw);
   }

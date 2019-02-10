@@ -5,20 +5,20 @@ import { Observable, of as observableOf } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { HWB_WINDOW } from '../../theme.options';
 
-import { TraqAuthStrategy } from '../auth-strategy';
+import { HwbAuthStrategy } from '../auth-strategy';
 import {
-  TraqAuthIllegalTokenError,
-  TraqAuthRefreshableToken,
-  TraqAuthResult,
-  TraqAuthToken,
+  HwbAuthIllegalTokenError,
+  HwbAuthRefreshableToken,
+  HwbAuthResult,
+  HwbAuthToken,
 } from '../../services';
 import {
-  TraqOAuth2AuthStrategyOptions,
-  TraqOAuth2ResponseType,
+  HwbOAuth2AuthStrategyOptions,
+  HwbOAuth2ResponseType,
   auth2StrategyOptions,
-  TraqOAuth2GrantType, TraqOAuth2ClientAuthMethod,
+  HwbOAuth2GrantType, HwbOAuth2ClientAuthMethod,
 } from './oauth2-strategy.options';
-import { TraqAuthStrategyClass } from '../../auth.options';
+import { HwbAuthStrategyClass } from '../../auth.options';
 
 
 /**
@@ -27,23 +27,23 @@ import { TraqAuthStrategyClass } from '../../auth.options';
  * Strategy settings:
  *
  * ```ts
- * export enum TraqOAuth2ResponseType {
+ * export enum HwbOAuth2ResponseType {
  *   CODE = 'code',
  *   TOKEN = 'token',
  * }
  *
- * export enum TraqOAuth2GrantType {
+ * export enum HwbOAuth2GrantType {
  *   AUTHORIZATION_CODE = 'authorization_code',
  *   PASSWORD = 'password',
  *   REFRESH_TOKEN = 'refresh_token',
  * }
  *
- * export class TraqOAuth2AuthStrategyOptions {
+ * export class HwbOAuth2AuthStrategyOptions {
  *   name: string;
  *   baseEndpoint?: string = '';
  *   clientId: string = '';
  *   clientSecret: string = '';
- *   clientAuthMethod: string = TraqOAuth2ClientAuthMethod.NONE;
+ *   clientAuthMethod: string = HwbOAuth2ClientAuthMethod.NONE;
  *   redirect?: { success?: string; failure?: string } = {
  *     success: '/',
  *     failure: null,
@@ -60,7 +60,7 @@ import { TraqAuthStrategyClass } from '../../auth.options';
  *     params?: { [key: string]: string };
  *   } = {
  *     endpoint: 'authorize',
- *     responseType: TraqOAuth2ResponseType.CODE,
+ *     responseType: HwbOAuth2ResponseType.CODE,
  *   };
  *   token?: {
  *     endpoint?: string;
@@ -70,7 +70,7 @@ import { TraqAuthStrategyClass } from '../../auth.options';
  *     class: NbAuthTokenClass,
  *   } = {
  *     endpoint: 'token',
- *     grantType: TraqOAuth2GrantType.AUTHORIZATION_CODE,
+ *     grantType: HwbOAuth2GrantType.AUTHORIZATION_CODE,
  *     class: NbAuthOAuth2Token,
  *   };
  *   refresh?: {
@@ -80,17 +80,17 @@ import { TraqAuthStrategyClass } from '../../auth.options';
  *     requireValidToken: false,
  *   } = {
  *     endpoint: 'token',
- *     grantType: TraqOAuth2GrantType.REFRESH_TOKEN,
+ *     grantType: HwbOAuth2GrantType.REFRESH_TOKEN,
  *   };
  * }
  * ```
  *
  */
 @Injectable()
-export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
+export class HwbOAuth2AuthStrategy extends HwbAuthStrategy {
 
-  static setup(options: TraqOAuth2AuthStrategyOptions): [TraqAuthStrategyClass, TraqOAuth2AuthStrategyOptions] {
-    return [TraqOAuth2AuthStrategy, options];
+  static setup(options: HwbOAuth2AuthStrategyOptions): [HwbAuthStrategyClass, HwbOAuth2AuthStrategyOptions] {
+    return [HwbOAuth2AuthStrategy, options];
   }
 
   get responseType() {
@@ -102,7 +102,7 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
   }
 
   protected redirectResultHandlers = {
-    [TraqOAuth2ResponseType.CODE]: () => {
+    [HwbOAuth2ResponseType.CODE]: () => {
       return observableOf(this.route.snapshot.queryParams).pipe(
         switchMap((params: any) => {
           if (params.code) {
@@ -110,7 +110,7 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
           }
 
           return observableOf(
-            new TraqAuthResult(
+            new HwbAuthResult(
               false,
               params,
               this.getOption('redirect.failure'),
@@ -120,14 +120,14 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
         }),
       );
     },
-    [TraqOAuth2ResponseType.TOKEN]: () => {
+    [HwbOAuth2ResponseType.TOKEN]: () => {
       const module = 'authorize';
       const requireValidToken = this.getOption(`${module}.requireValidToken`);
       return observableOf(this.route.snapshot.fragment).pipe(
         map(fragment => this.parseHashAsQueryParams(fragment)),
         map((params: any) => {
           if (!params.error) {
-            return new TraqAuthResult(
+            return new HwbAuthResult(
               true,
               params,
               this.getOption('redirect.success'),
@@ -135,7 +135,7 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
               this.getOption('defaultMessages'),
               this.createToken(params, requireValidToken));
           }
-          return new TraqAuthResult(
+          return new HwbAuthResult(
             false,
             params,
             this.getOption('redirect.failure'),
@@ -145,13 +145,13 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
         }),
         catchError(err => {
           const errors = [];
-          if (err instanceof TraqAuthIllegalTokenError) {
+          if (err instanceof HwbAuthIllegalTokenError) {
             errors.push(err.message)
           } else {
             errors.push('Something went wrong.');
           }
           return observableOf(
-            new TraqAuthResult(
+            new HwbAuthResult(
               false,
               err,
               this.getOption('redirect.failure'),
@@ -163,12 +163,12 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
   };
 
   protected redirectResults = {
-    [TraqOAuth2ResponseType.CODE]: () => {
+    [HwbOAuth2ResponseType.CODE]: () => {
       return observableOf(this.route.snapshot.queryParams).pipe(
         map((params: any) => !!(params && (params.code || params.error))),
       );
     },
-    [TraqOAuth2ResponseType.TOKEN]: () => {
+    [HwbOAuth2ResponseType.TOKEN]: () => {
       return observableOf(this.route.snapshot.fragment).pipe(
         map(fragment => this.parseHashAsQueryParams(fragment)),
         map((params: any) => !!(params && (params.access_token || params.error))),
@@ -176,7 +176,7 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
     },
   };
 
-  protected defaultOptions: TraqOAuth2AuthStrategyOptions = auth2StrategyOptions;
+  protected defaultOptions: HwbOAuth2AuthStrategyOptions = auth2StrategyOptions;
 
   constructor(protected http: HttpClient,
               private route: ActivatedRoute,
@@ -184,9 +184,9 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
     super();
   }
 
-  authenticate(data?: any): Observable<TraqAuthResult> {
+  authenticate(data?: any): Observable<HwbAuthResult> {
 
-    if (this.getOption('token.grantType') === TraqOAuth2GrantType.PASSWORD) {
+    if (this.getOption('token.grantType') === HwbOAuth2GrantType.PASSWORD) {
       return this.passwordToken(data.email, data.password)
     } else {
       return this.isRedirectResult()
@@ -194,7 +194,7 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
           switchMap((result: boolean) => {
             if (!result) {
               this.authorizeRedirect();
-              return observableOf(new TraqAuthResult(true));
+              return observableOf(new HwbAuthResult(true));
             }
             return this.getAuthorizationResult();
           }),
@@ -212,7 +212,7 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
                       only 'token' and 'code' are supported now`);
   }
 
-  refreshToken(token: TraqAuthRefreshableToken): Observable<TraqAuthResult> {
+  refreshToken(token: HwbAuthRefreshableToken): Observable<HwbAuthResult> {
     const module = 'refresh';
     const url = this.getActionEndpoint(module);
     const requireValidToken = this.getOption(`${module}.requireValidToken`);
@@ -220,7 +220,7 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
     return this.http.post(url, this.buildRefreshRequestData(token), this.buildAuthHeader())
       .pipe(
         map((res) => {
-          return new TraqAuthResult(
+          return new HwbAuthResult(
             true,
             res,
             this.getOption('redirect.success'),
@@ -232,7 +232,7 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
       );
   }
 
-  passwordToken(email: string, password: string): Observable<TraqAuthResult> {
+  passwordToken(email: string, password: string): Observable<HwbAuthResult> {
     const module = 'token';
     const url = this.getActionEndpoint(module);
     const requireValidToken = this.getOption(`${module}.requireValidToken`);
@@ -240,7 +240,7 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
     return this.http.post(url, this.buildPasswordRequestData(email, password), this.buildAuthHeader() )
       .pipe(
         map((res) => {
-          return new TraqAuthResult(
+          return new HwbAuthResult(
             true,
             res,
             this.getOption('redirect.success'),
@@ -270,7 +270,7 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
                          this.buildAuthHeader())
       .pipe(
         map((res) => {
-          return new TraqAuthResult(
+          return new HwbAuthResult(
             true,
             res,
             this.getOption('redirect.success'),
@@ -292,7 +292,7 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
     return this.cleanParams(this.addCredentialsToParams(params));
   }
 
-  protected buildRefreshRequestData(token: TraqAuthRefreshableToken): any {
+  protected buildRefreshRequestData(token: HwbAuthRefreshableToken): any {
     const params = {
       grant_type: this.getOption('refresh.grantType'),
       refresh_token: token.getRefreshToken(),
@@ -311,7 +311,7 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
   }
 
   protected buildAuthHeader(): any {
-    if (this.clientAuthMethod === TraqOAuth2ClientAuthMethod.BASIC) {
+    if (this.clientAuthMethod === HwbOAuth2ClientAuthMethod.BASIC) {
       if (this.getOption('clientId') && this.getOption('clientSecret')) {
         return {
           headers: new HttpHeaders(
@@ -334,7 +334,7 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
   }
 
   protected addCredentialsToParams(params: any): any {
-    if (this.clientAuthMethod === TraqOAuth2ClientAuthMethod.REQUEST_BODY) {
+    if (this.clientAuthMethod === HwbOAuth2ClientAuthMethod.REQUEST_BODY) {
       if (this.getOption('clientId') && this.getOption('clientSecret')) {
         return {
           ... params,
@@ -349,7 +349,7 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
   }
 
 
-  protected handleResponseError(res: any): Observable<TraqAuthResult> {
+  protected handleResponseError(res: any): Observable<HwbAuthResult> {
     let errors = [];
     if (res instanceof HttpErrorResponse) {
       if (res.error.error_description) {
@@ -357,14 +357,14 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
       } else {
         errors = this.getOption('defaultErrors');
       }
-    }  else if (res instanceof TraqAuthIllegalTokenError ) {
+    }  else if (res instanceof HwbAuthIllegalTokenError ) {
       errors.push(res.message)
     } else {
         errors.push('Something went wrong.')
     };
 
     return observableOf(
-      new TraqAuthResult(
+      new HwbAuthResult(
         false,
         res,
         this.getOption('redirect.failure'),
@@ -401,8 +401,8 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
     }, {}) : {};
   }
 
-  protected createRefreshedToken(res, existingToken: TraqAuthRefreshableToken, requireValidToken: boolean): TraqAuthToken {
-    type AuthRefreshToken = TraqAuthRefreshableToken & TraqAuthToken;
+  protected createRefreshedToken(res, existingToken: HwbAuthRefreshableToken, requireValidToken: boolean): HwbAuthToken {
+    type AuthRefreshToken = HwbAuthRefreshableToken & HwbAuthToken;
 
     const refreshedToken: AuthRefreshToken = this.createToken<AuthRefreshToken>(res, requireValidToken);
     if (!refreshedToken.getRefreshToken() && existingToken.getRefreshToken()) {
@@ -411,19 +411,19 @@ export class TraqOAuth2AuthStrategy extends TraqAuthStrategy {
     return refreshedToken;
   }
 
-  register(data?: any): Observable<TraqAuthResult> {
-    throw new Error('`register` is not supported by `TraqOAuth2AuthStrategy`, use `authenticate`.');
+  register(data?: any): Observable<HwbAuthResult> {
+    throw new Error('`register` is not supported by `HwbOAuth2AuthStrategy`, use `authenticate`.');
   }
 
-  requestPassword(data?: any): Observable<TraqAuthResult> {
-    throw new Error('`requestPassword` is not supported by `TraqOAuth2AuthStrategy`, use `authenticate`.');
+  requestPassword(data?: any): Observable<HwbAuthResult> {
+    throw new Error('`requestPassword` is not supported by `HwbOAuth2AuthStrategy`, use `authenticate`.');
   }
 
-  resetPassword(data: any = {}): Observable<TraqAuthResult> {
-    throw new Error('`resetPassword` is not supported by `TraqOAuth2AuthStrategy`, use `authenticate`.');
+  resetPassword(data: any = {}): Observable<HwbAuthResult> {
+    throw new Error('`resetPassword` is not supported by `HwbOAuth2AuthStrategy`, use `authenticate`.');
   }
 
-  logout(): Observable<TraqAuthResult> {
-    return observableOf(new TraqAuthResult(true));
+  logout(): Observable<HwbAuthResult> {
+    return observableOf(new HwbAuthResult(true));
   }
 }

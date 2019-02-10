@@ -1,0 +1,35 @@
+
+    <mat-card  style="margin-right: 20px;" *ngIf="accountsummayLoaded">
+                
+            <mat-card-content>   
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row"> 
+
+                                <div fxFlex.xs="100" fxFlex.lg="16" fxFlex.md="50" fxFlex.sm="50"  style="font-weight:bold ;text-align:left;" > 
+                                        Account Name
+                                </div>     
+                                <div fxFlex.xs="100" fxFlex.lg="25" fxFlex.md="50" fxFlex.sm="50" >  
+                                        {{accountsummary.fullname}}
+                                </div>  
+                                <div fxFlex.xs="100" fxFlex.lg="16" fxFlex.md="50" fxFlex.sm="50"  style="font-weight:bold ;text-align:left;" > 
+                                        Account Number
+                                </div>     
+                                <div fxFlex.xs="100" fxFlex.lg="25" fxFlex.md="50" fxFlex.sm="50" >  
+                                        {{accountsummary.acc_account_code}}
+                                </div>  
+                                <div fxFlex.xs="100" fxFlex.lg="25" fxFlex.md="50" fxFlex.sm="50"  style="font-weight:bold ;text-align:left;" > 
+                                        Outstanding Balance
+                                </div>     
+                                <div fxFlex.xs="100" fxFlex.lg="9" fxFlex.md="50" fxFlex.sm="50" >  
+                                        {{accountsummary.acc_outstanding_balance}}
+                                </div> 
+
+                                <div fxFlex.xs="100" fxFlex.lg="9" fxFlex.md="50" fxFlex.sm="50"  style="font-weight:bold ;text-align:left;" > 
+                                        Book
+                                </div>     
+                                <div fxFlex.xs="100" fxFlex.lg="16" fxFlex.md="50" fxFlex.sm="50" >  
+                                        {{accountsummary.bck_description}}
+                                </div> 
+                        </div> 
+            </mat-card-content>
+     
+            </mat-card>

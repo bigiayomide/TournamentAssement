@@ -95,6 +95,7 @@ namespace HWBTournament.Data.Repositories
         public virtual void Commit()
         {
             _context.SaveChanges();
+            //_context.Dispose();
         }
     }
 }

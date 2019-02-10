@@ -1,35 +1,47 @@
 ﻿using HWBTournament.Data.Contracts;
 using HWBTournament.Model.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Text;
 
 namespace HWBTournament.Data.Repositories
 {
-    public class EventDetailRepository : EntityBaseRepository<eventdetail>, IEventDetailRepository
+    public class EventDetailRepository : EntityBaseRepository<EventDetail>, IEventDetailRepository
     {
+        public HWBTournamentContext _context;
         public EventDetailRepository(HWBTournamentContext context)
             : base(context)
         {
+            _context = context;
         }
-        public eventdetail CreateEventDetail(eventdetail neweventdetail)
+        public EventDetail CreateEventDetail(EventDetail neweventdetail)
         {
-            Add(neweventdetail);
-            Commit();
+            //Add(neweventdetail);
+            //Commit();
+            _context.Database.ExecuteSqlCommand("EXEC PI_Insert_Event_Detail @event_id, @event_status_id,@event_detail_name,@event_detail_number,@event_detail_odd,@finishing_position,@first_timer",
+                                                 new SqlParameter("@event_id", neweventdetail.event_id),
+                                                 new SqlParameter("@event_status_id", neweventdetail.event_status_id),
+                                                 new SqlParameter("@event_detail_name", neweventdetail.event_detail_name),
+                                                 new SqlParameter("@event_detail_number", neweventdetail.event_detail_number),
+                                                 new SqlParameter("@event_detail_odd", neweventdetail.event_detail_odd),
+                                                 new SqlParameter("@finishing_position", neweventdetail.finishing_position),
+                                                 new SqlParameter("@first_timer", neweventdetail.first_timer));
             return neweventdetail;
         }
 
-        public eventdetail GetSingleById(int eventdetailId)
+        public EventDetail GetSingleById(int eventdetailId)
         {
             return GetSingle(eventdetailId);
         }
 
-        public IEnumerable<eventdetail> GetEventDetails()
+        public IEnumerable<EventDetail> GetEventDetails()
         {
             return GetAll();
         }
 
-        public eventdetail UpdateEventDetail(eventdetail updateEventDetail)
+        public EventDetail UpdateEventDetail(EventDetail updateEventDetail)
         {
             var eventdetail = GetSingle(updateEventDetail.Id);
 

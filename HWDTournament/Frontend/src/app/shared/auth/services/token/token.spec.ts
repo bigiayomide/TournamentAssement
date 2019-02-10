@@ -1,4 +1,4 @@
-import { TraqAuthOAuth2Token, TraqAuthJWTToken, TraqAuthSimpleToken, TraqAuthOAuth2JWTToken } from './token';
+import { HwbAuthOAuth2Token, HwbAuthJWTToken, HwbAuthSimpleToken, HwbAuthOAuth2JWTToken } from './token';
 
 
 describe('auth token', () => {
@@ -6,19 +6,19 @@ describe('auth token', () => {
     const now = new Date();
 
     // tslint:disable
-    const simpleToken = new TraqAuthSimpleToken('token','strategy');
-    const validJWTToken = new TraqAuthJWTToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjZXJlbWEuZnIiLCJpYXQiOjE1MzIzNTA4MDAsImV4cCI6MjUzMjM1MDgwMCwic3ViIjoiQWxhaW4gQ0hBUkxFUyIsImFkbWluIjp0cnVlfQ.Rgkgb4KvxY2wp2niXIyLJNJeapFp9z3tCF-zK6Omc8c', 'strategy');
+    const simpleToken = new HwbAuthSimpleToken('token','strategy');
+    const validJWTToken = new HwbAuthJWTToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjZXJlbWEuZnIiLCJpYXQiOjE1MzIzNTA4MDAsImV4cCI6MjUzMjM1MDgwMCwic3ViIjoiQWxhaW4gQ0hBUkxFUyIsImFkbWluIjp0cnVlfQ.Rgkgb4KvxY2wp2niXIyLJNJeapFp9z3tCF-zK6Omc8c', 'strategy');
 
-    const noIatJWTToken = new TraqAuthJWTToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjZXJlbWEuZnIiLCJleHAiOjE1MzI0MzcyMDAsInN1YiI6IkFsYWluIENIQVJMRVMiLCJhZG1pbiI6dHJ1ZX0.cfwQlKo6xomXkE-U-SOqse2GjdxncOuhdd1VWIOiYzA', 'strategy');
+    const noIatJWTToken = new HwbAuthJWTToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjZXJlbWEuZnIiLCJleHAiOjE1MzI0MzcyMDAsInN1YiI6IkFsYWluIENIQVJMRVMiLCJhZG1pbiI6dHJ1ZX0.cfwQlKo6xomXkE-U-SOqse2GjdxncOuhdd1VWIOiYzA', 'strategy');
 
-    const noExpJWTToken = new TraqAuthJWTToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjZXJlbWEuZnIiLCJpYXQiOjE1MzIzNTA4MDAsInN1YiI6IkFsYWluIENIQVJMRVMiLCJhZG1pbiI6dHJ1ZX0.heHVXkHexwqbPCPUAvkJlXO6tvxzxTKf4iP0OWBbp7Y','strategy');
+    const noExpJWTToken = new HwbAuthJWTToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjZXJlbWEuZnIiLCJpYXQiOjE1MzIzNTA4MDAsInN1YiI6IkFsYWluIENIQVJMRVMiLCJhZG1pbiI6dHJ1ZX0.heHVXkHexwqbPCPUAvkJlXO6tvxzxTKf4iP0OWBbp7Y','strategy');
 
-    const expiredJWTToken = new TraqAuthJWTToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzY290Y2guaW8iLCJleHAiOjEzMDA4MTkzODAsIm5hbWUiOiJDaHJpcyBTZXZpbGxlamEiLCJhZG1pbiI6dHJ1ZX0.03f329983b86f7d9a9f5fef85305880101d5e302afafa20154d094b229f75773','strategy');
+    const expiredJWTToken = new HwbAuthJWTToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzY290Y2guaW8iLCJleHAiOjEzMDA4MTkzODAsIm5hbWUiOiJDaHJpcyBTZXZpbGxlamEiLCJhZG1pbiI6dHJ1ZX0.03f329983b86f7d9a9f5fef85305880101d5e302afafa20154d094b229f75773','strategy');
 
     // tslint:enable
     it('JWT Token constructor, not valid JWT token, must consist of three parts', () => {
       expect(() => {
-        new TraqAuthJWTToken('.', 'strategy');
+        new HwbAuthJWTToken('.', 'strategy');
       })
         .toThrow(new Error(
           `The payload . is not valid JWT payload and must consist of three parts.`));
@@ -26,7 +26,7 @@ describe('auth token', () => {
 
     it('JWT Token constructor,, not valid JWT token, cannot be decoded', () => {
       expect(() => {
-        new TraqAuthJWTToken('..', 'strategy');
+        new HwbAuthJWTToken('..', 'strategy');
       })
         .toThrow(new Error(
           `The payload .. is not valid JWT payload and cannot be decoded.`));
@@ -34,7 +34,7 @@ describe('auth token', () => {
 
     it('getPayload, not valid base64 in JWT token, cannot be decoded', () => {
       expect(() => {
-        new TraqAuthJWTToken('h%2BHY.h%2BHY.h%2BHY', 'strategy');
+        new HwbAuthJWTToken('h%2BHY.h%2BHY.h%2BHY', 'strategy');
       })
         .toThrow(new Error(
           `The payload h%2BHY.h%2BHY.h%2BHY is not valid JWT payload and cannot be parsed.`));
@@ -99,7 +99,7 @@ describe('auth token', () => {
 
     it('isValid fail', () => {
       // without token
-      expect(new TraqAuthJWTToken('', 'strategy', new Date()).isValid()).toBeFalsy();
+      expect(new HwbAuthJWTToken('', 'strategy', new Date()).isValid()).toBeFalsy();
 
 
       // expired date
@@ -108,12 +108,12 @@ describe('auth token', () => {
 
     it('NbAuthJWTToken name', () => {
       // without token
-      expect(TraqAuthJWTToken.NAME).toEqual(validJWTToken.getName());
+      expect(HwbAuthJWTToken.NAME).toEqual(validJWTToken.getName());
     });
 
     it('NbAuthSimpleToken name', () => {
       // without token
-      expect(TraqAuthSimpleToken.NAME).toEqual(simpleToken.getName());
+      expect(HwbAuthSimpleToken.NAME).toEqual(simpleToken.getName());
     });
 
     it('NbAuthSimpleToken has payload', () => {
@@ -129,12 +129,12 @@ describe('auth token', () => {
 
     it('NbAuthJWTToken name', () => {
       // without token
-      expect(TraqAuthJWTToken.NAME).toEqual(validJWTToken.getName());
+      expect(HwbAuthJWTToken.NAME).toEqual(validJWTToken.getName());
     });
 
     it('NbAuthSimpleToken name', () => {
       // without token
-      expect(TraqAuthSimpleToken.NAME).toEqual(simpleToken.getName());
+      expect(HwbAuthSimpleToken.NAME).toEqual(simpleToken.getName());
     });
 
     it('NbAuthSimpleToken has payload', () => {
@@ -154,9 +154,9 @@ describe('auth token', () => {
     };
 
 
-    let validToken = new TraqAuthOAuth2Token(token, 'strategy');
+    let validToken = new HwbAuthOAuth2Token(token, 'strategy');
 
-    const noExpToken = new TraqAuthOAuth2Token({
+    const noExpToken = new HwbAuthOAuth2Token({
       access_token: '2YotnFZFEjr1zCsicMWpAA',
       refresh_token: 'tGzv3JOkF0XG5Qx2TlKWIA',
       example_parameter: 'example_value',
@@ -168,7 +168,7 @@ describe('auth token', () => {
 
     it('empty token constructor, not valid token, cannot be decoded', () => {
       expect(() => {
-        new TraqAuthOAuth2Token({}, 'strategy');
+        new HwbAuthOAuth2Token({}, 'strategy');
       })
         .toThrow(new Error(
           `Cannot extract payload from an empty token.`));
@@ -176,7 +176,7 @@ describe('auth token', () => {
 
     it('getExpDate success', () => {
       // recreate it here if we want to be in the same second
-      validToken = new TraqAuthOAuth2Token(token, 'strategy');
+      validToken = new HwbAuthOAuth2Token(token, 'strategy');
       const date = new Date();
       date.setTime(date.getTime() + 3600 * 1000);
       expect(validToken.getTokenExpDate().getTime() - date.getTime() < 10);
@@ -207,11 +207,11 @@ describe('auth token', () => {
     });
 
     it('name', () => {
-      expect(TraqAuthOAuth2Token.NAME).toEqual(validToken.getName());
+      expect(HwbAuthOAuth2Token.NAME).toEqual(validToken.getName());
     });
   });
 
-  describe('TraqAuthOAuth2JWTToken', () => {
+  describe('HwbAuthOAuth2JWTToken', () => {
 
     const exp = 2532350800;
     const iat = 1532350800;
@@ -259,9 +259,9 @@ describe('auth token', () => {
       example_parameter: 'example_value',
     };
 
-    const validToken = new TraqAuthOAuth2JWTToken(validPayload, 'strategy');
-    let noExpButIatToken = new TraqAuthOAuth2JWTToken(noExpButIatPayload, 'strategy');
-    const permanentToken = new TraqAuthOAuth2JWTToken(permanentPayload, 'strategy');
+    const validToken = new HwbAuthOAuth2JWTToken(validPayload, 'strategy');
+    let noExpButIatToken = new HwbAuthOAuth2JWTToken(noExpButIatPayload, 'strategy');
+    const permanentToken = new HwbAuthOAuth2JWTToken(permanentPayload, 'strategy');
 
     it('getPayload success', () => {
       expect(validToken.getPayload()).toEqual(validPayload);
@@ -273,7 +273,7 @@ describe('auth token', () => {
 
     it('empty token constructor, not valid token, cannot be decoded', () => {
       expect(() => {
-        new TraqAuthOAuth2JWTToken({}, 'strategy');
+        new HwbAuthOAuth2JWTToken({}, 'strategy');
       })
         .toThrow(new Error(
           `Cannot extract payload from an empty token.`));
@@ -286,7 +286,7 @@ describe('auth token', () => {
     });
 
     it('getCreatedAt success for no iat token', () => {
-      noExpButIatToken = new TraqAuthOAuth2JWTToken(noExpButIatPayload, 'strategy');
+      noExpButIatToken = new HwbAuthOAuth2JWTToken(noExpButIatPayload, 'strategy');
       const date = new Date();
       expect(noExpButIatToken.getTokenExpDate().getTime() - date.getTime() < 10);
     });
@@ -304,7 +304,7 @@ describe('auth token', () => {
     });
 
     it('getExpDate success when only expires_in is set', () => {
-      const NoExpNoIatToken = new TraqAuthOAuth2JWTToken(noExpNoIatPayload, 'strategy');
+      const NoExpNoIatToken = new HwbAuthOAuth2JWTToken(noExpNoIatPayload, 'strategy');
       const date = new Date();
       date.setTime(date.getTime() + expires_in * 1000);
       expect(NoExpNoIatToken.getTokenExpDate().getTime() - date.getTime() < 10);
@@ -315,7 +315,7 @@ describe('auth token', () => {
     });
 
     it('name', () => {
-      expect(TraqAuthOAuth2JWTToken.NAME).toEqual(validToken.getName());
+      expect(HwbAuthOAuth2JWTToken.NAME).toEqual(validToken.getName());
     });
   });
 

@@ -1,29 +1,29 @@
-import { TraqAuthOAuth2Token, TraqAuthTokenClass } from '../../services';
-import { TraqAuthStrategyOptions } from '../auth-strategy-options';
+import { HwbAuthOAuth2Token, HwbAuthTokenClass } from '../../services';
+import { HwbAuthStrategyOptions } from '../auth-strategy-options';
 
-export enum TraqOAuth2ResponseType {
+export enum HwbOAuth2ResponseType {
   CODE = 'code',
   TOKEN = 'token',
 }
 
 // TODO: client_credentials
-export enum TraqOAuth2GrantType {
+export enum HwbOAuth2GrantType {
   AUTHORIZATION_CODE = 'authorization_code',
   PASSWORD = 'password',
   REFRESH_TOKEN = 'refresh_token',
 }
 
-export enum TraqOAuth2ClientAuthMethod {
+export enum HwbOAuth2ClientAuthMethod {
   NONE = 'none',
   BASIC = 'basic',
   REQUEST_BODY = 'request-body',
 }
 
-export class TraqOAuth2AuthStrategyOptions extends TraqAuthStrategyOptions {
+export class HwbOAuth2AuthStrategyOptions extends HwbAuthStrategyOptions {
   baseEndpoint?: string = '';
   clientId: string = '';
   clientSecret?: string = '';
-  clientAuthMethod?: string = TraqOAuth2ClientAuthMethod.NONE;
+  clientAuthMethod?: string = HwbOAuth2ClientAuthMethod.NONE;
   redirect?: { success?: string; failure?: string } = {
     success: '/',
     failure: null,
@@ -40,19 +40,19 @@ export class TraqOAuth2AuthStrategyOptions extends TraqAuthStrategyOptions {
     params?: { [key: string]: string };
   } = {
     endpoint: 'authorize',
-    responseType: TraqOAuth2ResponseType.CODE,
+    responseType: HwbOAuth2ResponseType.CODE,
   };
   token?: {
     endpoint?: string;
     grantType?: string;
     redirectUri?: string;
     requireValidToken?: boolean;
-    class: TraqAuthTokenClass,
+    class: HwbAuthTokenClass,
   } = {
     endpoint: 'token',
-    grantType: TraqOAuth2GrantType.AUTHORIZATION_CODE,
+    grantType: HwbOAuth2GrantType.AUTHORIZATION_CODE,
     requireValidToken: false,
-    class: TraqAuthOAuth2Token,
+    class: HwbAuthOAuth2Token,
   };
   refresh?: {
     endpoint?: string;
@@ -61,8 +61,8 @@ export class TraqOAuth2AuthStrategyOptions extends TraqAuthStrategyOptions {
     requireValidToken?: boolean;
   } = {
     endpoint: 'token',
-    grantType: TraqOAuth2GrantType.REFRESH_TOKEN,
+    grantType: HwbOAuth2GrantType.REFRESH_TOKEN,
   };
 }
 
-export const auth2StrategyOptions: TraqOAuth2AuthStrategyOptions = new TraqOAuth2AuthStrategyOptions();
+export const auth2StrategyOptions: HwbOAuth2AuthStrategyOptions = new HwbOAuth2AuthStrategyOptions();

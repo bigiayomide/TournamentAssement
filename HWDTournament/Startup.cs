@@ -7,7 +7,6 @@ using HWBTournament.API.Core;
 using HWBTournament.Data;
 using HWBTournament.Data.Contracts;
 using HWBTournament.Data.Repositories;
-using HWBTournament.Data.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -46,16 +46,15 @@ namespace HWBTournament
             services.AddDbContext<HWBTournamentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
-            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
-            services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<ILoggingRepository, LoggingRepository>();
+
+            //services.AddScoped<ILoggingRepository, LoggingRepository>();
 
             services.AddScoped<ITournamentRepository, TournamentRepository>();
             services.AddScoped<IEventDetailRepository, EventDetailRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IEventDetailStatusRepository, EventDetailStatusRepository>();
             services.AddScoped<IDbDataSeeder, DbDataSeeder>();
-            services.AddScoped<IMembershipService, MembershipService>();
+
             services.AddScoped<IEncryptionService, EncryptionService>();
             
 
@@ -118,9 +117,8 @@ namespace HWBTournament
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -142,8 +140,7 @@ namespace HWBTournament
                     {
                         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-
-                        var error = context.Features.Get<IExceptionHandlerFeature>();
+                         var error = context.Features.Get<IExceptionHandlerFeature>();
                         if (error != null)
                         {
                             context.Response.AddApplicationError(error.Error.Message);
@@ -152,7 +149,7 @@ namespace HWBTournament
                     });
               });
 
- 
+            app.ConfigureExceptionHandler(loggerFactory);
             app.UseMvcWithDefaultRoute();
             app.UseDefaultFiles();
             app.UseStaticFiles();

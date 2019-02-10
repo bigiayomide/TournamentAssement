@@ -11,6 +11,6 @@ namespace HWBTournament.API.ViewModels
 
         public int Id { get; set; }
         public string tournament_name { get; set; }
-        //public List<@event> @events { get; set; }
+        //public List<Event> Events { get; set; }
     }
 }

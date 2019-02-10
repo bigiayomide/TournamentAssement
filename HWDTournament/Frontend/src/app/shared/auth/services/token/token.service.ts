@@ -2,26 +2,26 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, of as observableOf } from 'rxjs';
 import { filter, share } from 'rxjs/operators';
 
-import { TraqTokenStorage } from './token-storage';
-import { TraqAuthToken } from './token';
+import { HwbTokenStorage } from './token-storage';
+import { HwbAuthToken } from './token';
 
 /**
  * Service that allows you to manage authentication token - get, set, clear and also listen to token changes over time.
  */
 @Injectable()
-export class TraqTokenService {
+export class HwbTokenService {
 
-  protected token$: BehaviorSubject<TraqAuthToken> = new BehaviorSubject(null);
+  protected token$: BehaviorSubject<HwbAuthToken> = new BehaviorSubject(null);
 
-  constructor(protected tokenStorage: TraqTokenStorage) {
+  constructor(protected tokenStorage: HwbTokenStorage) {
     this.publishStoredToken();
   }
 
   /**
    * Publishes token when it changes.
-   * @returns {Observable<TraqAuthToken>}
+   * @returns {Observable<HwbAuthToken>}
    */
-  tokenChange(): Observable<TraqAuthToken> {
+  tokenChange(): Observable<HwbAuthToken> {
     return this.token$
       .pipe(
         filter(value => !!value),
@@ -32,10 +32,10 @@ export class TraqTokenService {
   /**
    * Sets a token into the storage. This method is used by the NbAuthService automatically.
    *
-   * @param {TraqAuthToken} token
+   * @param {HwbAuthToken} token
    * @returns {Observable<any>}
    */
-  set(token: TraqAuthToken): Observable<null> {
+  set(token: HwbAuthToken): Observable<null> {
     this.tokenStorage.set(token);
     this.publishStoredToken();
     return observableOf(null);
@@ -43,9 +43,9 @@ export class TraqTokenService {
 
   /**
    * Returns observable of current token
-   * @returns {Observable<TraqAuthToken>}
+   * @returns {Observable<HwbAuthToken>}
    */
-  get(): Observable<TraqAuthToken> {
+  get(): Observable<HwbAuthToken> {
     const token = this.tokenStorage.get();
     return observableOf(token);
   }

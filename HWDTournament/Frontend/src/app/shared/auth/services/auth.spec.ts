@@ -4,19 +4,19 @@ import { HttpResponse } from '@angular/common/http';
 import { of as observableOf } from 'rxjs';
 import { delay, first } from 'rxjs/operators';
 import { HWB_AUTH_OPTIONS, HWB_AUTH_USER_OPTIONS, HWB_AUTH_STRATEGIES, HWB_AUTH_TOKENS } from '../auth.options';
-import { TraqAuthService } from './auth.service';
-import { TraqDummyAuthStrategy } from '../strategies';
+import { HwbAuthService } from './auth.service';
+import { HwbDummyAuthStrategy } from '../strategies';
 import { hwbStrategiesFactory, hwbOptionsFactory } from '../auth.module';
-import { TraqAuthResult } from './auth-result';
-import { TraqTokenService } from './token/token.service';
-import { TraqAuthSimpleToken, hwbAuthCreateToken, TraqAuthJWTToken } from './token/token';
-import { TraqTokenLocalStorage, TraqTokenStorage } from './token/token-storage';
-import { HWB_AUTH_FALLBACK_TOKEN, TraqAuthTokenParceler } from './token/token-parceler';
+import { HwbAuthResult } from './auth-result';
+import { HwbTokenService } from './token/token.service';
+import { HwbAuthSimpleToken, hwbAuthCreateToken, HwbAuthJWTToken } from './token/token';
+import { HwbTokenLocalStorage, HwbTokenStorage } from './token/token-storage';
+import { HWB_AUTH_FALLBACK_TOKEN, HwbAuthTokenParceler } from './token/token-parceler';
 
 describe('auth-service', () => {
-  let authService: TraqAuthService;
-  let tokenService: TraqTokenService;
-  let dummyAuthStrategy: TraqDummyAuthStrategy;
+  let authService: HwbAuthService;
+  let tokenService: HwbTokenService;
+  let dummyAuthStrategy: HwbDummyAuthStrategy;
   const testTokenValue = 'test-token';
   const ownerStrategyName = 'strategy';
 
@@ -24,40 +24,40 @@ describe('auth-service', () => {
   const resp401 = new HttpResponse<Object>({body: {}, status: 401});
   const resp200 = new HttpResponse<Object>({body: {}, status: 200});
 
-  const testToken = hwbAuthCreateToken(TraqAuthSimpleToken, testTokenValue, ownerStrategyName);
-  const emptyToken = hwbAuthCreateToken(TraqAuthSimpleToken, null, ownerStrategyName);
+  const testToken = hwbAuthCreateToken(HwbAuthSimpleToken, testTokenValue, ownerStrategyName);
+  const emptyToken = hwbAuthCreateToken(HwbAuthSimpleToken, null, ownerStrategyName);
 
-  const failResult = new TraqAuthResult(false,
+  const failResult = new HwbAuthResult(false,
     resp401,
     null,
     ['Something went wrong.']);
 
-  const successResult = new TraqAuthResult(true,
+  const successResult = new HwbAuthResult(true,
     resp200,
     '/',
     [],
     ['Successfully logged in.'],
     testToken);
 
-  const successLogoutResult = new TraqAuthResult(true,
+  const successLogoutResult = new HwbAuthResult(true,
     resp200,
     '/',
     [],
     ['Successfully logged out.']);
 
-  const successResetPasswordResult = new TraqAuthResult(true,
+  const successResetPasswordResult = new HwbAuthResult(true,
     resp200,
     '/',
     [],
     ['Successfully reset password.']);
 
-  const successRequestPasswordResult = new TraqAuthResult(true,
+  const successRequestPasswordResult = new HwbAuthResult(true,
     resp200,
     '/',
     [],
     ['Successfully requested password.']);
 
-  const successRefreshTokenResult = new TraqAuthResult(true,
+  const successRefreshTokenResult = new HwbAuthResult(true,
     resp200,
     null,
     [],
@@ -68,9 +68,9 @@ describe('auth-service', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: HWB_AUTH_OPTIONS, useValue: {} },
-        { provide: HWB_AUTH_FALLBACK_TOKEN, useValue: TraqAuthSimpleToken },
-        { provide: HWB_AUTH_TOKENS, useValue: [TraqAuthSimpleToken, TraqAuthJWTToken] },
-        TraqAuthTokenParceler,
+        { provide: HWB_AUTH_FALLBACK_TOKEN, useValue: HwbAuthSimpleToken },
+        { provide: HWB_AUTH_TOKENS, useValue: [HwbAuthSimpleToken, HwbAuthJWTToken] },
+        HwbAuthTokenParceler,
         {
           provide: HWB_AUTH_USER_OPTIONS, useValue: {
             forms: {
@@ -79,7 +79,7 @@ describe('auth-service', () => {
               },
             },
             strategies: [
-              TraqDummyAuthStrategy.setup({
+              HwbDummyAuthStrategy.setup({
                 name: 'dummy',
 
                 alwaysFail: true,
@@ -90,15 +90,15 @@ describe('auth-service', () => {
         },
         { provide: HWB_AUTH_OPTIONS, useFactory: hwbOptionsFactory, deps: [HWB_AUTH_USER_OPTIONS] },
         { provide: HWB_AUTH_STRATEGIES, useFactory: hwbStrategiesFactory, deps: [HWB_AUTH_OPTIONS, Injector] },
-        { provide: TraqTokenStorage, useClass: TraqTokenLocalStorage },
-        TraqTokenService,
-        TraqAuthService,
-        TraqDummyAuthStrategy,
+        { provide: HwbTokenStorage, useClass: HwbTokenLocalStorage },
+        HwbTokenService,
+        HwbAuthService,
+        HwbDummyAuthStrategy,
       ],
     });
-    authService = TestBed.get(TraqAuthService);
-    tokenService = TestBed.get(TraqTokenService);
-    dummyAuthStrategy = TestBed.get(TraqDummyAuthStrategy);
+    authService = TestBed.get(HwbAuthService);
+    tokenService = TestBed.get(HwbTokenService);
+    dummyAuthStrategy = TestBed.get(HwbDummyAuthStrategy);
   });
 
   it('get test token before set', () => {
@@ -106,7 +106,7 @@ describe('auth-service', () => {
         .and
         .returnValue(observableOf(testToken));
 
-      authService.getToken().subscribe((val: TraqAuthSimpleToken) => {
+      authService.getToken().subscribe((val: HwbAuthSimpleToken) => {
         expect(spy).toHaveBeenCalled();
         expect(val.getValue()).toEqual(testTokenValue);
       });
@@ -144,7 +144,7 @@ describe('auth-service', () => {
 
       authService.onTokenChange()
         .pipe(first())
-        .subscribe((token: TraqAuthSimpleToken) => {
+        .subscribe((token: HwbAuthSimpleToken) => {
           expect(spy).toHaveBeenCalled();
           expect(token.getValue()).toEqual(testTokenValue);
           done();
@@ -160,7 +160,7 @@ describe('auth-service', () => {
             delay(1000),
           ));
 
-      authService.authenticate('dummy').subscribe((authRes: TraqAuthResult) => {
+      authService.authenticate('dummy').subscribe((authRes: HwbAuthResult) => {
         expect(spy).toHaveBeenCalled();
         expect(authRes.isFailure()).toBeTruthy();
         expect(authRes.isSuccess()).toBeFalsy();
@@ -187,7 +187,7 @@ describe('auth-service', () => {
         .returnValue(observableOf(null));
 
 
-      authService.authenticate('dummy').subscribe((authRes: TraqAuthResult) => {
+      authService.authenticate('dummy').subscribe((authRes: HwbAuthResult) => {
         expect(strategySpy).toHaveBeenCalled();
         expect(tokenServiceSetSpy).toHaveBeenCalled();
 
@@ -212,7 +212,7 @@ describe('auth-service', () => {
             delay(1000),
           ));
 
-      authService.register('dummy').subscribe((authRes: TraqAuthResult) => {
+      authService.register('dummy').subscribe((authRes: HwbAuthResult) => {
         expect(spy).toHaveBeenCalled();
         expect(authRes.isFailure()).toBeTruthy();
         expect(authRes.isSuccess()).toBeFalsy();
@@ -238,7 +238,7 @@ describe('auth-service', () => {
         .and
         .returnValue(observableOf(null));
 
-      authService.register('dummy').subscribe((authRes: TraqAuthResult) => {
+      authService.register('dummy').subscribe((authRes: HwbAuthResult) => {
         expect(strategySpy).toHaveBeenCalled();
         expect(tokenServiceSetSpy).toHaveBeenCalled();
 
@@ -262,7 +262,7 @@ describe('auth-service', () => {
             delay(1000),
           ));
 
-      authService.logout('dummy').subscribe((authRes: TraqAuthResult) => {
+      authService.logout('dummy').subscribe((authRes: HwbAuthResult) => {
         expect(spy).toHaveBeenCalled();
 
         expect(authRes.isFailure()).toBeTruthy();
@@ -286,7 +286,7 @@ describe('auth-service', () => {
           ));
       const tokenServiceClearSpy = spyOn(tokenService, 'clear').and.returnValue(observableOf('STUB'));
 
-      authService.logout('dummy').subscribe((authRes: TraqAuthResult) => {
+      authService.logout('dummy').subscribe((authRes: HwbAuthResult) => {
         expect(strategyLogoutSpy).toHaveBeenCalled();
         expect(tokenServiceClearSpy).toHaveBeenCalled();
 
@@ -310,7 +310,7 @@ describe('auth-service', () => {
             delay(1000),
           ));
 
-      authService.requestPassword('dummy').subscribe((authRes: TraqAuthResult) => {
+      authService.requestPassword('dummy').subscribe((authRes: HwbAuthResult) => {
         expect(spy).toHaveBeenCalled();
 
         expect(authRes.isFailure()).toBeTruthy();
@@ -333,7 +333,7 @@ describe('auth-service', () => {
             delay(1000),
           ));
 
-      authService.requestPassword('dummy').subscribe((authRes: TraqAuthResult) => {
+      authService.requestPassword('dummy').subscribe((authRes: HwbAuthResult) => {
         expect(strategyLogoutSpy).toHaveBeenCalled();
 
         expect(authRes.isFailure()).toBeFalsy();
@@ -356,7 +356,7 @@ describe('auth-service', () => {
             delay(1000),
           ));
 
-      authService.resetPassword('dummy').subscribe((authRes: TraqAuthResult) => {
+      authService.resetPassword('dummy').subscribe((authRes: HwbAuthResult) => {
         expect(spy).toHaveBeenCalled();
 
         expect(authRes.isFailure()).toBeTruthy();
@@ -379,7 +379,7 @@ describe('auth-service', () => {
             delay(1000),
           ));
 
-      authService.resetPassword('dummy').subscribe((authRes: TraqAuthResult) => {
+      authService.resetPassword('dummy').subscribe((authRes: HwbAuthResult) => {
         expect(strategyLogoutSpy).toHaveBeenCalled();
 
         expect(authRes.isFailure()).toBeFalsy();
@@ -402,7 +402,7 @@ describe('auth-service', () => {
             delay(1000),
           ));
 
-      authService.refreshToken('dummy').subscribe((authRes: TraqAuthResult) => {
+      authService.refreshToken('dummy').subscribe((authRes: HwbAuthResult) => {
         expect(spy).toHaveBeenCalled();
         expect(authRes.isFailure()).toBeTruthy();
         expect(authRes.isSuccess()).toBeFalsy();
@@ -428,7 +428,7 @@ describe('auth-service', () => {
         .and
         .returnValue(observableOf(null));
 
-      authService.refreshToken('dummy').subscribe((authRes: TraqAuthResult) => {
+      authService.refreshToken('dummy').subscribe((authRes: HwbAuthResult) => {
         expect(strategySpy).toHaveBeenCalled();
         expect(tokenServiceSetSpy).toHaveBeenCalled();
 

@@ -1,21 +1,21 @@
 import { async, inject, TestBed } from '@angular/core/testing';
 
-import { TraqAuthSimpleToken, hwbAuthCreateToken, TraqAuthJWTToken } from './token';
-import { HWB_AUTH_FALLBACK_TOKEN, TraqAuthTokenParceler } from './token-parceler';
+import { HwbAuthSimpleToken, hwbAuthCreateToken, HwbAuthJWTToken } from './token';
+import { HWB_AUTH_FALLBACK_TOKEN, HwbAuthTokenParceler } from './token-parceler';
 import { HWB_AUTH_TOKENS } from '../../auth.options';
 
 describe('token-parceler', () => {
 
-  let tokenParceler: TraqAuthTokenParceler;
+  let tokenParceler: HwbAuthTokenParceler;
 
   const createdAt = new Date(1532350800000);
-  const simpleToken = hwbAuthCreateToken(TraqAuthSimpleToken, 'test value', 'strategy', createdAt);
+  const simpleToken = hwbAuthCreateToken(HwbAuthSimpleToken, 'test value', 'strategy', createdAt);
   // tslint:disable-next-line
-  const wrappedSimple = `{"name":"${TraqAuthSimpleToken.NAME}","ownerStrategyName":"${simpleToken.getOwnerStrategyName()}","createdAt":${simpleToken.getCreatedAt().getTime()},"value":"${simpleToken.getValue()}"}`;
+  const wrappedSimple = `{"name":"${HwbAuthSimpleToken.NAME}","ownerStrategyName":"${simpleToken.getOwnerStrategyName()}","createdAt":${simpleToken.getCreatedAt().getTime()},"value":"${simpleToken.getValue()}"}`;
   // tslint:disable-next-line
-  const jwtToken = hwbAuthCreateToken(TraqAuthJWTToken, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjZXJlbWEuZnIiLCJpYXQiOjE1MzIzNTA4MDAsImV4cCI6MTUzMjQzNzIwMCwic3ViIjoiQWxhaW4gQ0hBUkxFUyIsImFkbWluIjp0cnVlfQ.iICwNqhvg9KPv3_MSg3HCydyAgAYI9mL3ZejLkY11Ck', 'strategy', createdAt);
+  const jwtToken = hwbAuthCreateToken(HwbAuthJWTToken, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjZXJlbWEuZnIiLCJpYXQiOjE1MzIzNTA4MDAsImV4cCI6MTUzMjQzNzIwMCwic3ViIjoiQWxhaW4gQ0hBUkxFUyIsImFkbWluIjp0cnVlfQ.iICwNqhvg9KPv3_MSg3HCydyAgAYI9mL3ZejLkY11Ck', 'strategy', createdAt);
   // tslint:disable-next-line
-  const wrappedJWT = `{"name":"${TraqAuthJWTToken.NAME}","ownerStrategyName":"${jwtToken.getOwnerStrategyName()}","createdAt":${jwtToken.getCreatedAt().getTime()},"value":"${jwtToken.getValue()}"}`;
+  const wrappedJWT = `{"name":"${HwbAuthJWTToken.NAME}","ownerStrategyName":"${jwtToken.getOwnerStrategyName()}","createdAt":${jwtToken.getCreatedAt().getTime()},"value":"${jwtToken.getValue()}"}`;
   // tslint:disable-next-line
   const wrappedNonExisting = `{"name":"non-existing","value":"${simpleToken.getValue()}","ownerStrategyName":"${simpleToken.getOwnerStrategyName()}","createdAt":"${createdAt.getTime()}"}`;
   const wrappedInvalid = `{"name":"non-existing"`;
@@ -24,15 +24,15 @@ describe('token-parceler', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         providers: [
-          { provide: HWB_AUTH_FALLBACK_TOKEN, useValue: TraqAuthSimpleToken },
-          { provide: HWB_AUTH_TOKENS, useValue: [TraqAuthSimpleToken, TraqAuthJWTToken] },
-          TraqAuthTokenParceler,
+          { provide: HWB_AUTH_FALLBACK_TOKEN, useValue: HwbAuthSimpleToken },
+          { provide: HWB_AUTH_TOKENS, useValue: [HwbAuthSimpleToken, HwbAuthJWTToken] },
+          HwbAuthTokenParceler,
         ],
       });
     });
 
     beforeEach(async(inject(
-      [TraqAuthTokenParceler],
+      [HwbAuthTokenParceler],
       (_tokenParceler) => {
         tokenParceler = _tokenParceler;
       },
@@ -76,15 +76,15 @@ describe('token-parceler', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         providers: [
-          { provide: HWB_AUTH_FALLBACK_TOKEN, useValue: TraqAuthSimpleToken },
+          { provide: HWB_AUTH_FALLBACK_TOKEN, useValue: HwbAuthSimpleToken },
           { provide: HWB_AUTH_TOKENS, useValue: [] },
-          TraqAuthTokenParceler,
+          HwbAuthTokenParceler,
         ],
       });
     });
 
     beforeEach(async(inject(
-      [TraqAuthTokenParceler],
+      [HwbAuthTokenParceler],
       (_tokenParceler) => {
         tokenParceler = _tokenParceler;
       },

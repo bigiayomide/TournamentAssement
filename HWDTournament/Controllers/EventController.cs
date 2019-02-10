@@ -4,6 +4,8 @@ using HWBTournament.Data.Contracts;
 using HWBTournament.Model.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,35 +15,38 @@ namespace HWBTournament.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/Event")]
-    [Authorize]
+    //[Authorize]
+    [ProducesResponseType(201)]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
     public class EventController : Controller
     {
         private readonly IEventRepository _eventRepository;
-        private readonly ILoggingRepository _loggingRepository;
         private readonly IMapper _mapper;
         //int page = 1;
         //int pageSize = 10;
 
-        public EventController(IEventRepository eventRepository,
-                         ILoggingRepository _errorRepository, IMapper mapper)
+        public EventController(IEventRepository eventRepository, IMapper mapper)
         {
-
             _eventRepository = eventRepository;
-            _loggingRepository = _errorRepository;
             _mapper = mapper;
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
-            @event _event = _eventRepository.GetSingle(u => u.Id == id);
+            Event _event = _eventRepository.GetSingle(u => u.Id == id);
             if (_event != null)
             {
-                EventViewModel _eventVM = _mapper.Map<@event, EventViewModel>(_event);
-                return new OkObjectResult(_eventVM);
+                EventViewModel _eventVM = _mapper.Map<Event, EventViewModel>(_event);
+                Log.Information("Event {@_eventVM} retrieved from database", _eventVM);
+                return new OkObjectResult(new ResultVM() { Status = Status.Success, Data = _eventVM });
             }
             else
             {
+                Log.Information("Could not find Event wit Id  {@id}", id);
                 return NotFound();
             }
         }
@@ -54,86 +59,71 @@ namespace HWBTournament.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            @event _newevent = new @event
-            {
-                event_date_time = eventvm.event_date_time,
-                auto_close= eventvm.auto_close,
-
-            };
-
-            @event _newCreatedEvent = _eventRepository.CreateEvent(_newevent);
+            Event _newevent = _mapper.Map<EventViewModel, Event>(eventvm);
+            Event _newCreatedEvent = _eventRepository.CreateEvent(_newevent);
 
 
             if (_newCreatedEvent == null)
             {
-                return new OkObjectResult(eventvm);
+                Log.Information("Error Inserting Event {@eventvm} Into database", eventvm);
+                return NotFound(new ResultVM() { Status = Status.Error, Message = "An Error Occuered Could not create Event " + _newevent.event_name, Data = _newevent });
             }
-
-            eventvm = new EventViewModel
-            {
-                Id = _newCreatedEvent.Id,
-                auto_close= _newCreatedEvent.auto_close,
-                event_date_time= _newCreatedEvent.event_date_time,
-                event_end_date_time= _newCreatedEvent.event_end_date_time,
-                event_name= _newCreatedEvent.event_name,
-                event_number= _newCreatedEvent.event_number,
-                tournament_id= _newCreatedEvent.tournament_id
-            };
-
-            return new OkObjectResult(eventvm);
+             EventViewModel _eventVM = _mapper.Map<Event, EventViewModel>(_newCreatedEvent);
+            Log.Information("Event {@_eventVM} Inserted from database", _eventVM);
+            return new OkObjectResult(new ResultVM() { Status = Status.Success, Message = "Succesfully Created Event: " + _eventVM.event_name, Data = _eventVM });
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            @event _event = _eventRepository.GetSingle(u => u.Id == id);
+            Event _event = _eventRepository.GetSingle(u => u.Id == id);
             if (_event != null)
             {
                 _eventRepository.Delete(_event);
-                EventViewModel _tournamentVM = _mapper.Map<@event, EventViewModel>(_event);
-                return new OkObjectResult(_tournamentVM);
+                EventViewModel _eventVM = _mapper.Map<Event, EventViewModel>(_event);
+                Log.Information("Event {@_eventVM} Deleted from database", _eventVM);
+                return new OkObjectResult(new ResultVM() { Status = Status.Success, Message = "Succesfully Deleted Event: " + _eventVM.event_name, Data = _eventVM });
             }
             else
             {
-                return NotFound();
+                Log.Information("Error Occured Deleting Event from database");
+                return NotFound(new ResultVM() { Status = Status.Error, Message = "An Error Occured: ", Data = null });
             }
         }
 
         [HttpGet]
-        public IActionResult Update()
+        public IActionResult Get()
         {
-            IEnumerable<@event> _event = _eventRepository.GetEvents();
+            IEnumerable<Event> _event = _eventRepository.GetEvents();
             if (_event != null)
             {
-                IEnumerable<EventViewModel> _eventVM = _mapper.Map<IEnumerable<@event>, IEnumerable<EventViewModel>>(_event);
-                return new OkObjectResult(_eventVM);
+                IEnumerable<EventViewModel> _eventVM = _mapper.Map<IEnumerable<Event>, IEnumerable<EventViewModel>>(_event);
+                Log.Information("Event {@_eventVM} retrieved from database", _eventVM);
+                return new OkObjectResult(new ResultVM() { Data = _eventVM, Status = Status.Success });
             }
             else
             {
-                return NotFound();
+                Log.Information("Error Occured Retrieving Events from database");
+                return NotFound(new ResultVM() { Data = "An Error Occured", Status = Status.Error });
             }
         }
 
         [HttpPatch]
         public IActionResult Update([FromBody] EventViewModel eventvm)
         {
-            @event _event = _eventRepository.GetSingle(u => u.Id == eventvm.Id);
+            Event _event = _eventRepository.GetSingle(u => u.Id == eventvm.Id);
             if (_event != null)
             {
-                _event.Id = eventvm.Id;
-                _event.auto_close = eventvm.auto_close;
-                _event.event_date_time = eventvm.event_date_time;
-                _event.event_end_date_time = eventvm.event_end_date_time;
-                _event.event_name = eventvm.event_name;
-                _event.event_number = eventvm.event_number;
-                _event.tournament_id = eventvm.tournament_id;
-                _eventRepository.Update(_event);
-                EventViewModel _eventVM = _mapper.Map<@event, EventViewModel>(_event);
-                return new OkObjectResult(_eventVM);
+                Event _updatedevent = _mapper.Map<EventViewModel, Event>(eventvm);
+                _eventRepository.Update(_updatedevent);
+                EventViewModel _eventVM = _mapper.Map<Event, EventViewModel>(_event);
+                Log.Information("Event {@_eventVM} Updated to database", _eventVM);
+                return new OkObjectResult(new ResultVM() { Data = _eventVM, Status = Status.Success });
             }
             else
             {
-                return NotFound();
+                Log.Information("Error Occured Updating Event {@eventvm}", eventvm);
+                return NotFound(new ResultVM() { Data = "An Error Occured", Status = Status.Error });
             }
         }
     }

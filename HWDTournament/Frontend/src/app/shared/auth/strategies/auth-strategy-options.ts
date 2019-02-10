@@ -1,9 +1,9 @@
-import { TraqAuthTokenClass } from '../services';
+import { HwbAuthTokenClass } from '../services';
 
-export class TraqAuthStrategyOptions {
+export class HwbAuthStrategyOptions {
   name: string;
   token?: {
-    class?: TraqAuthTokenClass;
+    class?: HwbAuthTokenClass;
     [key: string]: any;
   };
 }

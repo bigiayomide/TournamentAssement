@@ -7,30 +7,30 @@ using System.Linq;
 
 namespace HWBTournament.Data.Repositories
 {
-    public class TournamentRepository : EntityBaseRepository<tournament>, ITournamentRepository
+    public class TournamentRepository : EntityBaseRepository<Tournament>, ITournamentRepository
     {
         public TournamentRepository(HWBTournamentContext context)
             : base(context)
         {
         }
-        public tournament CreateTournament(tournament newtournament)
+        public Tournament CreateTournament(Tournament newtournament)
         {
             Add(newtournament);
             Commit();
             return newtournament;
         }
 
-        public tournament GetSingleById(int tournamentid)
+        public Tournament GetSingleById(int tournamentid)
         {
             return GetSingle(tournamentid);
         }
 
-        public IEnumerable<tournament> GetTournaments()
+        public IEnumerable<Tournament> GetTournaments()
         {
             return GetAll();
         }
 
-        public tournament UpdateTournament(tournament updateTournament)
+        public Tournament UpdateTournament(Tournament updateTournament)
         {
             var tournament = GetSingle(updateTournament.Id);
 

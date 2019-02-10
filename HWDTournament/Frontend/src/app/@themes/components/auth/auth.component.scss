@@ -5,10 +5,10 @@
     $warn: map-get($theme, warn);
     
     .sidenav,.drawer{
-        background: 	#2b2f3e;//mat-color($primary,400);    
+        background: #4f62a9;// mat-color($primary,400);    
         overflow: hidden;
         position: relative;
-        width: 250px;       
+        //width: 250px;       
     }
    
     [no-over-flow] {
@@ -23,23 +23,6 @@
 
     .logo{
         font-size: 26px;font-family: Roboto;color:white;margin-top: 8px;
-    }
-
-    .mat-drawer-inner-container {
-         width: 100%;
-         height: calc(100% + 10px);
-         overflow: none; 
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .ps__rail-y {
-        display: none;
-        opacity: 0;
-        transition: background-color .2s linear, opacity .2s linear;
-        -webkit-transition: background-color .2s linear, opacity .2s linear;
-        width: 30px;
-        right: 0;
-        position: absolute;
     }
 }
 

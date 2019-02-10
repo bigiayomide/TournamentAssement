@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { MatTableModule,
+import { 
         MatCardModule,
         MatButtonModule,
         MatButtonToggleModule,
@@ -8,25 +8,18 @@ import { MatTableModule,
         MatIconModule,
         MatCheckboxModule,
         MatListModule,
-        MatDialogModule,
        } from '@angular/material';
 import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { PagesRouterModule } from './pages.routes';
+// import { ContactComponent } from './contact/contact.component';
+// import { AboutComponent } from './about/about.component';
+import { ServicesComponent } from './services/services.component';
 import { CoreModule } from '../../@themes/components/core/core.module';
-import { AppUserComponent } from './users/app-user/app-user.component';
-import { ToasterModule, ToasterService } from 'angular2-toaster';
-import { DeleteDialogComponent } from './users/delete-dialog/delete-dialog.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EqualValidatorModule } from '../../shared/utils/equal-validator.module';
-import { BrowserModule } from '@angular/platform-browser';
-
 
 @NgModule({
     imports: [
-        MatTableModule,
-        MatDialogModule,
         MatCardModule,
         CommonModule,
         FlexLayoutModule,
@@ -39,15 +32,16 @@ import { BrowserModule } from '@angular/platform-browser';
         MatListModule,
         MatChipsModule,
         CoreModule,
-        PagesRouterModule,
-        ToasterModule,
-       // AccountDataService,
-        ReactiveFormsModule,
-        FormsModule,
-        BrowserModule,
-        EqualValidatorModule,
+        PagesRouterModule ],
+    declarations: [   
+        // ContactComponent,
+        // AboutComponent,
+        ServicesComponent
     ],
-    entryComponents: [AppUserComponent, DeleteDialogComponent]
+    exports: [
+    ],
+    providers: [
+    ]
 })
 export class PagesModule {
 }

@@ -9,11 +9,11 @@ using System.Text;
 namespace HWBTournament.Model.Entities
 {
     [Table("Tournament", Schema = "hwb")]
-    public class tournament : IEntityBase
+    public class Tournament : IEntityBase
     {
-        public tournament()
+        public Tournament()
         {
-            @events = new List<@event>();
+            Events = new List<Event>();
         }
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -23,13 +23,13 @@ namespace HWBTournament.Model.Entities
         [Column("TournamentName")]
         [MaxLength(200, ErrorMessage = "Too Much characters for field Tournament Name")]
         public string tournament_name {get;set;}
-        public List<@event> @events { get; set; }
+        public List<Event> Events { get; set; }
     }
-    public class tournamentConfiguration : IEntityTypeConfiguration<tournament>
+    public class TournamentConfiguration : IEntityTypeConfiguration<Tournament>
     {
-        public void Configure(EntityTypeBuilder<tournament> builder)
+        public void Configure(EntityTypeBuilder<Tournament> builder)
         {
-            builder.HasMany(x => x.events)
+            builder.HasMany(x => x.Events)
                 .WithOne(x => x.tournament)
                 .HasForeignKey(x => x.tournament_id)
                 .OnDelete(DeleteBehavior.Cascade);

@@ -6,30 +6,30 @@ using System.Text;
 
 namespace HWBTournament.Data.Repositories
 {
-    public class EventDetailStatusRepository : EntityBaseRepository<eventdetailstatus>, IEventDetailStatusRepository
+    public class EventDetailStatusRepository : EntityBaseRepository<EventDetailStatus>, IEventDetailStatusRepository
     {
         public EventDetailStatusRepository(HWBTournamentContext context)
             : base(context)
         {
         }
-        public eventdetailstatus CreateEventStatusDetail(eventdetailstatus neweventdetailstatus)
+        public EventDetailStatus CreateEventStatusDetail(EventDetailStatus neweventdetailstatus)
         {
             Add(neweventdetailstatus);
             Commit();
             return neweventdetailstatus;
         }
 
-        public eventdetailstatus GetSingleById(int eventstatusdetailId)
+        public EventDetailStatus GetSingleById(int eventstatusdetailId)
         {
             return GetSingle(eventstatusdetailId);
         }
 
-        public IEnumerable<eventdetailstatus> GetEventStatusDetails()
+        public IEnumerable<EventDetailStatus> GetEventStatusDetails()
         {
             return GetAll();
         }
 
-        public eventdetailstatus UpdateEventStatusDetail(eventdetailstatus neweventdetailstatus)
+        public EventDetailStatus UpdateEventStatusDetail(EventDetailStatus neweventdetailstatus)
         {
             var eventdetailstatus = GetSingle(neweventdetailstatus.Id);
 

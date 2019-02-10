@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +20,7 @@ namespace HWBTournament.API.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;
-
+        private ResultVM _resultVM { get; set; }
 
         public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration)
         {
@@ -41,12 +40,13 @@ namespace HWBTournament.API.Controllers
 
                 if (user != null)
                 {
-                    return Ok(new ResultVM
+                    _resultVM = new ResultVM
                     {
                         Status = Status.Error,
                         Message = "Invalid data",
-                        Data = "<li>User already exists</li>"
-                    });
+                        Data = "User already exists"
+                    };
+                    return Ok(_resultVM);
                 }
 
                 user = new IdentityUser
@@ -60,114 +60,37 @@ namespace HWBTournament.API.Controllers
 
                 if (result.Succeeded)
                 {
-                   await _userManager.AddToRoleAsync(user, "Admin");
+                    await _userManager.AddToRoleAsync(user, "Admin");
 
-                    return Ok(new ResultVM
+                    _resultVM = new ResultVM
                     {
                         Status = Status.Success,
                         Message = "User Created",
                         Data = user
-                    });
+                    };
+                    return Ok(_resultVM);
                 }
-                else
+
+                return BadRequest(new ResultVM
                 {
-                    var resultErrors = result.Errors;
-                    return BadRequest(new ResultVM
-                    {
-                        Status = Status.Error,
-                        Message = "User Created",
-                        Data = resultErrors
-                    });
-                    //return BadRequest(resultErrors);
-                }
+                    Status = Status.Error,
+                    Message = "An Error Occured",
+                    Data = string.Join("", result.Errors.Select(x=>x.Description))
+                });
             }
 
-            var errors = ModelState.Keys.Select(e => "<li>" + e + "</li>");
-            return BadRequest(errors);
+
+            return BadRequest(new ResultVM
+            {
+                Status = Status.Error,
+                Message = "An Error Occured"
+            });
+
         }
 
-        //[HttpPost]
-        //public async Task<ResultVM> EditUser([FromBody] RegisterVM model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // logic could be moved into a service
-        //        var user = await _userManager.FindByIdAsync(model.Id);
-        //        user.UserName = model.UserName;
-        //        user.Email = model.Email;
-        //        await _userManager.UpdateAsync(user);
-        //        var roles = await _userManager.GetRolesAsync(user);
-        //        if (model.IsAdmin)
-        //        {
-        //            if (!roles.Contains("Admin"))
-        //            {
-        //                await _userManager.AddToRoleAsync(user, "Admin");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (roles.Contains("Admin"))
-        //            {
-        //                await _userManager.RemoveFromRoleAsync(user, "Admin");
-        //            }
-        //        }
-        //        return new ResultVM
-        //        {
-        //            Status = Status.Success,
-        //            Message = "User Updated",
-        //            Data = user
-        //        };
-        //    }
-        //    return new ResultVM
-        //    {
-        //        Status = Status.Success,
-        //        Message = "Invalid data",
-        //        Data = "Could not verify the user model"
-        //    };
-        //}
+     
 
-        //[HttpPost]
-        //public async Task<ResultVM> DeleteUser([FromBody] string userId)
-        //{
-        //    // logic could be moved into a service
-        //    var user = await _userManager.FindByIdAsync(userId);
-        //    if (user != null)
-        //    {
-        //        try
-        //        {
-        //            var roles = await _userManager.GetRolesAsync(user);
-        //            if (roles.Count > 0)
-        //            {
-        //                await _userManager.RemoveFromRolesAsync(user, roles);
-        //            }
-        //            await _userManager.DeleteAsync(user);
-        //            return new ResultVM
-        //            {
-        //                Status = Status.Success,
-        //                Message = "User Deleted",
-        //                Data = user
-        //            };
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            return new ResultVM
-        //            {
-        //                Status = Status.Error,
-        //                Message = ex.Message,
-        //                Data = user
-        //            };
-        //        }
-        //    }
-        //    return new ResultVM
-        //    {
-        //        Status = Status.Error,
-        //        Message = $"Could not find user with id {userId}",
-        //        Data = ""
-        //    };
-
-        //}
-
-        [HttpPost(Name ="token")]
+        [HttpPost(Name = "token")]
         public async Task<IActionResult> Token([FromBody] LoginVM model)
         {
             if (ModelState.IsValid)
@@ -218,7 +141,7 @@ namespace HWBTournament.API.Controllers
             });
         }
 
-        [HttpGet (Name ="Claims")]
+        [HttpGet(Name = "Claims")]
         [Authorize]
         public async Task<UserClaims> Claims()
         {
@@ -248,65 +171,11 @@ namespace HWBTournament.API.Controllers
             };
         }
 
-        //[HttpGet]
-        //public async Task<List<AppUser>> GetUsers()
-        //{
-        //    var users = await _userManager.Users.ToListAsync();
-        //    var result = users.Select(x => new AppUser()
-        //    {
-        //        Id = x.Id,
-        //        UserName = x.UserName,
-        //        Email = x.Email,
-        //        IsAdmin = _userManager.GetRolesAsync(x).Result.Contains("Admin")
-        //    });
-
-        //    return result.ToList();
-        //}
-
-        [HttpPost(Name ="Signout")]
+        [HttpPost(Name = "Signout")]
         public async Task SignOut()
         {
             await _signInManager.SignOutAsync();
         }
-
-        //[HttpGet]
-        //public async Task<IActionResult> ResetPassword(string email)
-        //{
-        //    var user = await _userManager.FindByEmailAsync(email);
-        //    if (user != null)
-        //    {
-        //        var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-        //        var resetLink = _configuration["clientUrl"] + $"#/reset-password?resetToken={resetToken}&&userId={user.Id}";
-        //        var body = MailMessageHelper.PasswordResertMessage(user.UserName, resetLink);
-        //        _emailService.sendEmail(user.Email, user.UserName, "Password Reset", body);
-        //        return Ok("Reset email sent");
-        //    }
-        //    return BadRequest($"No user found for {email}");
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> ResetPassword([FromBody] PasswordResetModel model)
-        //{
-        //    var user = await _userManager.FindByIdAsync(model.Id);
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (user != null)
-        //        {
-        //            var result = await _userManager.ResetPasswordAsync(user, model.ResetToken, model.Password);
-        //            if (result.Succeeded)
-        //            {
-        //                return Ok("Password reset successful");
-        //            }
-        //            else
-        //            {
-        //                BadRequest(result.Errors.ToString());
-        //            }
-        //        }
-        //        return BadRequest($"Could not find user email {model.Email}");
-        //    }
-        //    return BadRequest("model state invalid");
-        //}
-
 
         private async Task<List<Claim>> GetValidClaims(IdentityUser user, List<string> roles)
         {

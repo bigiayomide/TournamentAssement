@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable, of as observableOf } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-import { TraqAuthStrategy } from '../auth-strategy';
-import { TraqAuthResult } from '../../services/auth-result';
-import { TraqDummyAuthStrategyOptions, dummyStrategyOptions } from './dummy-strategy-options';
-import { TraqAuthStrategyClass } from '../../auth.options';
+import { HwbAuthStrategy } from '../auth-strategy';
+import { HwbAuthResult } from '../../services/auth-result';
+import { HwbDummyAuthStrategyOptions, dummyStrategyOptions } from './dummy-strategy-options';
+import { HwbAuthStrategyClass } from '../../auth.options';
 
 
 /**
@@ -27,60 +27,60 @@ import { TraqAuthStrategyClass } from '../../auth.options';
  * ```
  */
 @Injectable()
-export class TraqDummyAuthStrategy extends TraqAuthStrategy {
+export class HwbDummyAuthStrategy extends HwbAuthStrategy {
 
-  protected defaultOptions: TraqDummyAuthStrategyOptions = dummyStrategyOptions;
+  protected defaultOptions: HwbDummyAuthStrategyOptions = dummyStrategyOptions;
 
-  static setup(options: TraqDummyAuthStrategyOptions): [TraqAuthStrategyClass, TraqDummyAuthStrategyOptions] {
-    return [TraqDummyAuthStrategy, options];
+  static setup(options: HwbDummyAuthStrategyOptions): [HwbAuthStrategyClass, HwbDummyAuthStrategyOptions] {
+    return [HwbDummyAuthStrategy, options];
   }
 
-  authenticate(data?: any): Observable<TraqAuthResult> {
+  authenticate(data?: any): Observable<HwbAuthResult> {
     return observableOf(this.createDummyResult(data))
       .pipe(
         delay(this.getOption('delay')),
       );
   }
 
-  register(data?: any): Observable<TraqAuthResult> {
+  register(data?: any): Observable<HwbAuthResult> {
     return observableOf(this.createDummyResult(data))
       .pipe(
         delay(this.getOption('delay')),
       );
   }
 
-  requestPassword(data?: any): Observable<TraqAuthResult> {
+  requestPassword(data?: any): Observable<HwbAuthResult> {
     return observableOf(this.createDummyResult(data))
       .pipe(
         delay(this.getOption('delay')),
       );
   }
 
-  resetPassword(data?: any): Observable<TraqAuthResult> {
+  resetPassword(data?: any): Observable<HwbAuthResult> {
     return observableOf(this.createDummyResult(data))
       .pipe(
         delay(this.getOption('delay')),
       );
   }
 
-  logout(data?: any): Observable<TraqAuthResult> {
+  logout(data?: any): Observable<HwbAuthResult> {
     return observableOf(this.createDummyResult(data))
       .pipe(
         delay(this.getOption('delay')),
       );
   }
 
-  refreshToken(data?: any): Observable<TraqAuthResult> {
+  refreshToken(data?: any): Observable<HwbAuthResult> {
     return observableOf(this.createDummyResult(data))
       .pipe(
         delay(this.getOption('delay')),
       );
   }
 
-  protected createDummyResult(data?: any): TraqAuthResult {
+  protected createDummyResult(data?: any): HwbAuthResult {
 
     if (this.getOption('alwaysFail')) {
-      return new TraqAuthResult(
+      return new HwbAuthResult(
         false,
         this.createFailResponse(data),
         null,
@@ -90,7 +90,7 @@ export class TraqDummyAuthStrategy extends TraqAuthStrategy {
 
     try {
       const token = this.createToken('test token', true);
-      return new TraqAuthResult(
+      return new HwbAuthResult(
         true,
         this.createSuccessResponse(data),
         '/',
@@ -99,7 +99,7 @@ export class TraqDummyAuthStrategy extends TraqAuthStrategy {
         token,
       );
     } catch (err) {
-      return new TraqAuthResult(
+      return new HwbAuthResult(
         false,
         this.createFailResponse(data),
         null,

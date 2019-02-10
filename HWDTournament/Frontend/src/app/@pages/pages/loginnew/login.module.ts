@@ -1,23 +1,23 @@
 import { NgModule } from '@angular/core';
 import { LoginSComponent } from './login.component';
 
-import {
+import { ParticlesModule } from 'angular-particle';
+//import {RegsterComponent} from './register.component';
+import { 
         MatCardModule,
         MatButtonModule,
         MatButtonToggleModule,
         MatInputModule,
         MatToolbarModule,
-        MatProgressBarModule,
-        MatProgressSpinnerModule
+        MatIconModule
        } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule , ReactiveFormsModule} from '@angular/forms';
-import { AccountDataService } from '../../../shared/services/account.data.service';
 import { ToasterModule, ToasterService } from 'angular2-toaster';
-import { ParticlesModule } from 'angular-particle';
-
+import { UserDataService } from '../../../shared/services/user.data.service';
+import { ItemsService } from '../../../shared/utils/items.service';
 
 const routes: Routes = [
     {path: '', component: LoginSComponent},
@@ -25,6 +25,7 @@ const routes: Routes = [
 @NgModule({
     imports: [
         MatCardModule,
+        MatIconModule,
         CommonModule,
         FlexLayoutModule,
         MatButtonModule,
@@ -33,21 +34,20 @@ const routes: Routes = [
         MatToolbarModule,
         FormsModule,
         ReactiveFormsModule,
-        ToasterModule,
-        ParticlesModule,
-        MatProgressBarModule,
-        MatProgressSpinnerModule,
-        RouterModule.forChild(routes)
+        ParticlesModule,   
+        ToasterModule,     
+        RouterModule.forChild(routes)       
     ],
-    declarations: [
-        LoginSComponent
+    declarations: [   
+        LoginSComponent,
     ],
     exports: [
         RouterModule
     ],
     providers: [
-        AccountDataService,
         ToasterService,
+        UserDataService, 
+        ItemsService,
     ]
 })
 export class LoginSModule {

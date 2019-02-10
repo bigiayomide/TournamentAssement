@@ -1,4 +1,4 @@
-import {Component, OnInit ,Input,ViewChild,ElementRef,Renderer} from '@angular/core';
+import {Directive, Component, OnInit ,Input,ViewChild,ElementRef,Renderer,Renderer2} from '@angular/core';
 import { MediaChange, ObservableMedia } from '@angular/flex-layout';
 import { MatSidenav } from '@angular/material';
 
@@ -9,9 +9,10 @@ import { MatSidenav } from '@angular/material';
 })
 
 export class AuthComponent implements OnInit/*,AfterViewInit*/{
-  @ViewChild('sidenav') public sidenav: MatSidenav;
-  @Input() isVisible: boolean = true;
-
+  @ViewChild('sidenav') public sidenav: MatSidenav;  
+  @ViewChild('drawer') public drawer: any;  
+  @Input() isVisible : boolean = true;
+ 
   visibility = 'shown';
   ismobilemenu : boolean =false;
 
@@ -20,25 +21,28 @@ export class AuthComponent implements OnInit/*,AfterViewInit*/{
   matDrawerShow: boolean = true;
   sideNavMode: string = 'side';
 
-   constructor(private media: ObservableMedia) { }
+   constructor(private elementRef:ElementRef,private renderer: Renderer,private media: ObservableMedia) { }
+    
     HideMenu()
-    {
-       if (this.media.isActive('lt-sm') || this.media.isActive('gt-xs')) {
+    {     
+       if ( this.media.isActive('lt-sm') || this.media.isActive('gt-xs') )
+        { 
            this.sidenav.toggle();
-       }
+        } 
     }
 
 	ngOnInit() {
-		this.media.subscribe(() => {
+		this.media.subscribe((mediaChange: MediaChange) => {
             this.toggleView();
         });
     } 
 
     getRouteAnimation(outlet) {
-       return outlet.activatedRouteData.animation;
+       return outlet.activatedRouteData.animation;       
     }
 
-	toggleView() {
+	toggleView() {    
+     
 		if (this.media.isActive('gt-md')) {
             this.sideNavMode = 'side';
             this.sideNavOpened = true;
@@ -46,6 +50,7 @@ export class AuthComponent implements OnInit/*,AfterViewInit*/{
             this.matDrawerShow = true;
             this.ismobilemenu = false;  
         } else if(this.media.isActive('gt-xs')) {
+        
             this.sideNavMode = 'over';
             this.sideNavOpened = false;
             this.matDrawerOpened = true;
@@ -56,7 +61,7 @@ export class AuthComponent implements OnInit/*,AfterViewInit*/{
             this.sideNavOpened = false;
             this.matDrawerOpened = false;
             this.matDrawerShow = false;
-            this.ismobilemenu = true;
+            this.ismobilemenu = true;           
         }
- }
+	}
 }

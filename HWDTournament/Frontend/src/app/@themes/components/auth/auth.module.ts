@@ -22,9 +22,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 import { DashboardCrmModule } from '../../../@pages/dashboard-crm/dashboard-crm.module';
 
 import { CoreModule } from '../core/core.module';
-import { CallRecordingSearchModule } from '../../../@pages/call-recording-search/call-recording-search.module';
-import { CallRecordingSearchComponent } from '../../../@pages/call-recording-search/call-recording-search.component';
-import { HomeComponent } from '../../../@pages/call-recording-search/recordingsearch/home/home.component';
 
 @NgModule({
     imports: [
@@ -39,7 +36,7 @@ import { HomeComponent } from '../../../@pages/call-recording-search/recordingse
         MatSidenavModule,
         PerfectScrollbarModule,
     ],
-    declarations: [ AuthComponent ],
+    declarations: [AuthComponent],
     providers: [
         {
             provide: PERFECT_SCROLLBAR_CONFIG,

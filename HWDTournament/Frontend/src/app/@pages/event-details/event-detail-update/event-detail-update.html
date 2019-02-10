@@ -1,0 +1,49 @@
+<h1  mat-dialog-title>Create New Event Detail</h1>
+<div mat-dialog-content>
+  <toaster-container [toasterconfig]="config"></toaster-container>
+  <form [formGroup]="eventDetailForm" (ngSubmit)="onSubmitclick()" fxflex="80" fxflex.gt-sm="30" fxflex.sm="60" novalidate=""
+    class="ng-pristine ng-invalid ng-touched" style="flex: 1 1 100%; box-sizing: border-box;margin:auto !important;">
+    <mat-card class="mat-elevation-z12 box-content-inner mat-card" fxlayout="column" fxlayoutalign="center center"
+      style="flex-direction: column; box-sizing: border-box; max-width: 100%; place-content: center; align-items: center;">
+
+      <div class="row">
+        <div fxFlex.xs="100" fxFlex.xl="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" style="padding:10px;">
+            <mat-form-field class="full-width">
+                <input type="text" formControlName="event_id" tabindex="1" class="form-control" placeholder="Event" required matInput>
+    
+              </mat-form-field>
+          
+          <mat-form-field class="full-width">
+            <input type="text" formControlName="event_status_id" tabindex="2" class="form-control" placeholder="Event Status" required matInput>
+
+          </mat-form-field>
+          <mat-form-field class="full-width">
+              <input type="text" formControlName="event_detail_name" tabindex="3" class="form-control" placeholder="Event Detail Name" required matInput>
+  
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <input type="number" formControlName="event_detail_number" tabindex="4" class="form-control" placeholder="Event Detail Nummber" required matInput>
+    
+              </mat-form-field>
+              <mat-form-field class="full-width">
+                  <input type="number" formControlName="event_detail_odd" tabindex="5" class="form-control" placeholder="Event Detail Odd" required matInput>
+      
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <input type="text" formControlName="finishing_position" tabindex="6" class="form-control" placeholder="Event Detail Finishing Position" required matInput>
+        
+                  </mat-form-field>
+                  <mat-form-field class="full-width">
+                      <input type="text" formControlName="first_timer" tabindex="6" class="form-control" placeholder="First Timer" required matInput>
+          
+                    </mat-form-field>
+        </div>
+      </div>
+
+  </mat-card>
+</form>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary"  [mat-dialog-close]="_dialogMessage" [disabled]="!eventDetailForm.valid" (click)="onSubmitclick()">Submit</button>
+  <button mat-raised-button color="accent" [mat-dialog-close]="_dialogMessage" cdkFocusInitial>Close</button>
+</div>

@@ -1,15 +1,15 @@
 import { async, inject, TestBed } from '@angular/core/testing';
 
-import { TraqTokenLocalStorage, TraqTokenStorage } from './token-storage';
+import { HwbTokenLocalStorage, HwbTokenStorage } from './token-storage';
 import { HWB_AUTH_TOKENS } from '../../auth.options';
-import { TraqAuthSimpleToken, hwbAuthCreateToken } from './token';
-import { TraqAuthJWTToken } from './token';
-import { HWB_AUTH_FALLBACK_TOKEN, TraqAuthTokenParceler } from './token-parceler';
+import { HwbAuthSimpleToken, hwbAuthCreateToken } from './token';
+import { HwbAuthJWTToken } from './token';
+import { HWB_AUTH_FALLBACK_TOKEN, HwbAuthTokenParceler } from './token-parceler';
 
 describe('token-storage', () => {
 
-  let tokenStorage: TraqTokenStorage;
-  let tokenParceler: TraqAuthTokenParceler;
+  let tokenStorage: HwbTokenStorage;
+  let tokenParceler: HwbAuthTokenParceler;
   const testTokenKey = 'auth_app_token';
   const testTokenValue = 'test-token';
   const ownerStrategyName = 'strategy';
@@ -17,16 +17,16 @@ describe('token-storage', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: TraqTokenStorage, useClass: TraqTokenLocalStorage },
-        { provide: HWB_AUTH_FALLBACK_TOKEN, useValue: TraqAuthSimpleToken },
-        { provide: HWB_AUTH_TOKENS, useValue: [TraqAuthSimpleToken, TraqAuthJWTToken] },
-        TraqAuthTokenParceler,
+        { provide: HwbTokenStorage, useClass: HwbTokenLocalStorage },
+        { provide: HWB_AUTH_FALLBACK_TOKEN, useValue: HwbAuthSimpleToken },
+        { provide: HWB_AUTH_TOKENS, useValue: [HwbAuthSimpleToken, HwbAuthJWTToken] },
+        HwbAuthTokenParceler,
       ],
     });
   });
 
     beforeEach(async(inject(
-    [TraqTokenStorage, TraqAuthTokenParceler],
+    [HwbTokenStorage, HwbAuthTokenParceler],
     (_tokenStorage, _tokenParceler) => {
       tokenStorage = _tokenStorage;
       tokenParceler = _tokenParceler;
@@ -39,7 +39,7 @@ describe('token-storage', () => {
 
 
   it('set test token', () => {
-    const token = hwbAuthCreateToken(TraqAuthSimpleToken, testTokenValue, ownerStrategyName);
+    const token = hwbAuthCreateToken(HwbAuthSimpleToken, testTokenValue, ownerStrategyName);
 
     tokenStorage.set(token);
     expect(localStorage.getItem(testTokenKey)).toEqual(tokenParceler.wrap(token));
@@ -48,11 +48,11 @@ describe('token-storage', () => {
   it('setter set invalid token to localStorage as empty string', () => {
     let token;
 
-    token = hwbAuthCreateToken(TraqAuthSimpleToken, null, ownerStrategyName);
+    token = hwbAuthCreateToken(HwbAuthSimpleToken, null, ownerStrategyName);
     tokenStorage.set(token);
     expect(localStorage.getItem(testTokenKey)).toEqual(tokenParceler.wrap(token));
 
-    token = hwbAuthCreateToken(TraqAuthSimpleToken, undefined, ownerStrategyName);
+    token = hwbAuthCreateToken(HwbAuthSimpleToken, undefined, ownerStrategyName);
     tokenStorage.set(token);
     expect(localStorage.getItem(testTokenKey)).toEqual(tokenParceler.wrap(token));
   });
@@ -64,14 +64,14 @@ describe('token-storage', () => {
   });
 
   it('should return correct value', () => {
-    const token = hwbAuthCreateToken(TraqAuthSimpleToken, 'test', ownerStrategyName);
+    const token = hwbAuthCreateToken(HwbAuthSimpleToken, 'test', ownerStrategyName);
     localStorage.setItem(testTokenKey, tokenParceler.wrap(token));
 
     expect(tokenStorage.get().getValue()).toEqual(token.getValue());
   });
 
   it('clear remove token', () => {
-    const token = hwbAuthCreateToken(TraqAuthSimpleToken, 'test', ownerStrategyName);
+    const token = hwbAuthCreateToken(HwbAuthSimpleToken, 'test', ownerStrategyName);
     localStorage.setItem(testTokenKey, tokenParceler.wrap(token));
 
     tokenStorage.clear();
@@ -80,7 +80,7 @@ describe('token-storage', () => {
   });
 
   it('clear remove token only', () => {
-    const token = hwbAuthCreateToken(TraqAuthSimpleToken, 'test', ownerStrategyName);
+    const token = hwbAuthCreateToken(HwbAuthSimpleToken, 'test', ownerStrategyName);
     localStorage.setItem(testTokenKey, tokenParceler.wrap(token));
     localStorage.setItem(testTokenKey + '2', tokenParceler.wrap(token));
 

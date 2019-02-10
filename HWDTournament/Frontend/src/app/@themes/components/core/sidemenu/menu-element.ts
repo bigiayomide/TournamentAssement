@@ -1,45 +1,19 @@
 export const menus = [
-    // {
-    //     'name': 'Dashboard',
-    //     'icon': 'dashboard',
-    //     'link': '/auth/dashboard',
-    //     'open': true,
-    //     'sub': [
-    //         {
-    //             'name': 'Dashboard','link': '/auth/dashboard','icon': 'dashboard','chip': false,'open': true,
-    //         }
-    //     ]
-    // },
     {
-        'name': 'Tournaments',
-        'icon': 'rowing',
-        // 'icon': 'work',
-        'open': false,
-        'link': 'recordings/home',
-        // 'sub': [
-        //     {
-        //         'name': 'recording','icon': 'work','open': false, 'link': 'recordings/home',
-        //     }
-        // ]
+        'name': 'Dashboard','icon': 'home', 'link': '/auth/landing', 'open': false,
     },
-    // {
-    //     'name': 'Auths',
-    //     'icon': 'https',
-    //     'open': false,
-    //     'link': false,
-    //     'sub': [
-    //         {
-    //             'name': 'Login','icon': 'work','open': false, 'link': '../logins',
-    //         },
-    //         {
-    //             'name': 'Register','icon': 'local_laundry_service', 'open': false,'link': '../registers',
-    //         },
-    //         {
-    //             'name': 'Logout','icon': 'work','open': false, 'link': '../logins',
-    //         },
-    //         // {
-    //         //     'name': 'TaqRegister','icon': 'local_laundry_service', 'open': false,'link': '../hwbregister',
-    //         // }
-    //     ]
-    // },
+    
+    {
+        'name': 'Tournament','icon': 'pool', 'link': '/auth/tournament', 'open': false,
+    },
+    {
+        'name': 'Events','icon': 'event', 'link': '/auth/event', 'open': false,
+    },
+    {
+        'name': 'Event Detail','icon': 'event', 'link': '/auth/event-detail', 'open': false,
+    },
+    {
+        'name': 'Event Status','icon': 'dashboard', 'link': '/auth/event-status', 'open': false,
+    }   //, 
+   
 ];

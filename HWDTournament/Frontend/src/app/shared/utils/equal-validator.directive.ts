@@ -1,4 +1,4 @@
-    import { Directive, forwardRef,  Attribute } from  '@angular/core'; 
+    import { Directive, forwardRef,  Attribute } from   '@angular/core';    
     import { Validator, AbstractControl, NG_VALIDATORS } from   '@angular/forms';     
     
     @Directive({    
@@ -22,7 +22,6 @@
         }
 
         validate(c: AbstractControl): { [key: string]: any } {        
-            alert('tests one two');
             // self value    
             let v = c.value;  
             // control vlaue

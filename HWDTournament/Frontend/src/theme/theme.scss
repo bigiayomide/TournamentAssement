@@ -31,26 +31,22 @@ $primary :  $mat-indigo;
 $accent  : $mat-orange;
 $warn    : $mat-red;
 
-
-
-$primary-app-primary:  mat-palette($primary , 400);
+$primary-app-primary: mat-palette($primary , 50);
 $primary-app-accent:  mat-palette($accent , 900);
 $primary-app-warn:    mat-palette($warn );
 $hwb-theme:   mat-light-theme($primary-app-primary, $primary-app-accent,$primary-app-warn);
 
 hwb-sidemenu{
-    $sidemenu-app-primary: 	#2b2f3e;//mat-palette($primary , 400);
+    $sidemenu-app-primary: #4f62a9;// mat-palette($primary , 400);
     $sidemenu-app-accent:  mat-palette($accent , 900);
     $sidemenu-app-warn:    mat-palette($warn );
     $hwb-sidemenu-theme:   mat-dark-theme($sidemenu-app-primary, $sidemenu-app-accent,$sidemenu-app-warn);
     @include mat-list-theme($hwb-sidemenu-theme);
 }
 
-
 hwb-sidemenu-item{
     @include sidemenu-item($hwb-theme,20px)
 }
-
 
 hwb-dashcard {
     $dashcard-primary: mat-palette($primary);
@@ -81,6 +77,23 @@ body{
   margin: 0px !important;
   height:100%;
 }
+
+.myapp-no-padding-dialog .mat-dialog-container {
+//  background-color: whitesmoke
+ background-color: #c5cae9;
+//  position:fixed;
+}
+
+dialog-component-dialog
+{
+  width: 70%;
+  position:fixed;
+}
+
+.dialog-component-dialog
+{
+  position:fixed;
+}
 .components-container-gt-xs {
     padding: 10px;
     // background-color: #fdfdfd;
@@ -92,13 +105,26 @@ body{
 .component-preview {
     padding: 20px;
 }
-.ps-content {
-    padding: 10px;
+
+// .ps-content {
+//     padding: 10px;
+//   height: 100%;
+// }
+.mat-drawer-inner-container {
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  }
+
+ps-content {
+  //padding: 10px;
+  padding: 10px 10px 10px 10px;
   height: calc(100% - 20px);
   border-radius: 25px;
-}
-
-.mat-drawer {
+  }
+   
+  .mat-drawer {
   position: relative;
   z-index: 4;
   display: block;
@@ -108,20 +134,12 @@ body{
   z-index: 3;
   outline: 0;
   box-sizing: border-box;
-  overflow-y: hidden !important;  
+  overflow-y: hidden !important;
   transform: translate3d(-100%,0,0);
-}
-
-.mat-drawer-inner-container {
-  width: 100%;
-  height: 100%;
-  overflow-y: hidden !important; 
-  -webkit-overflow-scrolling: touch;
-}
+  }
 
 .loader-container {
     background-color: white;
-   // background-color: #3f51b5;
     width: 100vw;
     height: 100vh;
     z-index: 2000;
@@ -153,6 +171,8 @@ body{
     }
 }
 
+
+
 .spinner {
     margin: 50vh auto 0;
     width: 70px;
@@ -162,6 +182,8 @@ body{
 .spinner > div {
   width: 18px;
   height: 18px;
+
+
   border-radius: 100%;
   display: inline-block;
   animation: sk-bouncedelay 1.4s infinite ease-in-out both;
@@ -184,6 +206,8 @@ body{
   animation-delay: -0.16s;
 }
 
+
+
 @keyframes sk-bouncedelay {
   0%, 80%, 100% { transform: scale(0) }
   40% { transform: scale(1.0) }
@@ -198,6 +222,7 @@ body{
     transform: scale(1.0);
   }
 }
+
 
 .mat-progress-bar-background {
     background: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20version%3D%271.1%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20xmlns%3Axlink%3D%27http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%27%20x%3D%270px%27%20y%3D%270px%27%20enable-background%3D%27new%200%200%205%202%27%20xml%3Aspace%3D%27preserve%27%20viewBox%3D%270%200%205%202%27%20preserveAspectRatio%3D%27none%20slice%27%3E%3Ccircle%20cx%3D%271%27%20cy%3D%271%27%20r%3D%271%27%20fill%3D%27%23c5cae9%27%2F%3E%3C%2Fsvg%3E"); }

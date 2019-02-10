@@ -3,9 +3,9 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { HWB_WINDOW } from '../../theme.options';
-import { TraqOAuth2AuthStrategy } from './oauth2-strategy';
-import { TraqOAuth2ClientAuthMethod, TraqOAuth2GrantType, TraqOAuth2ResponseType } from './oauth2-strategy.options';
-import { TraqAuthResult, hwbAuthCreateToken, TraqAuthOAuth2Token } from '../../services';
+import { HwbOAuth2AuthStrategy } from './oauth2-strategy';
+import { HwbOAuth2ClientAuthMethod, HwbOAuth2GrantType, HwbOAuth2ResponseType } from './oauth2-strategy.options';
+import { HwbAuthResult, hwbAuthCreateToken, HwbAuthOAuth2Token } from '../../services';
 
 function createURL(params: any) {
   return Object.keys(params).map((k) => {
@@ -15,7 +15,7 @@ function createURL(params: any) {
 
 describe('oauth2-auth-strategy', () => {
 
-  let strategy: TraqOAuth2AuthStrategy;
+  let strategy: HwbOAuth2AuthStrategy;
   let httpMock: HttpTestingController;
   let routeMock: any;
   let windowMock: any;
@@ -57,10 +57,10 @@ describe('oauth2-auth-strategy', () => {
     error_uri: 'some',
   };
 
-  const successToken = hwbAuthCreateToken(TraqAuthOAuth2Token, tokenSuccessResponse, 'strategy') as TraqAuthOAuth2Token;
+  const successToken = hwbAuthCreateToken(HwbAuthOAuth2Token, tokenSuccessResponse, 'strategy') as HwbAuthOAuth2Token;
   // tslint:disable-next-line
-  const refreshedToken = hwbAuthCreateToken(TraqAuthOAuth2Token, refreshedTokenPayload, 'strategy') as TraqAuthOAuth2Token;
-  const refreshedTokenWithRefreshToken = hwbAuthCreateToken(TraqAuthOAuth2Token, refreshedTokenResponse, 'strategy') as TraqAuthOAuth2Token;
+  const refreshedToken = hwbAuthCreateToken(HwbAuthOAuth2Token, refreshedTokenPayload, 'strategy') as HwbAuthOAuth2Token;
+  const refreshedTokenWithRefreshToken = hwbAuthCreateToken(HwbAuthOAuth2Token, refreshedTokenResponse, 'strategy') as HwbAuthOAuth2Token;
 
 
   beforeEach(() => {
@@ -70,7 +70,7 @@ describe('oauth2-auth-strategy', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
-        TraqOAuth2AuthStrategy,
+        HwbOAuth2AuthStrategy,
         { provide: ActivatedRoute, useFactory: () => routeMock },
         { provide: HWB_WINDOW, useFactory: () => windowMock }, // useValue will clone, we need reference
       ],
@@ -78,7 +78,7 @@ describe('oauth2-auth-strategy', () => {
   });
 
   beforeEach(async(inject(
-    [TraqOAuth2AuthStrategy, HttpTestingController],
+    [HwbOAuth2AuthStrategy, HttpTestingController],
     (_strategy, _httpMock) => {
       strategy = _strategy;
       httpMock = _httpMock;
@@ -119,7 +119,7 @@ describe('oauth2-auth-strategy', () => {
       routeMock.snapshot.queryParams = { code: 'code' };
 
       strategy.authenticate()
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -133,7 +133,7 @@ describe('oauth2-auth-strategy', () => {
 
       httpMock.expectOne(
         req => req.url === 'http://example.com/token'
-            && req.body['grant_type'] === TraqOAuth2GrantType.AUTHORIZATION_CODE
+            && req.body['grant_type'] === HwbOAuth2GrantType.AUTHORIZATION_CODE
             && req.body['code'] === 'code'
             && req.body['client_id'] === 'clientId'
             && !req.body['redirect_uri'],
@@ -144,7 +144,7 @@ describe('oauth2-auth-strategy', () => {
       routeMock.snapshot.queryParams = tokenErrorResponse;
 
       strategy.authenticate()
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(false);
           expect(result.isFailure()).toBe(true);
@@ -161,7 +161,7 @@ describe('oauth2-auth-strategy', () => {
       routeMock.snapshot.queryParams = {code: 'code'};
 
       strategy.authenticate()
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
 
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(false);
@@ -182,10 +182,10 @@ describe('oauth2-auth-strategy', () => {
       strategy.setOptions({
         ... basicOptions,
         clientSecret: 'clientSecret',
-        clientAuthMethod: TraqOAuth2ClientAuthMethod.BASIC,
+        clientAuthMethod: HwbOAuth2ClientAuthMethod.BASIC,
       });
       strategy.refreshToken(successToken)
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -200,7 +200,7 @@ describe('oauth2-auth-strategy', () => {
       httpMock.expectOne(
         req => req.url === 'http://example.com/token'
           && req.headers.get('Authorization') === authHeader
-          && req.body['grant_type'] === TraqOAuth2GrantType.REFRESH_TOKEN
+          && req.body['grant_type'] === HwbOAuth2GrantType.REFRESH_TOKEN
           && req.body['refresh_token'] === successToken.getRefreshToken()
           && !req.body['scope'],
       ).flush(tokenSuccessResponse);
@@ -210,10 +210,10 @@ describe('oauth2-auth-strategy', () => {
       strategy.setOptions({
         ... basicOptions,
         clientSecret: 'clientSecret',
-        clientAuthMethod: TraqOAuth2ClientAuthMethod.REQUEST_BODY,
+        clientAuthMethod: HwbOAuth2ClientAuthMethod.REQUEST_BODY,
       });
       strategy.refreshToken(successToken)
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -227,7 +227,7 @@ describe('oauth2-auth-strategy', () => {
 
       httpMock.expectOne(
         req => req.url === 'http://example.com/token'
-          && req.body['grant_type'] === TraqOAuth2GrantType.REFRESH_TOKEN
+          && req.body['grant_type'] === HwbOAuth2GrantType.REFRESH_TOKEN
           && req.body['refresh_token'] === successToken.getRefreshToken()
           && req.body['client_id'] === strategy.getOption('clientId')
           && req.body['client_secret'] === strategy.getOption('clientSecret')
@@ -238,7 +238,7 @@ describe('oauth2-auth-strategy', () => {
     it('handle refresh token with NO client auth', (done: DoneFn) => {
       strategy.setOptions(basicOptions);
       strategy.refreshToken(successToken)
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -252,7 +252,7 @@ describe('oauth2-auth-strategy', () => {
 
       httpMock.expectOne(
         req => req.url === 'http://example.com/token'
-          && req.body['grant_type'] === TraqOAuth2GrantType.REFRESH_TOKEN
+          && req.body['grant_type'] === HwbOAuth2GrantType.REFRESH_TOKEN
           && req.body['refresh_token'] === successToken.getRefreshToken()
           && !req.body['scope'],
       ).flush(tokenSuccessResponse);
@@ -261,7 +261,7 @@ describe('oauth2-auth-strategy', () => {
     it('handle refresh token and inserts existing refresh_token if needed', (done: DoneFn) => {
       strategy.setOptions(basicOptions);
       strategy.refreshToken(successToken)
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -275,7 +275,7 @@ describe('oauth2-auth-strategy', () => {
 
       httpMock.expectOne(
         req => req.url === 'http://example.com/token'
-          && req.body['grant_type'] === TraqOAuth2GrantType.REFRESH_TOKEN
+          && req.body['grant_type'] === HwbOAuth2GrantType.REFRESH_TOKEN
           && req.body['refresh_token'] === successToken.getRefreshToken()
           && !req.body['scope'],
       ).flush(tokenWithoutRefreshTokenResponse);
@@ -284,7 +284,7 @@ describe('oauth2-auth-strategy', () => {
     it('Handle refresh-token and leaves refresh_token unchanged if present', (done: DoneFn) => {
       strategy.setOptions(basicOptions);
       strategy.refreshToken(successToken)
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -299,7 +299,7 @@ describe('oauth2-auth-strategy', () => {
 
       httpMock.expectOne(
         req => req.url === 'http://example.com/token'
-          && req.body['grant_type'] === TraqOAuth2GrantType.REFRESH_TOKEN
+          && req.body['grant_type'] === HwbOAuth2GrantType.REFRESH_TOKEN
           && req.body['refresh_token'] === successToken.getRefreshToken()
           && !req.body['scope'],
       ).flush(refreshedTokenResponse);
@@ -308,7 +308,7 @@ describe('oauth2-auth-strategy', () => {
     it('handle error token refresh response', (done: DoneFn) => {
 
       strategy.refreshToken(successToken)
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(false);
           expect(result.isFailure()).toBe(true);
@@ -332,7 +332,7 @@ describe('oauth2-auth-strategy', () => {
       baseEndpoint: 'http://example.com/',
       clientId: 'clientId',
       authorize: {
-        responseType: TraqOAuth2ResponseType.TOKEN,
+        responseType: HwbOAuth2ResponseType.TOKEN,
       },
     }
 
@@ -358,12 +358,12 @@ describe('oauth2-auth-strategy', () => {
       routeMock.snapshot.fragment = createURL(token);
 
       strategy.authenticate()
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
           // tslint:disable-next-line
-          expect(result.getToken().getValue()).toEqual(hwbAuthCreateToken(TraqAuthOAuth2Token, token, 'strategy').getValue());
+          expect(result.getToken().getValue()).toEqual(hwbAuthCreateToken(HwbAuthOAuth2Token, token, 'strategy').getValue());
           expect(result.getMessages()).toEqual(successMessages);
           expect(result.getErrors()).toEqual([]); // no error message, response is success
           expect(result.getRedirect()).toEqual('/');
@@ -375,7 +375,7 @@ describe('oauth2-auth-strategy', () => {
       routeMock.snapshot.fragment = createURL(tokenErrorResponse);
 
       strategy.authenticate()
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(false);
           expect(result.isFailure()).toBe(true);
@@ -442,7 +442,7 @@ describe('oauth2-auth-strategy', () => {
       routeMock.snapshot.queryParams = { code: 'code' };
 
       strategy.authenticate()
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -456,7 +456,7 @@ describe('oauth2-auth-strategy', () => {
 
       httpMock.expectOne(
         req => req.url === 'http://example.com/custom'
-          && req.body['grant_type'] === TraqOAuth2GrantType.AUTHORIZATION_CODE
+          && req.body['grant_type'] === HwbOAuth2GrantType.AUTHORIZATION_CODE
           && req.body['code'] === 'code'
           && req.body['client_id'] === 'clientId'
           && req.body['redirect_uri'] === 'http://localhost:4200/callback',
@@ -468,11 +468,11 @@ describe('oauth2-auth-strategy', () => {
       strategy.setOptions({
         ... basicOptions,
         clientSecret: 'clientSecret',
-        clientAuthMethod: TraqOAuth2ClientAuthMethod.BASIC,
+        clientAuthMethod: HwbOAuth2ClientAuthMethod.BASIC,
       })
 
       strategy.authenticate()
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -487,7 +487,7 @@ describe('oauth2-auth-strategy', () => {
       httpMock.expectOne(
         req => req.url === 'http://example.com/custom'
           && req.headers.get('Authorization') === authHeader
-          && req.body['grant_type'] === TraqOAuth2GrantType.AUTHORIZATION_CODE
+          && req.body['grant_type'] === HwbOAuth2GrantType.AUTHORIZATION_CODE
           && req.body['code'] === 'code'
           && req.body['client_id'] === 'clientId'
           && req.body['redirect_uri'] === 'http://localhost:4200/callback',
@@ -499,11 +499,11 @@ describe('oauth2-auth-strategy', () => {
       strategy.setOptions({
         ... basicOptions,
         clientSecret: 'clientSecret',
-        clientAuthMethod: TraqOAuth2ClientAuthMethod.REQUEST_BODY,
+        clientAuthMethod: HwbOAuth2ClientAuthMethod.REQUEST_BODY,
       })
 
       strategy.authenticate()
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -517,7 +517,7 @@ describe('oauth2-auth-strategy', () => {
 
       httpMock.expectOne(
         req => req.url === 'http://example.com/custom'
-          && req.body['grant_type'] === TraqOAuth2GrantType.AUTHORIZATION_CODE
+          && req.body['grant_type'] === HwbOAuth2GrantType.AUTHORIZATION_CODE
           && req.body['code'] === 'code'
           && req.body['client_id'] === strategy.getOption('clientId')
           && req.body['client_secret'] === strategy.getOption('clientSecret')
@@ -529,7 +529,7 @@ describe('oauth2-auth-strategy', () => {
       routeMock.snapshot.queryParams = tokenErrorResponse;
 
       strategy.authenticate()
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(false);
           expect(result.isFailure()).toBe(true);
@@ -545,7 +545,7 @@ describe('oauth2-auth-strategy', () => {
       strategy.setOptions(basicOptions);
 
       strategy.refreshToken(successToken)
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -559,7 +559,7 @@ describe('oauth2-auth-strategy', () => {
 
       httpMock.expectOne(
         req => req.url === 'http://example.com/custom'
-          && req.body['grant_type'] === TraqOAuth2GrantType.REFRESH_TOKEN
+          && req.body['grant_type'] === HwbOAuth2GrantType.REFRESH_TOKEN
           && req.body['refresh_token'] === successToken.getRefreshToken()
           && req.body['scope'] === 'read',
       ).flush(tokenSuccessResponse);
@@ -569,11 +569,11 @@ describe('oauth2-auth-strategy', () => {
       strategy.setOptions({
         ... basicOptions,
         clientSecret: 'clientSecret',
-        clientAuthMethod: TraqOAuth2ClientAuthMethod.BASIC,
+        clientAuthMethod: HwbOAuth2ClientAuthMethod.BASIC,
       });
 
       strategy.refreshToken(successToken)
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -588,7 +588,7 @@ describe('oauth2-auth-strategy', () => {
       httpMock.expectOne(
         req => req.url === 'http://example.com/custom'
           && req.headers.get('Authorization') === authHeader
-          && req.body['grant_type'] === TraqOAuth2GrantType.REFRESH_TOKEN
+          && req.body['grant_type'] === HwbOAuth2GrantType.REFRESH_TOKEN
           && req.body['refresh_token'] === successToken.getRefreshToken()
           && req.body['scope'] === 'read',
       ).flush(tokenSuccessResponse);
@@ -598,11 +598,11 @@ describe('oauth2-auth-strategy', () => {
       strategy.setOptions({
         ... basicOptions,
         clientSecret: 'clientSecret',
-        clientAuthMethod: TraqOAuth2ClientAuthMethod.REQUEST_BODY,
+        clientAuthMethod: HwbOAuth2ClientAuthMethod.REQUEST_BODY,
       });
 
       strategy.refreshToken(successToken)
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -616,7 +616,7 @@ describe('oauth2-auth-strategy', () => {
 
       httpMock.expectOne(
         req => req.url === 'http://example.com/custom'
-          && req.body['grant_type'] === TraqOAuth2GrantType.REFRESH_TOKEN
+          && req.body['grant_type'] === HwbOAuth2GrantType.REFRESH_TOKEN
           && req.body['refresh_token'] === successToken.getRefreshToken()
           && req.body['client_id'] === strategy.getOption('clientId')
           && req.body['client_secret'] === strategy.getOption('clientSecret')
@@ -628,7 +628,7 @@ describe('oauth2-auth-strategy', () => {
       routeMock.snapshot.queryParams = { code: 'code' };
 
       strategy.authenticate()
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
 
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(false);
@@ -653,7 +653,7 @@ describe('oauth2-auth-strategy', () => {
       baseEndpoint: 'http://example.com/',
       clientId: 'clientId',
       token: {
-        grantType: TraqOAuth2GrantType.PASSWORD,
+        grantType: HwbOAuth2GrantType.PASSWORD,
         endpoint: 'token',
       },
     }
@@ -666,7 +666,7 @@ describe('oauth2-auth-strategy', () => {
       const credentials = { email: 'example@akveo.com', password: '123456' };
 
       strategy.authenticate(credentials)
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -680,7 +680,7 @@ describe('oauth2-auth-strategy', () => {
 
       httpMock.expectOne(
         req => req.url === 'http://example.com/token'
-          && req.body['grant_type'] === TraqOAuth2GrantType.PASSWORD
+          && req.body['grant_type'] === HwbOAuth2GrantType.PASSWORD
           && req.body['email'] === credentials.email
           && req.body['password'] === credentials.password,
       ).flush(tokenSuccessResponse);
@@ -691,11 +691,11 @@ describe('oauth2-auth-strategy', () => {
       strategy.setOptions({
         ... basicOptions,
         clientSecret: 'clientSecret',
-        clientAuthMethod: TraqOAuth2ClientAuthMethod.BASIC,
+        clientAuthMethod: HwbOAuth2ClientAuthMethod.BASIC,
       })
 
       strategy.authenticate(credentials)
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -710,7 +710,7 @@ describe('oauth2-auth-strategy', () => {
       httpMock.expectOne(
         req => req.url === 'http://example.com/token'
           && req.headers.get('Authorization') === authHeader
-          && req.body['grant_type'] === TraqOAuth2GrantType.PASSWORD
+          && req.body['grant_type'] === HwbOAuth2GrantType.PASSWORD
           && req.body['email'] === credentials.email
           && req.body['password'] === credentials.password,
       ).flush(tokenSuccessResponse);
@@ -721,11 +721,11 @@ describe('oauth2-auth-strategy', () => {
       strategy.setOptions({
         ... basicOptions,
         clientSecret: 'clientSecret',
-        clientAuthMethod: TraqOAuth2ClientAuthMethod.REQUEST_BODY,
+        clientAuthMethod: HwbOAuth2ClientAuthMethod.REQUEST_BODY,
       })
 
       strategy.authenticate(credentials)
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(true);
           expect(result.isFailure()).toBe(false);
@@ -739,7 +739,7 @@ describe('oauth2-auth-strategy', () => {
 
       httpMock.expectOne(
         req => req.url === 'http://example.com/token'
-          && req.body['grant_type'] === TraqOAuth2GrantType.PASSWORD
+          && req.body['grant_type'] === HwbOAuth2GrantType.PASSWORD
           && req.body['email'] === credentials.email
           && req.body['password'] === credentials.password
           && req.body['client_id'] === strategy.getOption('clientId')
@@ -752,7 +752,7 @@ describe('oauth2-auth-strategy', () => {
       const credentials = { email: 'example@akveo.com', password: '123456' };
 
       strategy.authenticate(credentials)
-        .subscribe((result: TraqAuthResult) => {
+        .subscribe((result: HwbAuthResult) => {
           expect(result).toBeTruthy();
           expect(result.isSuccess()).toBe(false);
           expect(result.isFailure()).toBe(true);
@@ -766,7 +766,7 @@ describe('oauth2-auth-strategy', () => {
 
        httpMock.expectOne(
         req => req.url === 'http://example.com/token'
-          && req.body['grant_type'] === TraqOAuth2GrantType.PASSWORD
+          && req.body['grant_type'] === HwbOAuth2GrantType.PASSWORD
           && req.body['email'] === credentials.email
           && req.body['password'] === credentials.password,
       ).flush(tokenErrorResponse, {status: 401, statusText: 'unauthorized'});

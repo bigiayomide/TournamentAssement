@@ -3,20 +3,20 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable, of as observableOf } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { TraqAuthStrategy } from '../strategies/auth-strategy';
+import { HwbAuthStrategy } from '../strategies/auth-strategy';
 import { HWB_AUTH_STRATEGIES } from '../auth.options';
-import { TraqAuthResult } from './auth-result';
-import { TraqTokenService } from './token/token.service';
-import { TraqAuthToken } from './token/token';
+import { HwbAuthResult } from './auth-result';
+import { HwbTokenService } from './token/token.service';
+import { HwbAuthToken } from './token/token';
 
 /**
  * Common authentication service.
  * Should be used to as an interlayer between UI Components and Auth Strategy.
  */
 @Injectable()
-export class TraqAuthService {
+export class HwbAuthService {
 
-  constructor(protected tokenService: TraqTokenService,
+  constructor(protected tokenService: HwbTokenService,
               @Inject(HWB_AUTH_STRATEGIES) protected strategies) {
   }
 
@@ -24,7 +24,7 @@ export class TraqAuthService {
    * Retrieves current authenticated token stored
    * @returns {Observable<any>}
    */
-  getToken(): Observable<TraqAuthToken> {
+  getToken(): Observable<HwbAuthToken> {
     return this.tokenService.get();
   }
 
@@ -34,14 +34,14 @@ export class TraqAuthService {
    */
   isAuthenticated(): Observable<boolean> {
     return this.getToken()
-      .pipe(map((token: TraqAuthToken) => token.isValid()));
+      .pipe(map((token: HwbAuthToken) => token.isValid()));
   }
 
   /**
    * Returns tokens stream
-   * @returns {Observable<TraqAuthSimpleToken>}
+   * @returns {Observable<HwbAuthSimpleToken>}
    */
-  onTokenChange(): Observable<TraqAuthToken> {
+  onTokenChange(): Observable<HwbAuthToken> {
     return this.tokenService.tokenChange();
   }
 
@@ -51,7 +51,7 @@ export class TraqAuthService {
    */
   onAuthenticationChange(): Observable<boolean> {
     return this.onTokenChange()
-      .pipe(map((token: TraqAuthToken) => token.isValid()));
+      .pipe(map((token: HwbAuthToken) => token.isValid()));
   }
 
   /**
@@ -63,13 +63,13 @@ export class TraqAuthService {
    *
    * @param strategyName
    * @param data
-   * @returns {Observable<TraqAuthResult>}
+   * @returns {Observable<HwbAuthResult>}
    */
-  authenticate(strategyName: string, data?: any): Observable<TraqAuthResult> {
-    alert('test strategy service');
+  authenticate(strategyName: string, data?: any): Observable<HwbAuthResult> {
+
     return this.getStrategy(strategyName).authenticate(data)
       .pipe(
-        switchMap((result: TraqAuthResult) => {
+        switchMap((result: HwbAuthResult) => {
           return this.processResultToken(result);
         }),
       );
@@ -84,13 +84,13 @@ export class TraqAuthService {
    *
    * @param strategyName
    * @param data
-   * @returns {Observable<TraqAuthResult>}
+   * @returns {Observable<HwbAuthResult>}
    */
-  register(strategyName: string, data?: any): Observable<TraqAuthResult> {
-    console.log('data////.ppppppppppppp'  + data);
+  register(strategyName: string, data?: any): Observable<HwbAuthResult> {
+
     return this.getStrategy(strategyName).register(data)
       .pipe(
-        switchMap((result: TraqAuthResult) => {
+        switchMap((result: HwbAuthResult) => {
           return this.processResultToken(result);
         }),
       );
@@ -104,12 +104,12 @@ export class TraqAuthService {
    * logout('email')
    *
    * @param strategyName
-   * @returns {Observable<TraqAuthResult>}
+   * @returns {Observable<HwbAuthResult>}
    */
-  logout(strategyName: string): Observable<TraqAuthResult> {
+  logout(strategyName: string): Observable<HwbAuthResult> {
     return this.getStrategy(strategyName).logout()
       .pipe(
-        switchMap((result: TraqAuthResult) => {
+        switchMap((result: HwbAuthResult) => {
           if (result.isSuccess()) {
             this.tokenService.clear()
               .pipe(map(() => result));
@@ -127,9 +127,9 @@ export class TraqAuthService {
    *
    * @param strategyName
    * @param data
-   * @returns {Observable<TraqAuthResult>}
+   * @returns {Observable<HwbAuthResult>}
    */
-  requestPassword(strategyName: string, data?: any): Observable<TraqAuthResult> {
+  requestPassword(strategyName: string, data?: any): Observable<HwbAuthResult> {
     return this.getStrategy(strategyName).requestPassword(data);
   }
 
@@ -141,9 +141,9 @@ export class TraqAuthService {
    *
    * @param strategyName
    * @param data
-   * @returns {Observable<TraqAuthResult>}
+   * @returns {Observable<HwbAuthResult>}
    */
-  resetPassword(strategyName: string, data?: any): Observable<TraqAuthResult> {
+  resetPassword(strategyName: string, data?: any): Observable<HwbAuthResult> {
     return this.getStrategy(strategyName).resetPassword(data);
   }
 
@@ -156,12 +156,12 @@ export class TraqAuthService {
    *
    * @param {string} strategyName
    * @param data
-   * @returns {Observable<TraqAuthResult>}
+   * @returns {Observable<HwbAuthResult>}
    */
-  refreshToken(strategyName: string, data?: any): Observable<TraqAuthResult> {
+  refreshToken(strategyName: string, data?: any): Observable<HwbAuthResult> {
     return this.getStrategy(strategyName).refreshToken(data)
       .pipe(
-        switchMap((result: TraqAuthResult) => {
+        switchMap((result: HwbAuthResult) => {
           return this.processResultToken(result);
         }),
       );
@@ -174,11 +174,11 @@ export class TraqAuthService {
    * getStrategy('email')
    *
    * @param {string} provider
-   * @returns {TraqAbstractAuthProvider}
+   * @returns {HwbAbstractAuthProvider}
    */
-  protected getStrategy(strategyName: string): TraqAuthStrategy {
+  protected getStrategy(strategyName: string): HwbAuthStrategy {
     console.log('strategise---///....' + this.strategies);
-    const found = this.strategies.find((strategy: TraqAuthStrategy) => strategy.getName() === strategyName);
+    const found = this.strategies.find((strategy: HwbAuthStrategy) => strategy.getName() === strategyName);
 
     if (!found) {
       throw new TypeError(`There is no Auth Strategy registered under '${strategyName}' name`);
@@ -187,11 +187,11 @@ export class TraqAuthService {
     return found;
   }
 
-  private processResultToken(result: TraqAuthResult) {
+  private processResultToken(result: HwbAuthResult) {
     if (result.isSuccess() && result.getToken()) {
       return this.tokenService.set(result.getToken())
         .pipe(
-          map((token: TraqAuthToken) => {
+          map((token: HwbAuthToken) => {
             return result;
           }),
         );

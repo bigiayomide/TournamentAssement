@@ -2,12 +2,9 @@
 using HWBTournament.API.ViewModels;
 using HWBTournament.Data.Contracts;
 using HWBTournament.Model.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Serilog;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HWBTournament.API.Controllers
 {
@@ -16,36 +13,35 @@ namespace HWBTournament.API.Controllers
     [ProducesResponseType(201)]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    [Authorize]
+    //[Authorize]
     public class EventStatusController : Controller
     {
         
         private readonly IEventDetailStatusRepository _eventStatusRepository;
-        private readonly ILoggingRepository _loggingRepository;
+
         private readonly IMapper _mapper;
         //int page = 1;
         //int pageSize = 10;
 
-        public EventStatusController(IEventDetailStatusRepository eventStatusRepository,
-                         ILoggingRepository _errorRepository, IMapper mapper)
+        public EventStatusController(IEventDetailStatusRepository eventStatusRepository,IMapper mapper)
         {
-
             _eventStatusRepository = eventStatusRepository;
-            _loggingRepository = _errorRepository;
             _mapper = mapper;
         }
 
-        [HttpGet("{id}", Name = "GetEventStatusDetail")]
+        [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
-            eventdetailstatus _eventStatus = _eventStatusRepository.GetSingle(u => u.Id == id);
+            EventDetailStatus _eventStatus = _eventStatusRepository.GetSingle(u => u.Id == id);
             if (_eventStatus != null)
             {
-                EventStatusViewModel _eventStatusVM = _mapper.Map<eventdetailstatus, EventStatusViewModel>(_eventStatus);
-                return new OkObjectResult(_eventStatusVM);
+                EventStatusViewModel _eventStatusVM = _mapper.Map<EventDetailStatus, EventStatusViewModel>(_eventStatus);
+                Log.Information("Event Status {@_eventStatusVM} retrieved from database", _eventStatusVM);
+                return new OkObjectResult(new ResultVM() { Status = Status.Success, Data = _eventStatusVM });
             }
             else
             {
+                Log.Information("Could not find Event Status wit Id  {@id}", id);
                 return NotFound();
             }
         }
@@ -58,75 +54,73 @@ namespace HWBTournament.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            eventdetailstatus _newevent = new eventdetailstatus
-            {
-                 Id= eventStatusvm.Id,
-                  event_detail_status_name= eventStatusvm.event_detail_status_name
-            };
+            EventDetailStatus _eventStatus = _mapper.Map<EventStatusViewModel,EventDetailStatus>(eventStatusvm);
 
-            eventdetailstatus _newCreatedEventStatus = _eventStatusRepository.CreateEventStatusDetail(_newevent);
-
+            EventDetailStatus _newCreatedEventStatus = _eventStatusRepository.CreateEventStatusDetail(_eventStatus);
 
             if (_newCreatedEventStatus == null)
             {
-                return new OkObjectResult(eventStatusvm);
+                Log.Information("Error Inserting Event Status {@eventStatusvm} Into database", eventStatusvm);
+                return NotFound(new ResultVM() { Status = Status.Error, Message = "An Error Occuered Could not create Event Status" + eventStatusvm.event_detail_status_name, Data = eventStatusvm });
             }
 
-            eventStatusvm = new EventStatusViewModel
-            {
-                Id = _newCreatedEventStatus.Id,
-                 event_detail_status_name= _newCreatedEventStatus.event_detail_status_name
-            };
-
-            return new OkObjectResult(eventStatusvm);
+            eventStatusvm = _mapper.Map<EventDetailStatus, EventStatusViewModel>(_newCreatedEventStatus);
+            Log.Information("Event Status {@eventStatusvm} Inserted to database", eventStatusvm);
+            return new OkObjectResult(new ResultVM() { Status = Status.Success, Message = "Succesfully Created Event Status: " + eventStatusvm.event_detail_status_name, Data = eventStatusvm });
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            eventdetailstatus _eventStatus = _eventStatusRepository.GetSingle(u => u.Id == id);
+            EventDetailStatus _eventStatus = _eventStatusRepository.GetSingle(u => u.Id == id);
             if (_eventStatus != null)
             {
                 _eventStatusRepository.Delete(_eventStatus);
-                EventStatusViewModel _eventStatusVM = _mapper.Map<eventdetailstatus, EventStatusViewModel>(_eventStatus);
-                return new OkObjectResult(_eventStatusVM);
+                _eventStatusRepository.Commit();
+                EventStatusViewModel _eventStatusVM = _mapper.Map<EventDetailStatus, EventStatusViewModel>(_eventStatus);
+                Log.Information("Event Status {@_eventStatusVM} Deleted from database", _eventStatusVM);
+                return new OkObjectResult(new ResultVM() { Status = Status.Success, Message = "Succesfully Deleted Event Status: " + _eventStatusVM.event_detail_status_name, Data = _eventStatusVM });
             }
             else
             {
-                return NotFound();
+                Log.Information("Error Occured Deleting Event Status from database");
+                return NotFound(new ResultVM() { Status = Status.Error, Message = "An Error Occured: ", Data = null });
             }
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult Get()
         {
-            IEnumerable<eventdetailstatus> _event = _eventStatusRepository.GetEventStatusDetails();
+            IEnumerable<EventDetailStatus> _event = _eventStatusRepository.GetEventStatusDetails();
             if (_event != null)
             {
-                IEnumerable<EventStatusViewModel> _eventStatusVM = _mapper.Map<IEnumerable<eventdetailstatus>, IEnumerable<EventStatusViewModel>>(_event);
-                return new OkObjectResult(_eventStatusVM);
+                IEnumerable<EventStatusViewModel> _eventStatusVM = _mapper.Map<IEnumerable<EventDetailStatus>, IEnumerable<EventStatusViewModel>>(_event);
+                Log.Information("Event Status {@_eventStatusVM} retrieved from database", _eventStatusVM);
+                return new OkObjectResult(new ResultVM() { Data = _eventStatusVM, Status = Status.Success });
             }
             else
             {
-                return NotFound();
+                Log.Information("Error Occured Retrieving Event Statuss from database");
+                return NotFound(new ResultVM() { Status = Status.Error, Message = "An Error Occured: ", Data = null });
             }
         }
 
         [HttpPatch]
         public IActionResult Update([FromBody] EventStatusViewModel eventstatusvm)
         {
-            eventdetailstatus _eventStatus = _eventStatusRepository.GetSingle(u => u.Id == eventstatusvm.Id);
+            EventDetailStatus _eventStatus = _eventStatusRepository.GetSingle(u => u.Id == eventstatusvm.Id);
             if (_eventStatus != null)
             {
-                _eventStatus.Id = eventstatusvm.Id;
-                _eventStatus.event_detail_status_name = eventstatusvm.event_detail_status_name;
-                _eventStatusRepository.Update(_eventStatus);
-                EventStatusViewModel _eventStatusVM = _mapper.Map<eventdetailstatus, EventStatusViewModel>(_eventStatus);
-                return new OkObjectResult(_eventStatusVM);
+                EventDetailStatus _newEventStatus= _mapper.Map<EventStatusViewModel, EventDetailStatus>(eventstatusvm);
+                _eventStatusRepository.Update(_newEventStatus);
+                _eventStatusRepository.Commit();
+                EventStatusViewModel _eventStatusVM = _mapper.Map<EventDetailStatus, EventStatusViewModel>(_eventStatus);
+                return new OkObjectResult(new ResultVM() { Data = _eventStatusVM, Status = Status.Success });
             }
             else
             {
-                return NotFound();
+                Log.Information("Error Occured Updating Event Status {@eventstatusvm}", eventstatusvm);
+                return NotFound(new ResultVM() { Status = Status.Error, Message = "An Error Occured: ", Data = null });
             }
         }
     }

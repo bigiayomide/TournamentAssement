@@ -1,54 +1,36 @@
-﻿using HWBTournament.Data.Services;
-using HWBTournament.Model.Entities;
-using System;
+﻿using HWBTournament.Model.Entities;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HWBTournament.Data.Contracts
 {
-    public interface IUserRepository : IEntityBaseRepository<user>
+    public interface ITournamentRepository : IEntityBaseRepository<Tournament>
     {
-        user GetSingleByUsername(string username);
-        IEnumerable<role> GetUserRoles(string username);
-        user CreateUser(user newuser, int[] roles);
-        MembershipContext ValidateUser(string username, string password);
-        user UpdateUserPasswordUser(user updateuser);
+        IEnumerable<Tournament> GetTournaments();
+        Tournament CreateTournament(Tournament newtournament);
+        Tournament UpdateTournament(Tournament updatetournament);
     }
 
-    public interface ITournamentRepository : IEntityBaseRepository<tournament>
+    public interface IEventRepository : IEntityBaseRepository<Event>
     {
-        IEnumerable<tournament> GetTournaments();
-        tournament CreateTournament(tournament newtournament);
-        tournament UpdateTournament(tournament updatetournament);
+        IEnumerable<Event> GetEvents();
+        Event CreateEvent(Event newevent);
+        Event UpdateEvent(Event newevent);
+        Event GetSingleById(int Event);
     }
 
-    public interface IEventRepository : IEntityBaseRepository<@event>
+    public interface IEventDetailRepository : IEntityBaseRepository<EventDetail>
     {
-        IEnumerable<@event> GetEvents();
-        @event CreateEvent(@event newevent);
-        @event UpdateEvent(@event newevent);
-        @event GetSingleById(int @event);
+        IEnumerable<EventDetail> GetEventDetails();
+        EventDetail CreateEventDetail(EventDetail newevent);
+        EventDetail UpdateEventDetail(EventDetail newevent);
+        EventDetail GetSingleById(int eventdetailId);
     }
 
-    public interface IEventDetailRepository : IEntityBaseRepository<eventdetail>
+    public interface IEventDetailStatusRepository : IEntityBaseRepository<EventDetailStatus>
     {
-        IEnumerable<eventdetail> GetEventDetails();
-        eventdetail CreateEventDetail(eventdetail newevent);
-        eventdetail UpdateEventDetail(eventdetail newevent);
-        eventdetail GetSingleById(int eventdetailId);
+        IEnumerable<EventDetailStatus> GetEventStatusDetails();
+        EventDetailStatus CreateEventStatusDetail(EventDetailStatus neweventstatus);
+        EventDetailStatus UpdateEventStatusDetail(EventDetailStatus neweventstatus);
+        EventDetailStatus GetSingleById(int eventstatusdetailId);
     }
-
-    public interface IEventDetailStatusRepository : IEntityBaseRepository<eventdetailstatus>
-    {
-        IEnumerable<eventdetailstatus> GetEventStatusDetails();
-        eventdetailstatus CreateEventStatusDetail(eventdetailstatus neweventstatus);
-        eventdetailstatus UpdateEventStatusDetail(eventdetailstatus neweventstatus);
-        eventdetailstatus GetSingleById(int eventstatusdetailId);
-    }
-
-    public interface IUserRoleRepository : IEntityBaseRepository<userrole> { }
-
-    public interface ILoggingRepository : IEntityBaseRepository<error> { }
-
-    public interface IRoleRepository : IEntityBaseRepository<role> { }
 }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidemenuComponent } from './sidemenu/sidemenu.component';
 import { SidemenuItemComponent } from './sidemenu-item/sidemenu-item.component';
+//import { MatRadioModule } from '@angular/material/radio';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -9,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatTabsModule } from '@angular/material';
+import { MatTabsModule, MatRadioModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -26,6 +27,8 @@ import {
     MatSliderModule,
     MatProgressBarModule,
 } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToolbarSearchComponent } from './toolbar-search/toolbar-search.component';
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -39,6 +42,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         SidemenuItemComponent,
         ToolbarNotificationComponent,
         ToolbarComponent,
+        ToolbarSearchComponent,
         SearchBarComponent,
         FullscreenComponent,
         SidebarComponent,
@@ -46,7 +50,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ],
 
     imports: [
+        FormsModule  , 
+         ReactiveFormsModule,
         CommonModule,
+        MatRadioModule,
         MatListModule,
         MatButtonModule,
         MatInputModule,
@@ -70,6 +77,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         ToolbarNotificationComponent,
         ToolbarComponent,
         SearchBarComponent,
+        ToolbarSearchComponent,
         FullscreenComponent,
         SidebarComponent,
         UserMenuComponent

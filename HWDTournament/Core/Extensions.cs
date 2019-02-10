@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using HWBTournament.Data.Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace HWBTournament.API.Core
 {
@@ -24,9 +25,11 @@ namespace HWBTournament.API.Core
 
         public static void AddApplicationError(this HttpResponse response, string message)
         {
+           
             response.Headers.Add("Application-Error", message);
             // CORS
             response.Headers.Add("access-control-expose-headers", "Application-Error");
+
         }
     }
 }

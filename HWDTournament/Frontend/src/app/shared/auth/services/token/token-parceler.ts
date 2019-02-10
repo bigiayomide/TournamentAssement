@@ -1,28 +1,28 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 
-import { hwbAuthCreateToken, TraqAuthToken, TraqAuthTokenClass } from './token';
+import { hwbAuthCreateToken, HwbAuthToken, HwbAuthTokenClass } from './token';
 import { HWB_AUTH_TOKENS } from '../../auth.options';
 
-export interface TraqTokenPack {
+export interface HwbTokenPack {
   name: string,
   ownerStrategyName: string,
   createdAt: Number,
   value: string,
 }
 
-export const HWB_AUTH_FALLBACK_TOKEN = new InjectionToken<TraqAuthTokenClass>('Traq Auth Options');
+export const HWB_AUTH_FALLBACK_TOKEN = new InjectionToken<HwbAuthTokenClass>('Hwb Auth Options');
 
 /**
  * Creates a token parcel which could be stored/restored
  */
 @Injectable()
-export class TraqAuthTokenParceler {
+export class HwbAuthTokenParceler {
 
-  constructor(@Inject(HWB_AUTH_FALLBACK_TOKEN) private fallbackClass: TraqAuthTokenClass,
-              @Inject(HWB_AUTH_TOKENS) private tokenClasses: TraqAuthTokenClass[]) {
+  constructor(@Inject(HWB_AUTH_FALLBACK_TOKEN) private fallbackClass: HwbAuthTokenClass,
+              @Inject(HWB_AUTH_TOKENS) private tokenClasses: HwbAuthTokenClass[]) {
   }
 
-  wrap(token: TraqAuthToken): string {
+  wrap(token: HwbAuthToken): string {
     return JSON.stringify({
       name: token.getName(),
       ownerStrategyName: token.getOwnerStrategyName(),
@@ -31,13 +31,13 @@ export class TraqAuthTokenParceler {
     });
   }
 
-  unwrap(value: string): TraqAuthToken {
-    let tokenClass: TraqAuthTokenClass = this.fallbackClass;
+  unwrap(value: string): HwbAuthToken {
+    let tokenClass: HwbAuthTokenClass = this.fallbackClass;
     let tokenValue = '';
     let tokenOwnerStrategyName = '';
     let tokenCreatedAt: Date = null;
 
-    const tokenPack: TraqTokenPack = this.parseTokenPack(value);
+    const tokenPack: HwbTokenPack = this.parseTokenPack(value);
     if (tokenPack) {
       tokenClass = this.getClassByName(tokenPack.name) || this.fallbackClass;
       tokenValue = tokenPack.value;
@@ -49,11 +49,11 @@ export class TraqAuthTokenParceler {
   }
 
   // TODO: this could be moved to a separate token registry
-  protected getClassByName(name): TraqAuthTokenClass {
-    return this.tokenClasses.find((tokenClass: TraqAuthTokenClass) => tokenClass.NAME === name);
+  protected getClassByName(name): HwbAuthTokenClass {
+    return this.tokenClasses.find((tokenClass: HwbAuthTokenClass) => tokenClass.NAME === name);
   }
 
-  protected parseTokenPack(value): TraqTokenPack {
+  protected parseTokenPack(value): HwbTokenPack {
     try {
       return JSON.parse(value);
     } catch (e) { }

@@ -1,6 +1,6 @@
 import { urlBase64Decode } from '../../helpers';
 
-export abstract class TraqAuthToken {
+export abstract class HwbAuthToken {
 
   protected payload: any = null;
 
@@ -12,7 +12,7 @@ export abstract class TraqAuthToken {
   abstract toString(): string;
 
   getName(): string {
-    return (this.constructor as TraqAuthTokenClass).NAME;
+    return (this.constructor as HwbAuthTokenClass).NAME;
   }
 
   getPayload(): any {
@@ -20,45 +20,45 @@ export abstract class TraqAuthToken {
   }
 }
 
-export class TraqAuthTokenNotFoundError extends Error {
+export class HwbAuthTokenNotFoundError extends Error {
   constructor(message: string) {
     super(message);
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
 
-export class TraqAuthIllegalTokenError extends Error {
+export class HwbAuthIllegalTokenError extends Error {
   constructor(message: string) {
     super(message);
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
 
-export class TraqAuthEmptyTokenError extends TraqAuthIllegalTokenError {
+export class HwbAuthEmptyTokenError extends HwbAuthIllegalTokenError {
   constructor(message: string) {
     super(message);
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
 
-export class TraqAuthIllegalJWTTokenError extends TraqAuthIllegalTokenError {
+export class HwbAuthIllegalJWTTokenError extends HwbAuthIllegalTokenError {
   constructor(message: string) {
     super(message);
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
 
-export interface TraqAuthRefreshableToken {
+export interface HwbAuthRefreshableToken {
   getRefreshToken(): string;
   setRefreshToken(refreshToken: string);
 }
 
-export interface TraqAuthTokenClass<T = TraqAuthToken> {
+export interface HwbAuthTokenClass<T = HwbAuthToken> {
   NAME: string;
   new (raw: any, strategyName: string, expDate?: Date): T;
 }
 
-export function hwbAuthCreateToken<T extends TraqAuthToken>(tokenClass: TraqAuthTokenClass<T>,
+export function hwbAuthCreateToken<T extends HwbAuthToken>(tokenClass: HwbAuthTokenClass<T>,
                                   token: any,
                                   ownerStrategyName: string,
                                   createdAt?: Date) {
@@ -68,13 +68,13 @@ export function hwbAuthCreateToken<T extends TraqAuthToken>(tokenClass: TraqAuth
 export function decodeJwtPayload(payload: string): any {
 
   if (payload.length === 0) {
-    throw new TraqAuthEmptyTokenError('Cannot extract from an empty payload.');
+    throw new HwbAuthEmptyTokenError('Cannot extract from an empty payload.');
   }
 
   const parts = payload.split('.');
 
   if (parts.length !== 3) {
-    throw new TraqAuthIllegalJWTTokenError(
+    throw new HwbAuthIllegalJWTTokenError(
       `The payload ${payload} is not valid JWT payload and must consist of three parts.`);
   }
 
@@ -82,12 +82,12 @@ export function decodeJwtPayload(payload: string): any {
   try {
     decoded = urlBase64Decode(parts[1]);
   } catch (e) {
-    throw new TraqAuthIllegalJWTTokenError(
+    throw new HwbAuthIllegalJWTTokenError(
       `The payload ${payload} is not valid JWT payload and cannot be parsed.`);
   }
 
   if (!decoded) {
-    throw new TraqAuthIllegalJWTTokenError(
+    throw new HwbAuthIllegalJWTTokenError(
       `The payload ${payload} is not valid JWT payload and cannot be decoded.`);
   }
   return JSON.parse(decoded);
@@ -96,7 +96,7 @@ export function decodeJwtPayload(payload: string): any {
 /**
  * Wrapper for simple (text) token
  */
-export class TraqAuthSimpleToken extends TraqAuthToken {
+export class HwbAuthSimpleToken extends HwbAuthToken {
 
   static NAME = 'nb:auth:simple:token';
 
@@ -107,7 +107,7 @@ export class TraqAuthSimpleToken extends TraqAuthToken {
     try {
       this.parsePayload();
     } catch (err) {
-      if (!(err instanceof TraqAuthTokenNotFoundError)) {
+      if (!(err instanceof HwbAuthTokenNotFoundError)) {
         // token is present but has got a problem, including illegal
         throw err;
       }
@@ -163,7 +163,7 @@ export class TraqAuthSimpleToken extends TraqAuthToken {
 /**
  * Wrapper for JWT token with additional methods.
  */
-export class TraqAuthJWTToken extends TraqAuthSimpleToken {
+export class HwbAuthJWTToken extends HwbAuthSimpleToken {
 
   static NAME = 'nb:auth:jwt:token';
 
@@ -181,7 +181,7 @@ export class TraqAuthJWTToken extends TraqAuthSimpleToken {
    */
   protected parsePayload(): void {
     if (!this.token) {
-      throw new TraqAuthTokenNotFoundError('Token not found. ')
+      throw new HwbAuthTokenNotFoundError('Token not found. ')
     }
     this.payload = decodeJwtPayload(this.token);
   }
@@ -221,7 +221,7 @@ const prepareOAuth2Token = (data) => {
 /**
  * Wrapper for OAuth2 token whose access_token is a JWT Token
  */
-export class TraqAuthOAuth2Token extends TraqAuthSimpleToken {
+export class HwbAuthOAuth2Token extends HwbAuthSimpleToken {
 
   static NAME = 'nb:auth:oauth2:token';
 
@@ -263,10 +263,10 @@ export class TraqAuthOAuth2Token extends TraqAuthSimpleToken {
    */
   protected parsePayload(): void {
     if (!this.token) {
-      throw new TraqAuthTokenNotFoundError('Token not found.')
+      throw new HwbAuthTokenNotFoundError('Token not found.')
     } else {
       if (!Object.keys(this.token).length) {
-        throw new TraqAuthEmptyTokenError('Cannot extract payload from an empty token.');
+        throw new HwbAuthEmptyTokenError('Cannot extract payload from an empty token.');
       }
     }
     this.payload = this.token;
@@ -311,7 +311,7 @@ export class TraqAuthOAuth2Token extends TraqAuthSimpleToken {
 /**
  * Wrapper for OAuth2 token embedding JWT tokens
  */
-export class TraqAuthOAuth2JWTToken extends TraqAuthOAuth2Token {
+export class HwbAuthOAuth2JWTToken extends HwbAuthOAuth2Token {
 
   //static NAME = 'nb:auth:oauth2:jwt:token';
   static NAME = 'hwb:auth:oauth2:jwt:token';
@@ -326,7 +326,7 @@ export class TraqAuthOAuth2JWTToken extends TraqAuthOAuth2Token {
   protected parseAccessTokenPayload(): any {
     const accessToken = this.getValue();
     if (!accessToken) {
-      throw new TraqAuthTokenNotFoundError('access_token key not found.')
+      throw new HwbAuthTokenNotFoundError('access_token key not found.')
     }
     this.accessTokenPayload = decodeJwtPayload(accessToken);
   }

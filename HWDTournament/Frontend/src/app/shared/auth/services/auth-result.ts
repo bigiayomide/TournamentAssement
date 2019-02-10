@@ -1,8 +1,8 @@
-import { TraqAuthToken } from './token/token';
+import { HwbAuthToken } from './token/token';
 
-export class TraqAuthResult {
+export class HwbAuthResult {
 
-  protected token: TraqAuthToken;
+  protected token: HwbAuthToken;
   protected errors: string[] = [];
   protected messages: string[] = [];
 
@@ -12,7 +12,7 @@ export class TraqAuthResult {
               protected redirect?: any,
               errors?: any,
               messages?: any,
-              token: TraqAuthToken = null) {
+              token: HwbAuthToken = null) {
 
     this.errors = this.errors.concat([errors]);
     if (errors instanceof Array) {
@@ -31,7 +31,7 @@ export class TraqAuthResult {
     return this.response;
   }
 
-  getToken(): TraqAuthToken {
+  getToken(): HwbAuthToken {
     return this.token;
   }
 

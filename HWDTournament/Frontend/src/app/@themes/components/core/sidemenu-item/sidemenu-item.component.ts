@@ -20,8 +20,7 @@ export class SidemenuItemComponent implements OnInit {
         this.menu.open = this.menu.open;
     }
 
-    clicklink() {
-       // alert('test oen');
+    clicklink() {    
         this.onLinkClick.emit();    
       }
 

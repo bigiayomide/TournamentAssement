@@ -23,7 +23,7 @@ namespace HWBTournament.API.ViewModels
 
         public short finishing_position { get; set; }
         public bool first_timer { get; set; }
-        //public @event @event { get; set; }
+        //public Event Event { get; set; }
         //public eventdetailstatus event_detail_status { get; set; }
     }
 }

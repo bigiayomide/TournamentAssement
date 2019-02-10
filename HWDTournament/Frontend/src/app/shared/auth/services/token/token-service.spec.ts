@@ -1,11 +1,11 @@
 import { async, inject, TestBed } from '@angular/core/testing';
 import { take } from 'rxjs/operators';
 
-import { TraqTokenLocalStorage, TraqTokenStorage } from './token-storage';
-import { TraqAuthSimpleToken, TraqAuthToken, hwbAuthCreateToken } from './token';
-import { TraqTokenService } from './token.service';
-import { TraqAuthJWTToken } from './token';
-import { HWB_AUTH_FALLBACK_TOKEN, TraqAuthTokenParceler } from './token-parceler';
+import { HwbTokenLocalStorage, HwbTokenStorage } from './token-storage';
+import { HwbAuthSimpleToken, HwbAuthToken, hwbAuthCreateToken } from './token';
+import { HwbTokenService } from './token.service';
+import { HwbAuthJWTToken } from './token';
+import { HWB_AUTH_FALLBACK_TOKEN, HwbAuthTokenParceler } from './token-parceler';
 import { HWB_AUTH_TOKENS } from '../../auth.options';
 
 const noop = () => {};
@@ -13,26 +13,26 @@ const ownerStrategyName = 'strategy';
 
 describe('token-service', () => {
 
-  let tokenService: TraqTokenService;
-  let tokenStorage: TraqTokenLocalStorage;
-  const simpleToken = hwbAuthCreateToken(TraqAuthSimpleToken, 'test value', ownerStrategyName);
-  const emptyToken = hwbAuthCreateToken(TraqAuthSimpleToken, '', ownerStrategyName);
+  let tokenService: HwbTokenService;
+  let tokenStorage: HwbTokenLocalStorage;
+  const simpleToken = hwbAuthCreateToken(HwbAuthSimpleToken, 'test value', ownerStrategyName);
+  const emptyToken = hwbAuthCreateToken(HwbAuthSimpleToken, '', ownerStrategyName);
   const testTokenKey = 'auth_app_token';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: TraqTokenStorage, useClass: TraqTokenLocalStorage },
-        { provide: HWB_AUTH_FALLBACK_TOKEN, useValue: TraqAuthSimpleToken },
-        { provide: HWB_AUTH_TOKENS, useValue: [TraqAuthSimpleToken, TraqAuthJWTToken] },
-        TraqAuthTokenParceler,
-        TraqTokenService,
+        { provide: HwbTokenStorage, useClass: HwbTokenLocalStorage },
+        { provide: HWB_AUTH_FALLBACK_TOKEN, useValue: HwbAuthSimpleToken },
+        { provide: HWB_AUTH_TOKENS, useValue: [HwbAuthSimpleToken, HwbAuthJWTToken] },
+        HwbAuthTokenParceler,
+        HwbTokenService,
       ],
     });
   });
 
     beforeEach(async(inject(
-    [TraqTokenService, TraqTokenStorage],
+    [HwbTokenService, HwbTokenStorage],
     (_tokenService, _tokenStorage) => {
       tokenService = _tokenService;
       tokenStorage = _tokenStorage;
@@ -61,7 +61,7 @@ describe('token-service', () => {
       .returnValue(emptyToken);
 
     tokenService.get()
-      .subscribe((token: TraqAuthToken) => {
+      .subscribe((token: HwbAuthToken) => {
         expect(spy).toHaveBeenCalled();
         expect(token.getValue()).toEqual('');
         expect(token.isValid()).toBe(false);
@@ -72,7 +72,7 @@ describe('token-service', () => {
     tokenService.set(simpleToken).subscribe(noop);
 
     tokenService.get()
-      .subscribe((token: TraqAuthToken) => {
+      .subscribe((token: HwbAuthToken) => {
         expect(token.getValue()).toEqual(simpleToken.getValue());
       });
   });
@@ -93,12 +93,12 @@ describe('token-service', () => {
   it('token should be published', (done) => {
     tokenService.tokenChange()
       .pipe(take(1))
-      .subscribe((token: TraqAuthToken) => {
+      .subscribe((token: HwbAuthToken) => {
         expect(token.getValue()).toEqual('');
       });
     tokenService.set(simpleToken).subscribe(noop);
     tokenService.tokenChange()
-      .subscribe((token: TraqAuthToken) => {
+      .subscribe((token: HwbAuthToken) => {
         expect(token.getValue()).toEqual(simpleToken.getValue());
         done();
       });
@@ -107,18 +107,18 @@ describe('token-service', () => {
   it('clear should be published', (done) => {
     tokenService.tokenChange()
       .pipe(take(1))
-      .subscribe((token: TraqAuthToken) => {
+      .subscribe((token: HwbAuthToken) => {
         expect(token.getValue()).toEqual('');
       });
     tokenService.set(simpleToken).subscribe(noop);
     tokenService.tokenChange()
       .pipe(take(1))
-      .subscribe((token: TraqAuthToken) => {
+      .subscribe((token: HwbAuthToken) => {
         expect(token.getValue()).toEqual(simpleToken.getValue());
       });
     tokenService.clear().subscribe(noop);
     tokenService.tokenChange()
-      .subscribe((token: TraqAuthToken) => {
+      .subscribe((token: HwbAuthToken) => {
         expect(token.getValue()).toEqual('');
         done();
       });

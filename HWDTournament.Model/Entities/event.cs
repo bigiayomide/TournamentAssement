@@ -9,11 +9,11 @@ using System.Text;
 namespace HWBTournament.Model.Entities
 {
     [Table("Event", Schema = "hwb")]
-    public class @event : IEntityBase
+    public class Event : IEntityBase
     {
-        public @event()
+        public Event()
         {
-            event_details = new List<eventdetail>();
+            event_details = new List<EventDetail>();
         }
         [Key]
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -42,22 +42,22 @@ namespace HWBTournament.Model.Entities
         [Column("AutoClose")]
         [Required]
         public bool auto_close { get; set; }
-        public List<eventdetail> event_details { get; set; }
+        public List<EventDetail> event_details { get; set; }
 
-        public tournament tournament { get; set; }
+        public Tournament tournament { get; set; }
     }
 
-    public class eventConfiguration : IEntityTypeConfiguration<@event>
+    public class EventConfiguration : IEntityTypeConfiguration<Event>
     {
-        public void Configure(EntityTypeBuilder<@event> builder)
+        public void Configure(EntityTypeBuilder<Event> builder)
         {
             builder.HasMany(x => x.event_details)
-                  .WithOne(x => x.@event)
+                  .WithOne(x => x.Event)
                   .HasForeignKey(x => x.event_id)
                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.tournament)
-                .WithMany(x => x.@events)
+                .WithMany(x => x.Events)
                 .HasForeignKey(x => x.tournament_id);
         }
     }

@@ -1,18 +1,18 @@
 import { HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TraqAuthResult } from '../services/auth-result';
-import { TraqAuthStrategyOptions } from './auth-strategy-options';
+import { HwbAuthResult } from '../services/auth-result';
+import { HwbAuthStrategyOptions } from './auth-strategy-options';
 import { deepExtend, getDeepFromObject } from '../helpers';
 import {
-  TraqAuthToken,
+  HwbAuthToken,
   hwbAuthCreateToken,
-  TraqAuthIllegalTokenError,
+  HwbAuthIllegalTokenError,
 } from '../services/token/token';
 
-export abstract class TraqAuthStrategy {
+export abstract class HwbAuthStrategy {
 
-  protected defaultOptions: TraqAuthStrategyOptions;
-  protected options: TraqAuthStrategyOptions;
+  protected defaultOptions: HwbAuthStrategyOptions;
+  protected options: HwbAuthStrategyOptions;
 
   // we should keep this any and validation should be done in `register` method instead
   // otherwise it won't be possible to pass an empty object
@@ -24,14 +24,14 @@ export abstract class TraqAuthStrategy {
     return getDeepFromObject(this.options, key, null);
   }
 
-  createToken<T extends TraqAuthToken>(value: any, failWhenInvalidToken?: boolean): T {
+  createToken<T extends HwbAuthToken>(value: any, failWhenInvalidToken?: boolean): T {
     const token =  hwbAuthCreateToken<T>(this.getOption('token.class'), value, this.getName());
     // At this point, hwbAuthCreateToken failed with NbAuthIllegalTokenError which MUST be intercepted by strategies
     // Or token is created. It MAY be created even if backend did not return any token, in this case it is !Valid
     if (failWhenInvalidToken && !token.isValid()) {
       // If we require a valid token (i.e. isValid), then we MUST throw NbAuthIllegalTokenError so that the strategies
       // intercept it
-      throw new TraqAuthIllegalTokenError('Token is empty or invalid.');
+      throw new HwbAuthIllegalTokenError('Token is empty or invalid.');
     }
     return token;
   }
@@ -40,17 +40,17 @@ export abstract class TraqAuthStrategy {
     return this.getOption('name');
   }
 
-  abstract authenticate(data?: any): Observable<TraqAuthResult>;
+  abstract authenticate(data?: any): Observable<HwbAuthResult>;
 
-  abstract register(data?: any): Observable<TraqAuthResult>;
+  abstract register(data?: any): Observable<HwbAuthResult>;
 
-  abstract requestPassword(data?: any): Observable<TraqAuthResult>;
+  abstract requestPassword(data?: any): Observable<HwbAuthResult>;
 
-  abstract resetPassword(data?: any): Observable<TraqAuthResult>;
+  abstract resetPassword(data?: any): Observable<HwbAuthResult>;
 
-  abstract logout(): Observable<TraqAuthResult>;
+  abstract logout(): Observable<HwbAuthResult>;
 
-  abstract refreshToken(data?: any): Observable<TraqAuthResult>;
+  abstract refreshToken(data?: any): Observable<HwbAuthResult>;
 
   protected createFailResponse(data?: any): HttpResponse<Object> {
     return new HttpResponse<Object>({ body: {}, status: 401 });

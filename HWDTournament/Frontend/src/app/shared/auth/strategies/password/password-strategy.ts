@@ -4,11 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, of as observableOf } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 
-import { TraqAuthResult } from '../../services/auth-result';
-import { TraqAuthStrategy } from '../auth-strategy';
-import { TraqAuthStrategyClass } from '../../auth.options';
-import { TraqPasswordAuthStrategyOptions, passwordStrategyOptions } from './password-strategy-options';
-import { TraqAuthIllegalTokenError } from '../../services/token/token';
+import { HwbAuthResult } from '../../services/auth-result';
+import { HwbAuthStrategy } from '../auth-strategy';
+import { HwbAuthStrategyClass } from '../../auth.options';
+import { HwbPasswordAuthStrategyOptions, passwordStrategyOptions } from './password-strategy-options';
+import { HwbAuthIllegalTokenError } from '../../services/token/token';
 
 /**
  * The most common authentication provider for email/password strategy.
@@ -19,7 +19,7 @@ import { TraqAuthIllegalTokenError } from '../../services/token/token';
  * if you need it.
  *
  * ```ts
- *export class TraqPasswordAuthStrategyOptions extends TraqAuthStrategyOptions {
+ *export class HwbPasswordAuthStrategyOptions extends HwbAuthStrategyOptions {
  *  name: string;
  *  baseEndpoint? = '/api/auth/';
  *  login?: boolean | NbPasswordStrategyModule = {
@@ -34,7 +34,7 @@ import { TraqAuthIllegalTokenError } from '../../services/token/token';
  *    defaultErrors: ['Login/Email combination is not correct, please try again.'],
  *    defaultMessages: ['You have been successfully logged in.'],
  *  };
- *  register?: boolean | TraqPasswordStrategyModule = {
+ *  register?: boolean | HwbPasswordStrategyModule = {
  *    alwaysFail: false,
  *    rememberMe: true,
  *    endpoint: 'register',
@@ -47,7 +47,7 @@ import { TraqAuthIllegalTokenError } from '../../services/token/token';
  *    defaultErrors: ['Something went wrong, please try again.'],
  *    defaultMessages: ['You have been successfully registered.'],
  *  };
- *  requestPass?: boolean | TraqPasswordStrategyModule = {
+ *  requestPass?: boolean | HwbPasswordStrategyModule = {
  *    endpoint: 'request-pass',
  *    method: 'post',
  *    redirect: {
@@ -57,7 +57,7 @@ import { TraqAuthIllegalTokenError } from '../../services/token/token';
  *    defaultErrors: ['Something went wrong, please try again.'],
  *    defaultMessages: ['Reset password instructions have been sent to your email.'],
  *  };
- *  resetPass?: boolean | TraqPasswordStrategyReset = {
+ *  resetPass?: boolean | HwbPasswordStrategyReset = {
  *    endpoint: 'reset-pass',
  *    method: 'put',
  *    redirect: {
@@ -68,7 +68,7 @@ import { TraqAuthIllegalTokenError } from '../../services/token/token';
  *    defaultErrors: ['Something went wrong, please try again.'],
  *    defaultMessages: ['Your password has been successfully changed.'],
  *  };
- *  logout?: boolean | TraqPasswordStrategyReset = {
+ *  logout?: boolean | HwbPasswordStrategyReset = {
  *    alwaysFail: false,
  *    endpoint: 'logout',
  *    method: 'delete',
@@ -79,7 +79,7 @@ import { TraqAuthIllegalTokenError } from '../../services/token/token';
  *    defaultErrors: ['Something went wrong, please try again.'],
  *    defaultMessages: ['You have been successfully logged out.'],
  *  };
- *  refreshToken?: boolean | TraqPasswordStrategyModule = {
+ *  refreshToken?: boolean | HwbPasswordStrategyModule = {
  *    endpoint: 'refresh-token',
  *    method: 'post',
  *    requireValidToken: false,
@@ -90,25 +90,25 @@ import { TraqAuthIllegalTokenError } from '../../services/token/token';
  *    defaultErrors: ['Something went wrong, please try again.'],
  *    defaultMessages: ['Your token has been successfully refreshed.'],
  *  };
- *  token?: TraqPasswordStrategyToken = {
+ *  token?: HwbPasswordStrategyToken = {
  *    class: NbAuthSimpleToken,
  *    key: 'data.token',
- *    getter: (module: string, res: HttpResponse<Object>, options: TraqPasswordAuthStrategyOptions) => getDeepFromObject(
+ *    getter: (module: string, res: HttpResponse<Object>, options: HwbPasswordAuthStrategyOptions) => getDeepFromObject(
  *      res.body,
  *      options.token.key,
  *    ),
  *  };
- *  errors?: TraqPasswordStrategyMessage = {
+ *  errors?: HwbPasswordStrategyMessage = {
  *    key: 'data.errors',
- *    getter: (module: string, res: HttpErrorResponse, options: TraqPasswordAuthStrategyOptions) => getDeepFromObject(
+ *    getter: (module: string, res: HttpErrorResponse, options: HwbPasswordAuthStrategyOptions) => getDeepFromObject(
  *      res.error,
  *      options.errors.key,
  *      options[module].defaultErrors,
  *    ),
  *  };
- *  messages?: TraqPasswordStrategyMessage = {
+ *  messages?: HwbPasswordStrategyMessage = {
  *    key: 'data.messages',
- *    getter: (module: string, res: HttpResponse<Object>, options: TraqPasswordAuthStrategyOptions) => getDeepFromObject(
+ *    getter: (module: string, res: HttpResponse<Object>, options: HwbPasswordAuthStrategyOptions) => getDeepFromObject(
  *      res.body,
  *      options.messages.key,
  *      options[module].defaultMessages,
@@ -136,19 +136,19 @@ import { TraqAuthIllegalTokenError } from '../../services/token/token';
  * ```
  */
 @Injectable()
-export class TraqPasswordAuthStrategy extends TraqAuthStrategy {
+export class HwbPasswordAuthStrategy extends HwbAuthStrategy {
 
-  protected defaultOptions: TraqPasswordAuthStrategyOptions = passwordStrategyOptions;
+  protected defaultOptions: HwbPasswordAuthStrategyOptions = passwordStrategyOptions;
 
-  static setup(options: TraqPasswordAuthStrategyOptions): [TraqAuthStrategyClass, TraqPasswordAuthStrategyOptions] {
-    return [TraqPasswordAuthStrategy, options];
+  static setup(options: HwbPasswordAuthStrategyOptions): [HwbAuthStrategyClass, HwbPasswordAuthStrategyOptions] {
+    return [HwbPasswordAuthStrategy, options];
   }
 
   constructor(protected http: HttpClient, private route: ActivatedRoute) {
     super();
   }
 
-  authenticate(data?: any): Observable<TraqAuthResult> {
+  authenticate(data?: any): Observable<HwbAuthResult> {
     const module = 'login';
     const method = this.getOption(`${module}.method`);
     const url = this.getActionEndpoint(module);
@@ -162,7 +162,7 @@ export class TraqPasswordAuthStrategy extends TraqAuthStrategy {
           return res;
         }),
         map((res) => {
-          return new TraqAuthResult(
+          return new HwbAuthResult(
             true,
             res,
             this.getOption(`${module}.redirect.success`),
@@ -176,7 +176,7 @@ export class TraqPasswordAuthStrategy extends TraqAuthStrategy {
       );
   }
 
-  register(data?: any): Observable<TraqAuthResult> {
+  register(data?: any): Observable<HwbAuthResult> {
     const module = 'register';
     const method = this.getOption(`${module}.method`);
     const url = this.getActionEndpoint(module);
@@ -191,7 +191,7 @@ export class TraqPasswordAuthStrategy extends TraqAuthStrategy {
           return res;
         }),
         map((res) => {
-          return new TraqAuthResult(
+          return new HwbAuthResult(
             true,
             res,
             this.getOption(`${module}.redirect.success`),
@@ -205,7 +205,7 @@ export class TraqPasswordAuthStrategy extends TraqAuthStrategy {
       );
   }
 
-  requestPassword(data?: any): Observable<TraqAuthResult> {
+  requestPassword(data?: any): Observable<HwbAuthResult> {
     const module = 'requestPass';
     const method = this.getOption(`${module}.method`);
     const url = this.getActionEndpoint(module);
@@ -219,7 +219,7 @@ export class TraqPasswordAuthStrategy extends TraqAuthStrategy {
           return res;
         }),
         map((res) => {
-          return new TraqAuthResult(
+          return new HwbAuthResult(
             true,
             res,
             this.getOption(`${module}.redirect.success`),
@@ -232,7 +232,7 @@ export class TraqPasswordAuthStrategy extends TraqAuthStrategy {
       );
   }
 
-  resetPassword(data: any = {}): Observable<TraqAuthResult> {
+  resetPassword(data: any = {}): Observable<HwbAuthResult> {
 
     const module = 'resetPass';
     const method = this.getOption(`${module}.method`);
@@ -249,7 +249,7 @@ export class TraqPasswordAuthStrategy extends TraqAuthStrategy {
           return res;
         }),
         map((res) => {
-          return new TraqAuthResult(
+          return new HwbAuthResult(
             true,
             res,
             this.getOption(`${module}.redirect.success`),
@@ -262,7 +262,7 @@ export class TraqPasswordAuthStrategy extends TraqAuthStrategy {
       );
   }
 
-  logout(): Observable<TraqAuthResult> {
+  logout(): Observable<HwbAuthResult> {
 
     const module = 'logout';
     const method = this.getOption(`${module}.method`);
@@ -284,7 +284,7 @@ export class TraqPasswordAuthStrategy extends TraqAuthStrategy {
           return res;
         }),
         map((res) => {
-          return new TraqAuthResult(
+          return new HwbAuthResult(
             true,
             res,
             this.getOption(`${module}.redirect.success`),
@@ -297,7 +297,7 @@ export class TraqPasswordAuthStrategy extends TraqAuthStrategy {
       );
   }
 
-  refreshToken(data?: any): Observable<TraqAuthResult> {
+  refreshToken(data?: any): Observable<HwbAuthResult> {
 
     const module = 'refreshToken';
     const method = this.getOption(`${module}.method`);
@@ -314,7 +314,7 @@ export class TraqPasswordAuthStrategy extends TraqAuthStrategy {
           return res;
         }),
         map((res) => {
-          return new TraqAuthResult(
+          return new HwbAuthResult(
             true,
             res,
             this.getOption(`${module}.redirect.success`),
@@ -328,17 +328,17 @@ export class TraqPasswordAuthStrategy extends TraqAuthStrategy {
       );
   }
 
-  protected handleResponseError(res: any, module: string): Observable<TraqAuthResult> {
+  protected handleResponseError(res: any, module: string): Observable<HwbAuthResult> {
     let errors = [];
     if (res instanceof HttpErrorResponse) {
       errors = this.getOption('errors.getter')(module, res, this.options);
-    } else if (res instanceof TraqAuthIllegalTokenError) {
+    } else if (res instanceof HwbAuthIllegalTokenError) {
       errors.push(res.message)
     } else {
       errors.push('Something went wrong.');
     }
     return observableOf(
-      new TraqAuthResult(
+      new HwbAuthResult(
         false,
         res,
         this.getOption(`${module}.redirect.failure`),

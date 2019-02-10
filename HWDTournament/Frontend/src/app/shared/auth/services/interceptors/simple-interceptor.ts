@@ -3,9 +3,9 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { TraqAuthService } from '../auth.service';
+import { HwbAuthService } from '../auth.service';
 import { HWB_AUTH_INTERCEPTOR_HEADER } from '../../auth.options';
-import { TraqAuthJWTToken } from '../token/token';
+import { HwbAuthJWTToken } from '../token/token';
 
 @Injectable()
 export class NbAuthSimpleInterceptor implements HttpInterceptor {
@@ -18,7 +18,7 @@ export class NbAuthSimpleInterceptor implements HttpInterceptor {
 
     return this.authService.getToken()
       .pipe(
-        switchMap((token: TraqAuthJWTToken) => {
+        switchMap((token: HwbAuthJWTToken) => {
           if (token && token.getValue()) {
             req = req.clone({
               setHeaders: {
@@ -31,7 +31,7 @@ export class NbAuthSimpleInterceptor implements HttpInterceptor {
       );
   }
 
-  protected get authService(): TraqAuthService {
-    return this.injector.get(TraqAuthService);
+  protected get authService(): HwbAuthService {
+    return this.injector.get(HwbAuthService);
   }
 }

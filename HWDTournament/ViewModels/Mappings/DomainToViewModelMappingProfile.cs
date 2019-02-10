@@ -11,10 +11,10 @@ namespace HWBTournament.API.ViewModels.Mappings
     {
         public DomainToViewModelMappingProfile()
         {
-            CreateMap<@event, EventViewModel>();
-            CreateMap<eventdetail, EventDetailViewModel>();
-            CreateMap<eventdetailstatus, EventStatusViewModel>();
-            CreateMap<tournament, TournamentViewModel>();
+            CreateMap<Event, EventViewModel>();
+            CreateMap<EventDetail, EventDetailViewModel>();
+            CreateMap<EventDetailStatus, EventStatusViewModel>();
+            CreateMap<Tournament, TournamentViewModel>();
             //CreateMap<user, UserViewModel>();
 
         }

@@ -1,0 +1,90 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  //  margin-top: 200px;
+    width: 100%;  
+    /* transform: rotateY(180deg); */
+}
+
+// .card-wrapper {
+//     perspective: 800px;
+// }
+
+.card {
+    // border-radius: 8px;
+    position: relative;
+    // height: 200px;
+    // width: 120px;
+    transform-style: preserve-3d;
+}
+.cardholder{
+  padding-bottom: 20px !important;
+}
+// .mat-dialog-container { 
+//     background-color: #eaefee !important;
+//   }
+  
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 13px;
+    line-height: 1;
+    letter-spacing: normal;
+  
+}
+
+.card-title {
+  //  padding: 50px;
+    backface-visibility: hidden;
+    height: 100%;
+    width: calc(100% - 2px);// 50%;
+    position: absolute;
+    //text-align: center;
+   // border-radius: 8px;
+    color: white;
+  //  user-select: none;
+    cursor: pointer;
+   // flex:  1;
+
+   // line-height: 100px;
+   // font-size:30px;
+}
+
+.front {
+  height: 100%;
+    //background-color:green !important;
+    color: black;
+    transform: rotateY(0deg);
+}
+
+.back {
+  //  background-color:#d9eff7;;
+  height: 100%;
+  //background-color:magenta;
+    color: black;
+    transform: rotateY(180deg);
+}
+.clear {clear: both;}
+
+.tab-content {
+  padding: 16px;
+}
+
+.padding-bottom-0 {
+  padding-bottom: 0px !important;
+}
+
+.margin-bottom-0 {
+  margin-bottom: 0px !important;
+}
+
+.documentation {
+  background: #F0F0F0;
+  padding: 1.5em;
+  font-family: serif;
+}
+
+
+

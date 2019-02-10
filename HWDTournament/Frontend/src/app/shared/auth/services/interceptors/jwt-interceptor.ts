@@ -3,11 +3,11 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { TraqAuthService } from '../auth.service';
-import { TraqAuthJWTToken } from '../token/token';
+import { HwbAuthService } from '../auth.service';
+import { HwbAuthJWTToken } from '../token/token';
 
 @Injectable()
-export class TraqAuthJWTInterceptor implements HttpInterceptor {
+export class HwbAuthJWTInterceptor implements HttpInterceptor {
 
   constructor(private injector: Injector) {
   }
@@ -16,7 +16,8 @@ export class TraqAuthJWTInterceptor implements HttpInterceptor {
 
     return this.authService.getToken()
       .pipe(
-        switchMap((token: TraqAuthJWTToken) => {
+        switchMap((token: HwbAuthJWTToken) => {
+          debugger;
           if (token.isValid()) {
             const JWT = `Bearer ${token.getValue()}`;
             req = req.clone({
@@ -30,7 +31,7 @@ export class TraqAuthJWTInterceptor implements HttpInterceptor {
       );
   }
 
-  protected get authService(): TraqAuthService {
-    return this.injector.get(TraqAuthService);
+  protected get authService(): HwbAuthService {
+    return this.injector.get(HwbAuthService);
   }
 }

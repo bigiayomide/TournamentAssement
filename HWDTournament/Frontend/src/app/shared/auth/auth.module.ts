@@ -15,20 +15,20 @@ import { HttpClientModule } from '@angular/common/http';
 
 import {
   HWB_AUTH_FALLBACK_TOKEN,
-  TraqAuthService,
-  TraqAuthSimpleToken,
-  TraqAuthTokenClass,
-  TraqAuthTokenParceler,
-  TraqTokenLocalStorage,
-  TraqTokenService,
-  TraqTokenStorage,
+  HwbAuthService,
+  HwbAuthSimpleToken,
+  HwbAuthTokenClass,
+  HwbAuthTokenParceler,
+  HwbTokenLocalStorage,
+  HwbTokenService,
+  HwbTokenStorage,
 } from './services';
 import {
-  TraqAuthStrategy,
-  TraqAuthStrategyOptions,
-  TraqDummyAuthStrategy,
-  TraqOAuth2AuthStrategy,
-  TraqPasswordAuthStrategy,
+  HwbAuthStrategy,
+  HwbAuthStrategyOptions,
+  HwbDummyAuthStrategy,
+  HwbOAuth2AuthStrategy,
+  HwbPasswordAuthStrategy,
 } from './strategies';
 
 import {
@@ -38,17 +38,27 @@ import {
   HWB_AUTH_STRATEGIES,
   HWB_AUTH_TOKENS,
   HWB_AUTH_USER_OPTIONS,
-  TraqAuthOptions,
-  TraqAuthStrategyClass,
+  HwbAuthOptions,
+  HwbAuthStrategyClass,
 } from './auth.options';
 
+// import { HwbAuthComponent } from './components/auth.component';
+
+// import { HwbAuthBlockComponent } from './components/auth-block/auth-block.component';
+// import { HwbLoginComponent } from './components/login/login.component';
+// import { HwbRegisterComponent } from './components/register/register.component';
+// import { HwbLogoutComponent } from './components/logout/logout.component';
+// import { HwbRequestPasswordComponent } from './components/request-password/request-password.component';
+// import { HwbResetPasswordComponent } from './components/reset-password/reset-password.component';
+
+// import { routes } from './auth.routes';
 import { deepExtend } from './helpers';
 
-export function hwbStrategiesFactory(options: TraqAuthOptions, injector: Injector): TraqAuthStrategy[] {
+export function hwbStrategiesFactory(options: HwbAuthOptions, injector: Injector): HwbAuthStrategy[] {
   const strategies = [];
   options.strategies
-    .forEach(([strategyClass, strategyOptions]: [TraqAuthStrategyClass, TraqAuthStrategyOptions]) => {
-      const strategy: TraqAuthStrategy = injector.get(strategyClass);
+    .forEach(([strategyClass, strategyOptions]: [HwbAuthStrategyClass, HwbAuthStrategyOptions]) => {
+      const strategy: HwbAuthStrategy = injector.get(strategyClass);
       strategy.setOptions(strategyOptions);
 
       strategies.push(strategy);
@@ -56,10 +66,10 @@ export function hwbStrategiesFactory(options: TraqAuthOptions, injector: Injecto
   return strategies;
 }
 
-export function hwbTokensFactory(strategies: TraqAuthStrategy[]): TraqAuthTokenClass[] {
+export function hwbTokensFactory(strategies: HwbAuthStrategy[]): HwbAuthTokenClass[] {
   const tokens = [];
   strategies
-    .forEach((strategy: TraqAuthStrategy) => {
+    .forEach((strategy: HwbAuthStrategy) => {
       tokens.push(strategy.getOption('token.class'));
     });
   return tokens;
@@ -101,24 +111,24 @@ export function hwbOptionsFactory(options) {
     // NbLogoutComponent,
   ],
 })
-export class TraqAuthModule {
-  static forRoot(hwbAuthOptions?: TraqAuthOptions): ModuleWithProviders {
+export class HwbAuthModule {
+  static forRoot(hwbAuthOptions?: HwbAuthOptions): ModuleWithProviders {
     return <ModuleWithProviders> {
-      ngModule: TraqAuthModule,
+      ngModule: HwbAuthModule,
       providers: [
         { provide: HWB_AUTH_USER_OPTIONS, useValue: hwbAuthOptions },
         { provide: HWB_AUTH_OPTIONS, useFactory: hwbOptionsFactory, deps: [HWB_AUTH_USER_OPTIONS] },
         { provide: HWB_AUTH_STRATEGIES, useFactory: hwbStrategiesFactory, deps: [HWB_AUTH_OPTIONS, Injector] },
         { provide: HWB_AUTH_TOKENS, useFactory: hwbTokensFactory, deps: [HWB_AUTH_STRATEGIES] },
-        { provide: HWB_AUTH_FALLBACK_TOKEN, useValue: TraqAuthSimpleToken },
+        { provide: HWB_AUTH_FALLBACK_TOKEN, useValue: HwbAuthSimpleToken },
         { provide: HWB_AUTH_INTERCEPTOR_HEADER, useValue: 'Authorization' },
-        { provide: TraqTokenStorage, useClass: TraqTokenLocalStorage },
-        TraqAuthTokenParceler,
-        TraqAuthService,
-        TraqTokenService,
-        TraqDummyAuthStrategy,
-        TraqPasswordAuthStrategy,
-        TraqOAuth2AuthStrategy,
+        { provide: HwbTokenStorage, useClass: HwbTokenLocalStorage },
+        HwbAuthTokenParceler,
+        HwbAuthService,
+        HwbTokenService,
+        HwbDummyAuthStrategy,
+        HwbPasswordAuthStrategy,
+        HwbOAuth2AuthStrategy,
       ],
     };
   }

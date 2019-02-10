@@ -1,17 +1,17 @@
 import { InjectionToken } from '@angular/core';
-import { TraqAuthStrategy, TraqAuthStrategyOptions } from './strategies';
-import { TraqAuthToken, TraqAuthTokenClass } from './services/token/token';
+import { HwbAuthStrategy, HwbAuthStrategyOptions } from './strategies';
+import { HwbAuthToken, HwbAuthTokenClass } from './services/token/token';
 
-export type TraqAuthStrategyClass = new (...params: any[]) => TraqAuthStrategy;
+export type HwbAuthStrategyClass = new (...params: any[]) => HwbAuthStrategy;
 
-export type TraqAuthStrategies  = [TraqAuthStrategyClass, TraqAuthStrategyOptions][];
+export type HwbAuthStrategies  = [HwbAuthStrategyClass, HwbAuthStrategyOptions][];
 
-export interface TraqAuthOptions {
+export interface HwbAuthOptions {
   forms?: any;
-  strategies?: TraqAuthStrategies;
+  strategies?: HwbAuthStrategies;
 }
 
-export interface TraqAuthSocialLink {
+export interface HwbAuthSocialLink {
   link?: string,
   url?: string,
   target?: string,
@@ -19,7 +19,7 @@ export interface TraqAuthSocialLink {
   icon?: string,
 }
 
-const socialLinks: TraqAuthSocialLink[] = [];
+const socialLinks: HwbAuthSocialLink[] = [];
 
 export const defaultAuthOptions: any = {
   strategies: [],
@@ -84,14 +84,14 @@ export const defaultAuthOptions: any = {
   },
 };
 
-// export const HWB_AUTH_OPTIONS = new InjectionToken<TraqAuthOptions>('Nebular Auth Options');
-// export const HWB_AUTH_USER_OPTIONS = new InjectionToken<TraqAuthOptions>('Nebular User Auth Options');
-// export const HWB_AUTH_STRATEGIES = new InjectionToken<TraqAuthStrategies>('Nebular Auth Strategies');
-// export const HWB_AUTH_TOKENS = new InjectionToken<TraqAuthTokenClass<TraqAuthToken>[]>('Nebular Auth Tokens');
-// export const HWB_AUTH_INTERCEPTOR_HEADER = new InjectionToken<TraqAuthStrategies>('Nebular Simple Interceptor Header');
+// export const HWB_AUTH_OPTIONS = new InjectionToken<HwbAuthOptions>('Nebular Auth Options');
+// export const HWB_AUTH_USER_OPTIONS = new InjectionToken<HwbAuthOptions>('Nebular User Auth Options');
+// export const HWB_AUTH_STRATEGIES = new InjectionToken<HwbAuthStrategies>('Nebular Auth Strategies');
+// export const HWB_AUTH_TOKENS = new InjectionToken<HwbAuthTokenClass<HwbAuthToken>[]>('Nebular Auth Tokens');
+// export const HWB_AUTH_INTERCEPTOR_HEADER = new InjectionToken<HwbAuthStrategies>('Nebular Simple Interceptor Header');
 
-export const HWB_AUTH_OPTIONS = new InjectionToken<TraqAuthOptions>('Traq Auth Options');
-export const HWB_AUTH_USER_OPTIONS = new InjectionToken<TraqAuthOptions>('Traq User Auth Options');
-export const HWB_AUTH_STRATEGIES = new InjectionToken<TraqAuthStrategies>('Traq Auth Strategies');
-export const HWB_AUTH_TOKENS = new InjectionToken<TraqAuthTokenClass<TraqAuthToken>[]>('Traq Auth Tokens');
-export const HWB_AUTH_INTERCEPTOR_HEADER = new InjectionToken<TraqAuthStrategies>('Traq Simple Interceptor Header');
+export const HWB_AUTH_OPTIONS = new InjectionToken<HwbAuthOptions>('Hwb Auth Options');
+export const HWB_AUTH_USER_OPTIONS = new InjectionToken<HwbAuthOptions>('Hwb User Auth Options');
+export const HWB_AUTH_STRATEGIES = new InjectionToken<HwbAuthStrategies>('Hwb Auth Strategies');
+export const HWB_AUTH_TOKENS = new InjectionToken<HwbAuthTokenClass<HwbAuthToken>[]>('Hwb Auth Tokens');
+export const HWB_AUTH_INTERCEPTOR_HEADER = new InjectionToken<HwbAuthStrategies>('Hwb Simple Interceptor Header');

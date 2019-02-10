@@ -1,0 +1,37 @@
+<div  class="sales-list mat-elevation-z4 "  >
+        <!-- <toaster-container [toasterconfig]="config"></toaster-container> -->
+    <mat-toolbar>
+        
+        <mat-toolbar-row>
+            <span>Tournaments</span>
+            <span class="pull-right"></span>
+            <button mat-icon-button>
+              <mat-icon (click)="reload();" >refresh</mat-icon>
+            </button>
+            <button mat-icon-button>
+                <mat-icon (click)="OnCreateTournament();" >add</mat-icon>
+              </button>
+          </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-progress-bar *ngIf="showLoader"
+          [color]="'primary'"
+          [mode]="'indeterminate'"
+          [value]="90"
+          [bufferValue]="'10'">
+      </mat-progress-bar>
+    <mat-list >
+    <mat-list-item *ngFor="let tournament of tournaments"   >
+        <h3  > {{tournament.tournament_name}} </h3>
+        <span class="pull-right"></span>
+        <mat-chip-list    >
+            <button mat-icon-button color="warn" (click)="onDeleteTournament(tournament)" matTooltip="delete Tournament">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <button  mat-icon-button color="accent" (click)="onViewTournament(tournament)"  matTooltip="View Tournament">
+                    <mat-icon>remove_red_eye</mat-icon>
+                  </button>
+        </mat-chip-list>
+    </mat-list-item>
+</mat-list>
+
+</div>

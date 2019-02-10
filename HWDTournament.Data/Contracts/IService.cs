@@ -1,19 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using HWBTournament.Data;
-using HWBTournament.Model;
-using HWBTournament.Data.Services;
-using System.Threading.Tasks;
-using HWBTournament.Model.Entities;
-
-namespace HWBTournament.Data.Contracts
+﻿namespace HWBTournament.Data.Contracts
 {
-    public interface IService
-    {
-    }
-
-
     public interface IEncryptionService
     {
         /// <summary>
@@ -30,11 +16,4 @@ namespace HWBTournament.Data.Contracts
         string EncryptPassword(string password, string salt);
     }
 
-    public interface IMembershipService
-    {
-        MembershipContext ValidateUser(string username, string password);
-        user CreateUser(/*string username, string email, string password*/user objuser, int[] roles);
-        user GetUser(int userId);
-        List<role> GetUserRoles(string username);
-    }
 }

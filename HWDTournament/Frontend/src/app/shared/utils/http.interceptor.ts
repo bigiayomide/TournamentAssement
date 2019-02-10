@@ -20,10 +20,10 @@ export class HttpInterceptor extends Http {
             if ((error.status === 401) && (window.location.href.match(/\?/g) || []).length < 2) {
                 this.stateService.setAuthentication({ userName: '', isAuthenticated: false });
                 this.router.navigate(['/auth/authstest/logins']);
-                //alert('test error one');
+               
             }
             else if ((error.status === 403) && (window.location.href.match(/\?/g) || []).length < 2) {
-              //alert('test ne');
+              
               this.router.navigate(['/auth/authstest/access-forbidden']);
             }
             return Observable.throw(error);

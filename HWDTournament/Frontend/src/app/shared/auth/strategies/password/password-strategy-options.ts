@@ -1,9 +1,9 @@
-import { TraqAuthSimpleToken, TraqAuthTokenClass } from '../../services';
-import { TraqAuthStrategyOptions } from '../auth-strategy-options';
+import { HwbAuthSimpleToken, HwbAuthTokenClass } from '../../services';
+import { HwbAuthStrategyOptions } from '../auth-strategy-options';
 import { getDeepFromObject } from '../../helpers';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
-export interface TraqPasswordStrategyModule {
+export interface HwbPasswordStrategyModule {
   alwaysFail?: boolean;
   rememberMe?: boolean;
   endpoint?: string;
@@ -17,24 +17,24 @@ export interface TraqPasswordStrategyModule {
   defaultMessages?: string[];
 }
 
-export interface TraqPasswordStrategyReset extends TraqPasswordStrategyModule {
+export interface HwbPasswordStrategyReset extends HwbPasswordStrategyModule {
   resetPasswordTokenKey?: string;
 }
 
-export interface TraqPasswordStrategyToken {
-  class?: TraqAuthTokenClass,
+export interface HwbPasswordStrategyToken {
+  class?: HwbAuthTokenClass,
   key?: string,
   getter?: Function,
 }
 
-export interface TraqPasswordStrategyMessage {
+export interface HwbPasswordStrategyMessage {
   key?: string,
   getter?: Function,
 }
 
-export class TraqPasswordAuthStrategyOptions extends TraqAuthStrategyOptions {
+export class HwbPasswordAuthStrategyOptions extends HwbAuthStrategyOptions {
   baseEndpoint? = '/api/auth/';
-  login?: boolean | TraqPasswordStrategyModule = {
+  login?: boolean | HwbPasswordStrategyModule = {
     alwaysFail: false,
     endpoint: 'login',
     method: 'post',
@@ -46,7 +46,7 @@ export class TraqPasswordAuthStrategyOptions extends TraqAuthStrategyOptions {
     defaultErrors: ['Login/Email combination is not correct, please try again.'],
     defaultMessages: ['You have been successfully logged in.'],
   };
-  register?: boolean | TraqPasswordStrategyModule = {
+  register?: boolean | HwbPasswordStrategyModule = {
     alwaysFail: false,
     rememberMe: true,
     endpoint: 'register',
@@ -59,7 +59,7 @@ export class TraqPasswordAuthStrategyOptions extends TraqAuthStrategyOptions {
     defaultErrors: ['Something went wrong, please try again.'],
     defaultMessages: ['You have been successfully registered.'],
   };
-  requestPass?: boolean | TraqPasswordStrategyModule = {
+  requestPass?: boolean | HwbPasswordStrategyModule = {
     endpoint: 'request-pass',
     method: 'post',
     redirect: {
@@ -69,7 +69,7 @@ export class TraqPasswordAuthStrategyOptions extends TraqAuthStrategyOptions {
     defaultErrors: ['Something went wrong, please try again.'],
     defaultMessages: ['Reset password instructions have been sent to your email.'],
   };
-  resetPass?: boolean | TraqPasswordStrategyReset = {
+  resetPass?: boolean | HwbPasswordStrategyReset = {
     endpoint: 'reset-pass',
     method: 'put',
     redirect: {
@@ -80,7 +80,7 @@ export class TraqPasswordAuthStrategyOptions extends TraqAuthStrategyOptions {
     defaultErrors: ['Something went wrong, please try again.'],
     defaultMessages: ['Your password has been successfully changed.'],
   };
-  logout?: boolean | TraqPasswordStrategyReset = {
+  logout?: boolean | HwbPasswordStrategyReset = {
     alwaysFail: false,
     endpoint: 'logout',
     method: 'delete',
@@ -91,7 +91,7 @@ export class TraqPasswordAuthStrategyOptions extends TraqAuthStrategyOptions {
     defaultErrors: ['Something went wrong, please try again.'],
     defaultMessages: ['You have been successfully logged out.'],
   };
-  refreshToken?: boolean | TraqPasswordStrategyModule = {
+  refreshToken?: boolean | HwbPasswordStrategyModule = {
     endpoint: 'refresh-token',
     method: 'post',
     requireValidToken: false,
@@ -102,25 +102,25 @@ export class TraqPasswordAuthStrategyOptions extends TraqAuthStrategyOptions {
     defaultErrors: ['Something went wrong, please try again.'],
     defaultMessages: ['Your token has been successfully refreshed.'],
   };
-  token?: TraqPasswordStrategyToken = {
-    class: TraqAuthSimpleToken,
+  token?: HwbPasswordStrategyToken = {
+    class: HwbAuthSimpleToken,
     key: 'data.token',
-    getter: (module: string, res: HttpResponse<Object>, options: TraqPasswordAuthStrategyOptions) => getDeepFromObject(
+    getter: (module: string, res: HttpResponse<Object>, options: HwbPasswordAuthStrategyOptions) => getDeepFromObject(
       res.body,
       options.token.key,
     ),
   };
-  errors?: TraqPasswordStrategyMessage = {
+  errors?: HwbPasswordStrategyMessage = {
     key: 'data.errors',
-    getter: (module: string, res: HttpErrorResponse, options: TraqPasswordAuthStrategyOptions) => getDeepFromObject(
+    getter: (module: string, res: HttpErrorResponse, options: HwbPasswordAuthStrategyOptions) => getDeepFromObject(
       res.error,
       options.errors.key,
       options[module].defaultErrors,
     ),
   };
-  messages?: TraqPasswordStrategyMessage = {
+  messages?: HwbPasswordStrategyMessage = {
     key: 'data.messages',
-    getter: (module: string, res: HttpResponse<Object>, options: TraqPasswordAuthStrategyOptions) => getDeepFromObject(
+    getter: (module: string, res: HttpResponse<Object>, options: HwbPasswordAuthStrategyOptions) => getDeepFromObject(
       res.body,
       options.messages.key,
       options[module].defaultMessages,
@@ -146,4 +146,4 @@ export class TraqPasswordAuthStrategyOptions extends TraqAuthStrategyOptions {
   };
 }
 
-export const passwordStrategyOptions: TraqPasswordAuthStrategyOptions = new TraqPasswordAuthStrategyOptions();
+export const passwordStrategyOptions: HwbPasswordAuthStrategyOptions = new HwbPasswordAuthStrategyOptions();

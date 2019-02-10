@@ -1,0 +1,86 @@
+    <mat-card *ngIf="accountinfoLoaded">
+            <mat-card-header>
+            <div mat-card-avatar class="example-header-image">
+            </div>
+            <mat-card-title></mat-card-title>
+            <mat-card-subtitle style="color:#1e1e4e;;font-weight: 600; text-align: center;">ACCOUNT INFORMATION</mat-card-subtitle>
+            </mat-card-header>           
+            
+            <mat-card-content>   
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="column"> 
+                                <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100"  style="font-weight:bold ;text-align:left;" > 
+                                        Account Number Old
+                                </div>     
+                                <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100" >  
+                                        {{accountdetail.acc_account_code_old}}
+                                </div>  
+                        </div> 
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="column">   
+                            <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100"  style="font-weight:bold ;text-align:left;" > 
+                                    Payment Reference
+                            </div>     
+                            <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100" >  
+                                    {{accountdetail.acc_payment_reference}}
+                            </div> 
+                        </div> 
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="column">  
+                            <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100"  style="font-weight:bold ;text-align:left;" > 
+                                Phone Number
+                            </div>     
+                            <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100" >  
+                                    {{accountdetail.pho_phone_number}} 
+                            </div> 
+                        </div> 
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="column"> 
+                                <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100"  style="font-weight:bold ;text-align:left;" > 
+                                        Company Name
+                                </div>     
+                                <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100" >  
+                                        {{accountdetail.cmp_name}} 
+                                </div> 
+                        </div> 
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="column">    
+                                <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100"  style="font-weight:bold ;text-align:left;" > 
+                                        Account Type
+                                </div>     
+                                <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100" >  
+                                        {{accountdetail.acy_description}} 
+                                </div> 
+                        </div>
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="column">    
+                                <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100"  style="font-weight:bold ;text-align:left;" > 
+                                        Store Name
+                                </div>     
+                                <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100" >  
+                                        {{accountdetail.acc_store_name}}
+                                </div> 
+                        </div>
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="column">    
+                                <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100"  style="font-weight:bold ;text-align:left;" > 
+                                        Store Number
+                                </div>     
+                                <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100" >  
+                                        {{accountdetail.acc_store_numbe}}
+                                </div> 
+                        </div>
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="column">    
+                                <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100"  style="font-weight:bold ;text-align:left;" > 
+                                        Agent
+                                </div>     
+                                <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100" >  
+                                        {{accountdetail.agn_description}}
+                                </div> 
+                        </div>
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="column">    
+                                <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100"  style="font-weight:bold ;text-align:left;" > 
+                                        Cars Number
+                                </div>     
+                                <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100" >  
+                                        {{accountdetail.crs_description}}
+                                </div> 
+                        </div>
+          
+            </mat-card-content>
+      
+            </mat-card>
+           

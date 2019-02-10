@@ -9,7 +9,7 @@ using System.Text;
 namespace HWBTournament.Model.Entities
 {
     [Table("EventDetailStatus", Schema = "hwb")]
-    public class eventdetailstatus:IEntityBase
+    public class EventDetailStatus:IEntityBase
     {
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -20,11 +20,11 @@ namespace HWBTournament.Model.Entities
         [Required]
         [MaxLength(50, ErrorMessage = "Too Much characters for field Event Detail Name")]
         public string event_detail_status_name { get; set; }
-        public List<eventdetail> eventdetails { get; set; }
+        public List<EventDetail> eventdetails { get; set; }
     }
-    public class eventdetailstatusConfiguration : IEntityTypeConfiguration<eventdetailstatus>
+    public class EventdetailstatusConfiguration : IEntityTypeConfiguration<EventDetailStatus>
     {
-        public void Configure(EntityTypeBuilder<eventdetailstatus> builder)
+        public void Configure(EntityTypeBuilder<EventDetailStatus> builder)
         {
             builder.HasMany(x => x.eventdetails)
                 .WithOne(x => x.event_detail_status)

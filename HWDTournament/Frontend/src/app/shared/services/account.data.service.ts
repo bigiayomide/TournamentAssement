@@ -2,19 +2,18 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 // Grab everything with import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
+// import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 
-import { IUser, IUserRecaptcha, IForgotPasswordVM, LoginVM, RegisterVM, ResultVM} from '../interfaces';
+import { IUser, IUserRecaptcha, IForgotPasswordVM, IAccountSummaryVM, IAccountGeneralInformationVM, IAccountFinancialBalanceVM, IAccountFinancialDatesVM, IAccountDetailVM, IAccountSearchVM, PaginatedResult, IContactInformationVM, IContactPersonVM, ITitleVM, IMaritalStatusVM, ILanguageVM, ISalaryPaymentDateVM, IScriptVM, IPropertyTypeVM, IContactAddressVM} from '../interfaces/interfaces';
 import { ItemsService } from '../utils/items.service';
 import { ConfigService } from '../utils/config.service';
 
 @Injectable()
 export class AccountDataService {
 
-    _baseUrl = '';
+    _baseUrl: string = '';
 
     constructor(private http: Http,
         private itemsService: ItemsService,
@@ -22,22 +21,76 @@ export class AccountDataService {
         this._baseUrl = configService.getApiURI();
     }
 
-    // register(uservm: IUser): Observable<IUser> {
-    //     const headers = new Headers();
-    //     headers.append('Content-Type', 'application/json');
-    //     return this.http.post(this._baseUrl + 'user/', JSON.stringify(uservm), {
-    //         headers: headers,
-    //     })
-    //     .map((res: Response) => {
-    //         return;
-    //     })
-    //     .catch(this.handleError);
-    // }
-
-    resetpassword(resetvm: IUser): Observable<IUserRecaptcha> {
+    getAccountdetails(code: number): Observable<IAccountDetailVM> {
         const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this._baseUrl + 'user/resetpassword', JSON.stringify(resetvm), {
+        headers.append('Content-Type', 'application/json'); 
+        return this.http.get(this._baseUrl + 'accounts/getaccountdetails?acc_code=' + code )
+        .map((res: Response) => {   
+           // console.log(res);        
+            return res.json();
+        })
+        .catch(this.handleError);     
+    }
+
+    getAccountSummary(code: number): Observable<IAccountSummaryVM> {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json'); 
+        return this.http.get(this._baseUrl + 'accounts/getaccountsummary?acc_code=' + code )
+        .map((res: Response) => {   
+           // console.log(res);        
+            return res.json();
+        })
+        .catch(this.handleError);     
+       
+    }
+
+   getAccountsSummary(accountsearchvm: IAccountSearchVM): Observable<PaginatedResult<IAccountSummaryVM[]>> {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');      
+        let peginatedResult: PaginatedResult<IAccountSummaryVM[]> = new PaginatedResult<IAccountSummaryVM[]>();
+      // console.log(accountsearchvm) ;
+      // console.log(this._baseUrl);
+        return this.http.post(this._baseUrl + 'accounts/accountsearch/', JSON.stringify(accountsearchvm), {
+            headers: headers,
+        })
+        .map((res: any) => {
+            peginatedResult = res.json();
+            //peginatedResult.pagination = res.;
+         
+            console.log(res.json());
+            return res.json();            
+        })
+        .catch(this.handleError);
+    }
+
+    getContactInfomation(code: number): Observable<IContactInformationVM[]> {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json'); 
+        return this.http.get(this._baseUrl + 'accounts/getaccountcontactinfo?acc_code=' + code )
+        .map((res: Response) => {   
+           // console.log(res);        
+            return res.json();
+        })
+        .catch(this.handleError);
+    }
+
+    //to move to another service
+    getContactPerson (code: number): Observable<IContactPersonVM> {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json'); 
+        return this.http.get(this._baseUrl + 'accountholder/personaldetails?per_code=' + code )
+        .map((res: Response) => {   
+           // console.log(res);        
+            return res.json();
+        })
+        .catch(this.handleError);
+    }    
+
+    //to move to another service    
+    UpdateUser(contactpersonvm: IContactPersonVM): Observable<IContactPersonVM> {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json');     
+        return this.http.post(this._baseUrl + 'accountholder/editpersonaldetails/', JSON.stringify(contactpersonvm), {
             headers: headers,
         })
         .map((res: Response) => {
@@ -46,128 +99,142 @@ export class AccountDataService {
         .catch(this.handleError);
     }
 
-    forgotpassword(forgotpasswordvm: IForgotPasswordVM): Observable<IForgotPasswordVM> {
+
+    getTitles(): Observable<ITitleVM> {
         const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this._baseUrl + 'user/forgotpassword', JSON.stringify(forgotpasswordvm), {
-            headers: headers,
+        headers.append('Content-Type', 'application/json'); 
+        return this.http.get(this._baseUrl + 'lookup/titles' )
+        .map((res: Response) => {   
+           // console.log(res);        
+            return res.json();
         })
-        .map((res: Response) => {
+        .catch(this.handleError);    
+    }
+
+
+    getMaritalStatuses(): Observable<IMaritalStatusVM> {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json'); 
+        return this.http.get(this._baseUrl + 'lookup/maritalstatuses' )
+        .map((res: Response) => {   
+           // console.log(res);        
+            return res.json();
+        })
+        .catch(this.handleError);       
+    }
+  
+    getProperties(): Observable<IPropertyTypeVM[]> {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json'); 
+        return this.http.get(this._baseUrl + 'lookup/propertytypes' )
+        .map((res: Response) => {   
+           // console.log(res);        
+            return res.json();
+        })
+        .catch(this.handleError);       
+    }
+
+    getContactAddresses(per_code: number,address_typeid: number): Observable<IContactAddressVM> {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json'); 
+        return this.http.get(this._baseUrl + 'accountholder/accountaddress?per_code=' + per_code + '&addressTypeId=' + address_typeid )
+        .map((res: Response) => {   
+           // console.log(res);        
+            return res.json();
+        })
+        .catch(this.handleError);       
+    }
+ 
+    getLanguages(): Observable<ILanguageVM> {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json'); 
+        return this.http.get(this._baseUrl + 'lookup/languages' )
+        .map((res: Response) => {   
+           // console.log(res);        
+            return res.json();
+        })
+        .catch(this.handleError);       
+    }
+
+    getSalaryPaymentDates(): Observable<ISalaryPaymentDateVM> {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json'); 
+        return this.http.get(this._baseUrl + 'lookup/paymentdates' )
+        .map((res: Response) => {   
+           // console.log(res);        
+            return res.json();
+        })
+        .catch(this.handleError);       
+    }    
+
+    getScript(code: number): Observable<IScriptVM>
+    {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json'); 
+        return this.http.get(this._baseUrl + 'accounts/accountscript?acc_code=' + code )
+        .map((res: Response) => {   
+           // console.log(res);        
+            return res.json();
+        })
+        .catch(this.handleError);  
+    }
+
+    getAccountGeneralInfomation(code: number): Observable<IAccountGeneralInformationVM> {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json'); 
+        return this.http.get(this._baseUrl + 'accounts/getaccountgeneralinfo?acc_code=' + code )
+        .map((res: Response) => {   
+           // console.log(res);        
+            return res.json();
+        })
+        .catch(this.handleError);
+        // const headers = new Headers();
+        // headers.append('Content-Type', 'application/json'); 
+        // return this.http.get(this._baseUrl + 'user/getverificationcode/' + code )
+        // .map((res: Response) => {   
+        //     console.log(res);        
+        //     return res.json();
+        // })
+        // .catch(this.handleError);
+    }
+
+    getAccountFinancialBalance(code: number): Observable<IAccountFinancialBalanceVM> {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json'); 
+        return this.http.get(this._baseUrl + 'accounts/getaccountfinancialbalance?acc_code=' + code )
+        .map((res: Response) => {   
+           // console.log(res);        
+            return res.json();
+        })
+        .catch(this.handleError);
+        // const headers = new Headers();
+        // headers.append('Content-Type', 'application/json'); 
+        // return this.http.get(this._baseUrl + 'user/getverificationcode/' + code )
+        // .map((res: Response) => {   
+        //     console.log(res);        
+        //     return res.json();
+        // })
+        // .catch(this.handleError);
+    }
+
+    getAccountFinancialDates(code: number): Observable<IAccountFinancialDatesVM> {
+        const headers = new Headers();
+        headers.append('Content-Type', 'application/json'); 
+        return this.http.get(this._baseUrl + 'accounts/getaccountfinancialdates?acc_code=' + code )
+        .map((res: Response) => {   
+           // console.log(res);        
             return res.json();
         })
         .catch(this.handleError);
     }
 
-    getVerificationPassword(code: string): Observable<IForgotPasswordVM> {
-        const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        return this.http.get(this._baseUrl + 'user/getverificationcode/' + code )
-        .map((res: Response) => {
-            console.log(res);
-            return res.json();
-        })
-        .catch(this.handleError);
-    }
 
-    login(creds: LoginVM): Observable<ResultVM>  {
-        const headers = new Headers();
-       headers.append('accept', 'application/json');
-        headers.append('accept-language', 'en');
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this._baseUrl + 'user/token', JSON.stringify(creds), {
-            headers: headers, withCredentials: true })
-            .map((res: Response) => {
-               return res.json();
-            })
-            .catch(this.handleError);
-    }
-
-    register(user: RegisterVM): Observable<ResultVM>  {
-         const headers = new Headers();
-        headers.append('accept', 'application/json');
-         headers.append('accept-language', 'en');
-         headers.append('Content-Type', 'application/json');
-         return this.http.post(this._baseUrl + 'User/Create/', JSON.stringify(user), {
-             headers: headers, withCredentials: true })
-             .map((res: Response) => {
-                return res.json();
-             })
-             .catch(this.handleError);
-     }
-
-     editUser(user: RegisterVM): Observable<ResultVM>  {
-        const headers = new Headers();
-       headers.append('accept', 'application/json');
-        headers.append('accept-language', 'en');
-        headers.append('Content-Type', 'application/json');
-        return this.http.post(this._baseUrl + 'account/EditUser/', JSON.stringify(user), {
-            headers: headers, withCredentials: true })
-            .map((res: Response) => {
-               return res.json();
-            })
-            .catch(this.handleError);
-    }
-
-    deleteUser(userId: string): Observable<ResultVM> {
-        const headers = new Headers();
-        headers.append('accept', 'application/json');
-         headers.append('accept-language', 'en');
-         headers.append('Content-Type', 'application/json');
-         return this.http.post(this._baseUrl + 'account/DeleteUser/', JSON.stringify(userId), {
-             headers: headers, withCredentials: true })
-             .map((res: Response) => {
-                return res.json();
-             })
-             .catch(this.handleError);
-    }
-
-    logout(creds: IUser): Observable<IUser>   {
-        return this.http.post(this._baseUrl + 'users/', JSON.stringify(creds), {
-        })
-            .map((res: Response) => {
-                return res.json();
-            })
-            .catch(this.handleError);
-    }
-
-    isUserAuthenticated(): boolean {
-        const _user: any = localStorage.getItem('user');
-        if (_user != null)   {
-            return true;
-            }   else {
-            return false;
-            }
-    }
-
-    getLoggedInUser(): IUser {
-        let _user: IUser;
-        if (this.isUserAuthenticated()) {
-            const _userData = JSON.parse(localStorage.getItem('user'));
-            _user = {
-                id: _userData.id ,
-                company_detail_id: _userData.company_detail_id,
-                b2btype_id: _userData.b2btype_id,
-                username : _userData.Username,
-                password: '',
-                usr_code: 0,
-                confirmpassword : '',
-                rememberme: _userData.rememberme,
-                salt: '',
-                isactive: false,
-                date_created : new Date(),
-                date_updated : null ,
-            };
-
-            return _user;
-        }
-    }
-
-    private handleError(error: any) {
+    private handleError(error: any) {      
         const applicationError = error.headers.get('Application-Error');
         const serverError = error.json();
-        let modelStateErrors = '';
+        let modelStateErrors: string = '';
 
-        if (!serverError.type) {
+        if (!serverError.type) {          
             for (const key in serverError) {
                 if (serverError[key]) {
                         modelStateErrors += serverError[key] + '\n';
@@ -176,8 +243,6 @@ export class AccountDataService {
         }
 
         modelStateErrors = modelStateErrors = '' ? null : modelStateErrors;
-        console.log(modelStateErrors);
         return Observable.throw(applicationError || modelStateErrors || 'Server error');
-        // return Observable.throwError(applicationError || modelStateErrors || 'Server error');
     }
 }

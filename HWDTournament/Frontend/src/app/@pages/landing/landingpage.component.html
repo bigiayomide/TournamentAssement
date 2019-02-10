@@ -1,0 +1,25 @@
+
+<div style="margin-right:15px; " fxLayout="row" fxLayout="row wrap">
+    <div *ngFor="let dash of dashCard1" fxFlex.lt-sm="100" fxFlex.sm="50" fxFlex.md="25">
+        <hwb-dashcard  style="cursor: pointer"
+         [dashData]="dash">              
+               
+        </hwb-dashcard>
+        <!-- matTooltip="CLICK TO GO TO SECTION" 
+        matTooltipPosition="above"
+        matTooltipClass="mat-custom-tooltip" -->
+    </div>
+</div>
+
+<div style="margin-right:15px;" fxLayout="row" fxLayout="row wrap">
+        <div *ngFor="let dash of dashCard2"  style="cursor: pointer" fxFlex.lt-sm="100" fxFlex.sm="50" fxFlex.md="25">
+            <hwb-dashcard [dashData]="dash"></hwb-dashcard>
+        </div>
+</div>
+
+<div style="margin-right:15px;" fxLayout="row" fxLayout="row wrap">
+    <hwb-tournament-list fxFlex="100" fxFlex.lt-sm="100" fxFlex.sm="50" fxFlex.md="25"></hwb-tournament-list>
+    <hwb-event-list fxFlex="100" fxFlex.lt-sm="100" fxFlex.sm="50" fxFlex.md="25"></hwb-event-list>
+    <hwb-event-status-list fxFlex="100" fxFlex.lt-sm="100" fxFlex.sm="50" fxFlex.md="25"></hwb-event-status-list>
+    <hwb-event-detail-list fxFlex="100" fxFlex.lt-sm="100" fxFlex.sm="50" fxFlex.md="25"></hwb-event-detail-list >
+</div> 

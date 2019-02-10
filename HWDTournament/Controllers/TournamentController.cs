@@ -4,6 +4,7 @@ using HWBTournament.Data.Contracts;
 using HWBTournament.Model.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,35 +17,35 @@ namespace HWBTournament.API.Controllers
     [ProducesResponseType(201)]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    [Authorize]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
+    //[Authorize]
     public class TournamentController : Controller
     {
         private readonly ITournamentRepository _tournamentRepository;
-        private readonly ILoggingRepository _loggingRepository;
         private readonly IMapper _mapper;
         //int page = 1;
         //int pageSize = 10;
 
-        public TournamentController(ITournamentRepository tournamentRepository,
-                         ILoggingRepository _errorRepository, IMapper mapper)
+        public TournamentController(ITournamentRepository tournamentRepository, IMapper mapper)
         {
-
             _tournamentRepository = tournamentRepository;
-            _loggingRepository = _errorRepository;
             _mapper = mapper;
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
-            tournament _tournament = _tournamentRepository.GetSingle(u => u.Id == id);
+            Tournament _tournament = _tournamentRepository.GetSingle(u => u.Id == id);
             if (_tournament != null)
             {
-                TournamentViewModel _tournamentVM = _mapper.Map<tournament, TournamentViewModel>(_tournament);
-                return new OkObjectResult(_tournamentVM);
+                TournamentViewModel _tournamentVM = _mapper.Map<Tournament, TournamentViewModel>(_tournament);
+                Log.Information("Tournament {@_tournamentVM} retrieved from database", _tournamentVM);
+                return new OkObjectResult(new ResultVM() { Status = Status.Success, Data = _tournamentVM });
             }
             else
             {
+                Log.Information("Could not find Tournament wit Id  {@id}", id);
                 return NotFound();
             }
         }
@@ -56,76 +57,76 @@ namespace HWBTournament.API.Controllers
             {
                 return BadRequest(ModelState);
             }
+            Tournament _newtournament= _mapper.Map<TournamentViewModel,Tournament>(tournamentvm);
 
-            tournament _newTournament = new tournament
-            {
-               tournament_name  = tournamentvm.tournament_name,
-            };
 
-            tournament _newCreatedTournament = _tournamentRepository.CreateTournament(_newTournament);
-
+            Tournament _newCreatedTournament = _tournamentRepository.CreateTournament(_newtournament);
+            _tournamentRepository.Commit();
 
             if (_newCreatedTournament == null)
             {
-                return new OkObjectResult(tournamentvm);
+                Log.Information("Error Inserting Tournament {@tournamentvm} Into database", tournamentvm);
+                return NotFound(new ResultVM() { Status= Status.Error, Message= "An Error Occuered Could not create Tournament "+tournamentvm.tournament_name, Data = tournamentvm });
             }
 
-            tournamentvm = new TournamentViewModel
-            {
-                Id = _newCreatedTournament.Id,
-                tournament_name = _newCreatedTournament.tournament_name 
-            };
-
-            return new OkObjectResult(tournamentvm);
+            tournamentvm = _mapper.Map<Tournament, TournamentViewModel>(_newCreatedTournament);
+            Log.Information("Tournament {@tournamentvm} Inserted from database", tournamentvm);
+            return new OkObjectResult(new ResultVM() { Status = Status.Success, Message = "Succesfully Created Tournament: " + tournamentvm.tournament_name, Data = tournamentvm });
         }
 
         [HttpDelete ("{id}")]
         public IActionResult Delete(long id)
         {
-            tournament _tournament = _tournamentRepository.GetSingle(u => u.Id == id);
+            Tournament _tournament = _tournamentRepository.GetSingle(u => u.Id == id);
             if (_tournament != null)
             {
                 _tournamentRepository.Delete(_tournament);
                 _tournamentRepository.Commit();
-                TournamentViewModel _tournamentVM = _mapper.Map<tournament, TournamentViewModel>(_tournament);
-                return new OkObjectResult(_tournamentVM);
+                TournamentViewModel _tournamentVM = _mapper.Map<Tournament, TournamentViewModel>(_tournament);
+                Log.Information("Tournament {@_tournamentVM} Deleted from database", _tournamentVM);
+                return new OkObjectResult(new ResultVM() { Status = Status.Success, Message = "Succesfully Deleted Tournament: " + _tournamentVM.tournament_name, Data = _tournamentVM });
             }
             else
             {
-                return NotFound();
+                Log.Information("Error Occured Deleting Tournament from database");
+                return NotFound(new ResultVM() { Status = Status.Error, Message = "An Error Occured: ", Data = null });
             }
         }
 
         [HttpGet]
         public IActionResult GetAllTournaments()
         {
-            IEnumerable<tournament> _tournament = _tournamentRepository.GetTournaments();
+            IEnumerable<Tournament> _tournament = _tournamentRepository.GetTournaments();
             if (_tournament != null)
             {
-                IEnumerable<TournamentViewModel> _tournamentVM = _mapper.Map<IEnumerable<tournament>, IEnumerable<TournamentViewModel>>(_tournament);
-                return new OkObjectResult(_tournamentVM);
+                IEnumerable<TournamentViewModel> _tournamentVM = _mapper.Map<IEnumerable<Tournament>, IEnumerable<TournamentViewModel>>(_tournament);
+                Log.Information("Tournament {@_tournamentVM} retrieved from database", _tournamentVM);
+                return new OkObjectResult(new ResultVM() {Data = _tournamentVM, Status =Status.Success});
             }
             else
             {
-                return NotFound();
+                Log.Information("Error Occured Retrieving Tournaments from database");
+                return NotFound(new ResultVM() { Data = "An Error Occured", Status = Status.Error });
             }
         }
 
         [HttpPatch]
         public IActionResult Update([FromBody] TournamentViewModel tournamentvm)
         {
-            tournament _tournament = _tournamentRepository.GetSingle(u => u.Id == tournamentvm.Id);
+            Tournament _tournament = _tournamentRepository.GetSingle(u => u.Id == tournamentvm.Id);
             if (_tournament != null)
             {
-                _tournament.tournament_name = tournamentvm.tournament_name;
-                _tournamentRepository.Update(_tournament);
+                Tournament _newtournament = _mapper.Map(tournamentvm, _tournament);
+                _tournamentRepository.Update(_newtournament);
                 _tournamentRepository.Commit();
-                TournamentViewModel _tournamentVM = _mapper.Map<tournament, TournamentViewModel>(_tournament);
-                return new OkObjectResult(_tournamentVM);
+                TournamentViewModel _tournamentVM = _mapper.Map<Tournament, TournamentViewModel>(_tournament);
+                Log.Information("Tournament {@_tournamentVM} Updated to database", _tournamentVM);
+                return new OkObjectResult(new ResultVM() { Data = _tournamentVM, Status = Status.Success });
             }
             else
             {
-                return NotFound();
+                Log.Information("Error Occured Updating Tournament {@tournamentvm}", tournamentvm);
+                return NotFound(new ResultVM() { Data = "An Error Occured", Status = Status.Error });
             }
         }
     }

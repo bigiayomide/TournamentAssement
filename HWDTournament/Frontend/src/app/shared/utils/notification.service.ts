@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Predicate } from '../interfaces'
+import { Predicate } from '../interfaces/interfaces'
 
 declare var alertify: any;
 

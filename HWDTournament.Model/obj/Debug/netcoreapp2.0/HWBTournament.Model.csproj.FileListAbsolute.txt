@@ -15,3 +15,12 @@ C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Model\obj\
 C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Model\obj\Debug\netcoreapp2.0\HWBTournament.Model.AssemblyInfo.cs
 C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Model\obj\Debug\netcoreapp2.0\HWBTournament.Model.dll
 C:\Users\isdev096\Desktop\Tournament\TournamentAssement\HWDTournament.Model\obj\Debug\netcoreapp2.0\HWBTournament.Model.pdb
+C:\Users\ayomi\source\repos\HWBTournament\HWDTournament.Model\bin\Debug\netcoreapp2.0\HWBTournament.Model.deps.json
+C:\Users\ayomi\source\repos\HWBTournament\HWDTournament.Model\bin\Debug\netcoreapp2.0\HWBTournament.Model.dll
+C:\Users\ayomi\source\repos\HWBTournament\HWDTournament.Model\bin\Debug\netcoreapp2.0\HWBTournament.Model.pdb
+C:\Users\ayomi\source\repos\HWBTournament\HWDTournament.Model\obj\Debug\netcoreapp2.0\HWBTournament.Model.csprojAssemblyReference.cache
+C:\Users\ayomi\source\repos\HWBTournament\HWDTournament.Model\obj\Debug\netcoreapp2.0\HWBTournament.Model.csproj.CoreCompileInputs.cache
+C:\Users\ayomi\source\repos\HWBTournament\HWDTournament.Model\obj\Debug\netcoreapp2.0\HWBTournament.Model.AssemblyInfoInputs.cache
+C:\Users\ayomi\source\repos\HWBTournament\HWDTournament.Model\obj\Debug\netcoreapp2.0\HWBTournament.Model.AssemblyInfo.cs
+C:\Users\ayomi\source\repos\HWBTournament\HWDTournament.Model\obj\Debug\netcoreapp2.0\HWBTournament.Model.dll
+C:\Users\ayomi\source\repos\HWBTournament\HWDTournament.Model\obj\Debug\netcoreapp2.0\HWBTournament.Model.pdb

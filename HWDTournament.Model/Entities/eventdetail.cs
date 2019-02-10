@@ -9,7 +9,7 @@ using System.Text;
 namespace HWBTournament.Model.Entities
 {
     [Table("EventDetail", Schema = "hwb")]
-    public class eventdetail : IEntityBase
+    public class EventDetail : IEntityBase
     {
         [Key]
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -42,16 +42,16 @@ namespace HWBTournament.Model.Entities
         [Required]
         [Column("FirstTimer")]
         public bool first_timer { get; set; }
-        public @event @event { get; set; }
-        public eventdetailstatus event_detail_status { get; set; }
+        public Event Event { get; set; }
+        public EventDetailStatus event_detail_status { get; set; }
 
     }
 
-    public class eventdetailConfiguration : IEntityTypeConfiguration<eventdetail>
+    public class EventdetailConfiguration : IEntityTypeConfiguration<EventDetail>
     {
-        public void Configure(EntityTypeBuilder<eventdetail> builder)
+        public void Configure(EntityTypeBuilder<EventDetail> builder)
         {
-            builder.HasOne(x => x.@event)
+            builder.HasOne(x => x.Event)
                 .WithMany(x => x.event_details)
                 .HasForeignKey(x => x.event_id);
 

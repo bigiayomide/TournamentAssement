@@ -1,0 +1,285 @@
+
+      <div style="padding-bottom: 10px;" *ngFor="let contactinfo of contactinfos; let i=index" #cardDiv class="cardholder">
+
+        <div fxLayout="row"   style="padding-bottom:50px; position: relative;transform-style: preserve-3d;min-height:155px;display:flex; " [@flipCard]="contactinfo.isFlipped">
+         
+            <div class="card-title front">
+                <mat-card >
+                    <mat-card-header>
+                        <div mat-card-avatar class="example-header-image">
+                        </div>
+                        <mat-card-title></mat-card-title>
+                        <mat-card-subtitle>
+                               
+                            <span style="color:#1e1e4e;;font-weight: 600">
+                                          {{contactinfo.ret_description?.toUpperCase()}} : {{contactinfo.fullname?.toUpperCase()}} 
+                            </span>
+                        </mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                   
+                       <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row">
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Cell Number
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.cell_number}}
+                                <span *ngIf="contactinfo.cell_number_status == 0 && contactinfo.cell_number != null ">
+                                                                    <mat-icon style="color:green" class="space">sentiment_satisfied</mat-icon>                                                               
+                                                              </span>
+                                <span *ngIf="contactinfo.cell_number_status == 1 && contactinfo.cell_number != null">
+                                                                    <mat-icon style="color:orange" class="space">sentiment_dissatisfied</mat-icon>
+                                                              </span>
+                                <span *ngIf="contactinfo.cell_number_status == 2 && contactinfo.cell_number != null">
+                                                                    <mat-icon style="color:red" class="space">sentiment_very_dissatisfied</mat-icon>
+                                                              </span>
+                                <span *ngIf="contactinfo.cell_number_status == 3 && contactinfo.cell_number != null">
+                                                                    <mat-icon style="color:purple" class="space">sentiment_very_satisfied</mat-icon>
+                                                              </span>
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Home Phone
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.home_phone_number}}
+                                <span *ngIf="contactinfo.home_phone_number_status == 0 && contactinfo.home_phone_number != null">
+                                                                        <mat-icon style="color:green" class="space">sentiment_satisfied</mat-icon>                                                               
+                                                                  </span>
+                                <span *ngIf="contactinfo.home_phone_number_status == 1 && contactinfo.home_phone_number != null">
+                                                                        <mat-icon style="color:orange" class="space">sentiment_dissatisfied</mat-icon>
+                                                                  </span>
+                                <span *ngIf="contactinfo.home_phone_number_status == 2 && contactinfo.home_phone_number != null">
+                                                                        <mat-icon style="color:red" class="space">sentiment_very_dissatisfied</mat-icon>
+                                                                  </span>
+                                <span *ngIf="contactinfo.home_phone_number_status == 3 && contactinfo.home_phone_number != null">
+                                                                        <mat-icon style="color:purple" class="space">sentiment_very_satisfied</mat-icon>
+                                                                  </span>
+                            </div>
+                        </div>
+    
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row">
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Work Phone
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.work_phone_number}}
+                                <span *ngIf="contactinfo.work_phone_number_status == 0 && contactinfo.work_phone_number != null">
+                                                                            <mat-icon style="color:green" class="space">sentiment_satisfied</mat-icon>                                                               
+                                                                      </span>
+                                <span *ngIf="contactinfo.work_phone_number_status == 1 && contactinfo.work_phone_number != null">
+                                                                            <mat-icon style="color:orange" class="space">sentiment_dissatisfied</mat-icon>
+                                                                      </span>
+                                <span *ngIf="contactinfo.work_phone_number_status == 2 && contactinfo.work_phone_number != null">
+                                                                            <mat-icon style="color:red" class="space">sentiment_very_dissatisfied</mat-icon>
+                                                                      </span>
+                                <span *ngIf="contactinfo.work_phone_number_status == 3 && contactinfo.work_phone_number != null">
+                                                                            <mat-icon style="color:purple" class="space">sentiment_very_satisfied</mat-icon>
+                                                                      </span>
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Personal Email
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.email_personal_address}}                              
+                            </div>
+                        </div>
+    
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row">
+                            <div fxFlex.xs="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="20" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Postal Address
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.xl="80" fxFlex.lg="80" fxFlex.md="80" fxFlex.sm="50">
+                                {{contactinfo.postal_address}} &nbsp; : {{contactinfo.postal_code_postal}}
+                                <span *ngIf="contactinfo.postal_address_status == 0 && contactinfo.postal_address != null">
+                                                                            <mat-icon style="color:green" class="space">sentiment_satisfied</mat-icon>                                                               
+                                                                      </span>
+                                <span *ngIf="contactinfo.postal_address_status == 1 && contactinfo.postal_address != null">
+                                                                            <mat-icon style="color:orange" class="space">sentiment_dissatisfied</mat-icon>
+                                                                      </span>
+                                <span *ngIf="contactinfo.postal_address_status == 2 && contactinfo.postal_address != null">
+                                                                            <mat-icon style="color:red" class="space">sentiment_very_dissatisfied</mat-icon>
+                                                                      </span>
+                                <span *ngIf="contactinfo.postal_address_status == 3 && contactinfo.postal_address != null">
+                                                                            <mat-icon style="color:purple" class="space">sentiment_very_satisfied</mat-icon>
+                                                                      </span>
+                            </div>
+                            <!-- <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Postal Code
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.postal_code_postal}}
+                            </div> -->
+                        </div>
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row">
+    
+                            <div fxFlex.xs="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="20" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Home Address
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.xl="80" fxFlex.lg="80" fxFlex.md="80" fxFlex.sm="50">
+                                {{contactinfo.home_address}} &nbsp; : {{contactinfo.postal_code_postal}}
+                                <span *ngIf="contactinfo.home_address_status == 0 && contactinfo.home_address != null">
+                                                                            <mat-icon style="color:green" class="space">sentiment_satisfied</mat-icon>                                                               
+                                                                      </span>
+                                <span *ngIf="contactinfo.home_address_status == 1  && contactinfo.home_address != null">
+                                                                            <mat-icon style="color:orange" class="space">sentiment_dissatisfied</mat-icon>
+                                                                      </span>
+                                <span *ngIf="contactinfo.home_address_status == 2  && contactinfo.home_address != null">
+                                                                            <mat-icon style="color:red" class="space">sentiment_very_dissatisfied</mat-icon>
+                                                                      </span>
+                                <span *ngIf="contactinfo.home_address_status == 3  && contactinfo.home_address != null">
+                                                                            <mat-icon style="color:purple" class="space">sentiment_very_satisfied</mat-icon>
+                                                                      </span>
+                            </div>
+                            <!-- <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                    Postal Code
+                                </div>
+                                <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                    {{contactinfo.postal_code_postal}}
+                                </div> -->
+                        </div>
+    
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row">
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Employer Address
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.employer_address}}
+                                <span *ngIf="contactinfo.employer_address_status == 0 && contactinfo.employer_address != null">
+                                                                            <mat-icon style="color:green" class="space">sentiment_satisfied</mat-icon>                                                               
+                                                                      </span>
+                                <span *ngIf="contactinfo.employer_address_status == 1  && contactinfo.employer_address != null">
+                                                                            <mat-icon style="color:orange" class="space">sentiment_dissatisfied</mat-icon>
+                                                                      </span>
+                                <span *ngIf="contactinfo.employer_address_status == 2  && contactinfo.employer_address != null">
+                                                                            <mat-icon style="color:red" class="space">sentiment_very_dissatisfied</mat-icon>
+                                                                      </span>
+                                <span *ngIf="contactinfo.employer_address_status == 3  && contactinfo.employer_address != null">
+                                                                            <mat-icon style="color:purple" class="space">sentiment_very_satisfied</mat-icon>
+                                                                      </span>
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Work Email
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.email_work_address}}
+                            </div>
+                        </div>
+    
+                    </mat-card-content>
+                    <mat-card-actions >
+                        <div *ngIf="!contactinfo.isFlipped" fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="column">
+                            <button mat-raised-button color="primary" (click)="flipCard(contactinfo)">
+                                View Person Details</button>
+                            <button mat-raised-button color="accent" (click)="openContactDetailsDialog(contactinfo)">Edit</button>
+                          
+                        </div>
+                    </mat-card-actions>
+    
+                </mat-card>
+            </div>
+            <div class="card-title back">
+    
+                <mat-card>
+                    <mat-card-header>
+                        <div mat-card-avatar class="example-header-image">
+                        </div>
+                        <mat-card-title></mat-card-title>
+                        <mat-card-subtitle>
+                            <span style="color:#1e1e4e;;font-weight: 600">
+                                    {{contactinfo.ret_description?.toUpperCase()}} : {{contactinfo.fullname?.toUpperCase()}} 
+                            </span>
+                        </mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                            
+                       <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row">
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                ID Number
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.id_number}}
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Date of Birth
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.date_of_birth | date: 'dd/MM/yyyy'}}
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row">
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Marital Status
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.marital_status}}
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Employer
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.employer}}
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row">
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Occupation
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.occupation}}
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Department
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.department}}
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row">
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Date Employed
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.date_employed | date: 'dd/MM/yyyy'}}
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Employee Code
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.employee_code}}
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row">
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Salary Amount
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.salary_amount}}
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="20" fxFlex.md="50" fxFlex.sm="50" style="font-weight:bold ;text-align:left;">
+                                Salary Paydate
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.lg="30" fxFlex.md="50" fxFlex.sm="50">
+                                {{contactinfo.salary_paydate }}
+                            </div>
+                        </div>
+
+                    </mat-card-content>
+                    <mat-card-actions >
+                        <div *ngIf="contactinfo.isFlipped" fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="column">
+                            <button mat-raised-button color="primary"  (click)="flipCard(contactinfo)">View Contact Details</button>
+                            <button mat-raised-button color="accent" (click)="openPersonDetailsDialog(contactinfo)">Edit</button>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>    
+            </div>
+        </div>
+      
+        <!-- <hr/> -->
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <!-- <br/> -->
+    </div>
+
