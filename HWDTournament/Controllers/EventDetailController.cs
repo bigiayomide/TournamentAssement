@@ -14,16 +14,14 @@ namespace HWBTournament.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/EventDetail")]
-    [ProducesResponseType(201)]
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
-    //[Authorize]
+    //[ProducesResponseType(201)]
+    //[ProducesResponseType(200)]
+    //[ProducesResponseType(400)]
+    [Authorize(Policy = "Bearer")]
     public class EventDetailController : Controller
     {
         private readonly IEventDetailRepository _eventDetailRepository;
         private readonly IMapper _mapper;
-        //int page = 1;
-        //int pageSize = 10;
 
         public EventDetailController(IEventDetailRepository eventDetailRepository, IMapper mapper)
         {
@@ -78,6 +76,7 @@ namespace HWBTournament.API.Controllers
             if (_eventdetail != null)
             {
                 _eventDetailRepository.Delete(_eventdetail);
+                _eventDetailRepository.Commit();
                 EventDetailViewModel _eventdetailVM = _mapper.Map<EventDetail, EventDetailViewModel>(_eventdetail);
                 Log.Information("Event Detail {@_eventdetailVM} Deleted from database", _eventdetailVM);
                 return new OkObjectResult(new ResultVM() { Status = Status.Success, Message = "Succesfully Deleted Tournament: " + _eventdetailVM.event_detail_name, Data = _eventdetailVM });
@@ -89,7 +88,8 @@ namespace HWBTournament.API.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet (Name = "EventDetail")]
+        //[Route("/api/EventDetail")]
         public IActionResult Get()
         {
             IEnumerable<EventDetail> _event = _eventDetailRepository.GetEventDetails();

@@ -29,6 +29,19 @@ export class EventStatusComponent implements OnInit {
           data:null,
         };
 
+      config: ToasterConfig;
+      position: string = 'toast-top-full-width';
+      animationType: string = 'slideDown';
+      title: string = 'HI there!';
+      content: string = `I'm cool toaster!`;
+      timeout: number = 5000;
+      toastsLimit: number = 5;
+      type: string = 'default';
+      isNewestOnTop: boolean = true;
+      isHideOnClick: boolean = true;
+      isDuplicatesPrevented: boolean = false;
+      isCloseButton: boolean = true;
+
     constructor(public http: Http,
         private toasterService: ToasterService,
         public dataService: EventStatusDataService,
@@ -79,7 +92,7 @@ export class EventStatusComponent implements OnInit {
                 this.dataService.DeleteEventStatus(dialogresult.data.id).subscribe((result: any) => {
                     this.showLoader = true;
                     const eventstatusResult = result as IResultVM;
-                    var eventstatus = eventstatusResult.data as IEventDetailStatus
+                    const eventstatus = eventstatusResult.data as IEventDetailStatus
                     if (eventstatusResult.status === StatusEnum.Success) {
                         this.GetStatusDetails();
                         this.showToast('success', 'Event Success', 'Deleted ' + eventstatus.event_detail_status_name + ' Successfuly');
@@ -111,7 +124,7 @@ export class EventStatusComponent implements OnInit {
             .subscribe((result: any) => {
                 this.showLoader = true;
                 const eventstatusResult = result as IResultVM;
-                var eventstatus = eventstatusResult.data as IEventDetailStatus
+                const eventstatus = eventstatusResult.data as IEventDetailStatus
                 if (eventstatusResult.status === StatusEnum.Success) {
                     this.GetStatusDetails();
                     this.showToast('success', 'Event Success', 'Created Tournamnet ' + eventstatus.event_detail_status_name + ' Successfuly');
@@ -139,13 +152,12 @@ export class EventStatusComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((dialogresult: IDialogMessage)=>  {
-        debugger;
         if (dialogresult.valid === true) {
             this.dataService.UpdateEventStatus(dialogresult.data)
             .subscribe((result: any) => {
                 this.showLoader = true;
                 const eventstatusResult = result as IResultVM;
-                var eventstatus = eventstatusResult.data as IEventDetailStatus
+                const eventstatus = eventstatusResult.data as IEventDetailStatus
                 if (eventstatusResult.status === StatusEnum.Success) {
                     this.GetStatusDetails();
                     this.showToast('success', 'Event Success', 'Created Tournamnet ' + eventstatus.event_detail_status_name + ' Successfuly');
@@ -163,18 +175,6 @@ export class EventStatusComponent implements OnInit {
         }
     });
    }
-    config: ToasterConfig;
-    position: string = 'toast-top-full-width';
-    animationType: string = 'slideDown';
-    title: string = 'HI there!';
-    content: string = `I'm cool toaster!`;
-    timeout: number = 5000;
-    toastsLimit: number = 5;
-    type: string = 'default';
-    isNewestOnTop: boolean = true;
-    isHideOnClick: boolean = true;
-    isDuplicatesPrevented: boolean = false;
-    isCloseButton: boolean = true;
 
     makeToast() {
         this.showToast(this.type, this.title, this.content);

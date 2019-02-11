@@ -1987,7 +1987,7 @@
       ]
     },
     "System.Linq.Queryable/4.0.1": {
-      "sha512": "Yn/WfYe9RoRfmSLvUt2JerP0BTGGykCZkQPgojaxgzF2N0oPo+/AhB8TXOpdCcNlrG3VRtsamtK2uzsp3cqRVw==",
+      "sha512": "NCqN/A/Frez7sQWLXM9ekliGuGXAejQNQQR9NNn77+V3Ril9xc5RtypoE+wENZ1wk/FLRO/uURQS0UCI1D9azQ==",
       "type": "package",
       "path": "system.linq.queryable/4.0.1",
       "files": [
@@ -2925,23 +2925,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ayomi\\.nuget\\packages\\": {},
+    "C:\\Users\\isdev096\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ayomi\\source\\repos\\HWBTournament\\HWDTournament.Model\\HWBTournament.Model.csproj",
+      "projectUniqueName": "C:\\Users\\isdev096\\Desktop\\Tournament\\TournamentAssement\\HWDTournament.Model\\HWBTournament.Model.csproj",
       "projectName": "HWBTournament.Model",
-      "projectPath": "C:\\Users\\ayomi\\source\\repos\\HWBTournament\\HWDTournament.Model\\HWBTournament.Model.csproj",
-      "packagesPath": "C:\\Users\\ayomi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ayomi\\source\\repos\\HWBTournament\\HWDTournament.Model\\obj\\",
+      "projectPath": "C:\\Users\\isdev096\\Desktop\\Tournament\\TournamentAssement\\HWDTournament.Model\\HWBTournament.Model.csproj",
+      "packagesPath": "C:\\Users\\isdev096\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\isdev096\\Desktop\\Tournament\\TournamentAssement\\HWDTournament.Model\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\ayomi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\isdev096\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2949,7 +2949,8 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://traq.pkgs.visualstudio.com/_packaging/TraqCoreRepository/nuget/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp2.0": {

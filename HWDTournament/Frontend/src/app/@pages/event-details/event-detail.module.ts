@@ -1,3 +1,4 @@
+import { MatRadioModule } from '@angular/material/radio';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,13 +14,15 @@ import { MatListModule } from '@angular/material/list';
 import { Ng2OdometerModule } from 'ng2-odometer';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
 import { ToasterService,ToasterModule } from 'angular2-toaster';
-import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonToggleModule, MatTableModule, MatPaginatorModule, MatGridListModule } from '@angular/material';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonToggleModule, MatTableModule, MatPaginatorModule, MatGridListModule, MatSelectModule, MatSortModule } from '@angular/material';
 import { EventDetailComponent } from './EventDetailView/event-detail.component';
 import { EventDetailUpdateDialogComponent } from './event-detail-update/event-detail-update';
 import { EventDetailCreateDialogComponent } from './event-detail-create/event-detail-create';
 import { EventDetailDataService } from '../../shared/services/eventdetail.data.service';
 import { EventDetailAlertDialogComponent } from './event-detail-alert/event-detail-alert';
 import { Routes, RouterModule } from '@angular/router';
+import { EventStatusDataService } from '../../shared/services/eventstatus.data.service';
+import { EventDataService } from '../../shared/services/event.data.service';
 
 export const appRoutes: Routes = [
   { path: '', component: EventDetailComponent },
@@ -44,13 +47,18 @@ export const appRoutes: Routes = [
     MatChipsModule,
     MatTableModule,
     MatProgressBarModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatButtonToggleModule,
     MatInputModule,
     RouterModule.forChild(appRoutes),
-    FormsModule,  
-    ToasterModule, 
+    FormsModule,
+    ToasterModule,
   ],
   declarations: [
     EventDetailComponent,
@@ -67,6 +75,8 @@ export const appRoutes: Routes = [
   providers:[
     ToasterService,
     EventDetailDataService,
+    EventStatusDataService,
+    EventDataService,
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}}
   ],
   entryComponents: [

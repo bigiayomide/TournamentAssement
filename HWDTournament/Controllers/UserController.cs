@@ -182,7 +182,7 @@ namespace HWBTournament.API.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id)
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
 				// new Claim(_options.ClaimsIdentity.UserNameClaimType, user.UserName)
 			};
             var userClaims = await _userManager.GetClaimsAsync(user);

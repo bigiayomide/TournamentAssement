@@ -20,7 +20,9 @@ namespace HWBTournament.API.Core
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                     .RequireAuthenticatedUser().Build());
 
-                auth.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin").AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser());
+                auth.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin")
+                .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                .RequireAuthenticatedUser().Build());
             });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

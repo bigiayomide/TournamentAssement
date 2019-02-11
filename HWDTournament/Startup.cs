@@ -75,16 +75,6 @@ namespace HWBTournament
               .AddEntityFrameworkStores<HWBTournamentContext>()
               .AddDefaultTokenProviders();
 
-            // Polices
-            services.AddAuthorization(options =>
-            {
-                // inline policies
-                options.AddPolicy("AdminOnly", policy =>
-                {
-                    policy.RequireClaim(ClaimTypes.Role, "Admin");
-                });
-            });
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", 

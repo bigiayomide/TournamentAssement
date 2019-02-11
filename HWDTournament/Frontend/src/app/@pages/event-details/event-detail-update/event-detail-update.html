@@ -9,34 +9,51 @@
       <div class="row">
         <div fxFlex.xs="100" fxFlex.xl="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" style="padding:10px;">
             <mat-form-field class="full-width">
-                <input type="text" formControlName="event_id" tabindex="1" class="form-control" placeholder="Event" required matInput>
-    
+              <mat-select placeholder="Event" [formControl]="event_id" required>
+                <mat-option *ngFor="let event of events" [value]="event">
+                {{event.event_name}}
+                </mat-option>
+                </mat-select>
+                <mat-error *ngIf="event_status_id.hasError('required')">Please choose an Event</mat-error>
+                <mat-hint>{{event_id.value?.sound}}</mat-hint>
+
               </mat-form-field>
-          
-          <mat-form-field class="full-width">
-            <input type="text" formControlName="event_status_id" tabindex="2" class="form-control" placeholder="Event Status" required matInput>
+
+              <mat-form-field class="full-width">
+
+
+                <mat-select placeholder="Status" [formControl]="event_status_id" required>
+                <mat-option *ngFor="let eventstatus of eventstatuses" [value]="eventstatus">
+                {{eventstatus.event_detail_status_name}}
+                </mat-option>
+                </mat-select>
+                <mat-error *ngIf="event_status_id.hasError('required')">Please choose a Status</mat-error>
+                <mat-hint>{{event_status_id.value?.sound}}</mat-hint>
 
           </mat-form-field>
           <mat-form-field class="full-width">
               <input type="text" formControlName="event_detail_name" tabindex="3" class="form-control" placeholder="Event Detail Name" required matInput>
-  
+
             </mat-form-field>
             <mat-form-field class="full-width">
-                <input type="number" formControlName="event_detail_number" tabindex="4" class="form-control" placeholder="Event Detail Nummber" required matInput>
-    
+                <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" formControlName="event_detail_number" tabindex="4" class="form-control" placeholder="Event Detail Nummber" required matInput>
+
               </mat-form-field>
               <mat-form-field class="full-width">
-                  <input type="number" formControlName="event_detail_odd" tabindex="5" class="form-control" placeholder="Event Detail Odd" required matInput>
-      
+                  <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" formControlName="event_detail_odd" tabindex="5" class="form-control" placeholder="Event Detail Odd" required matInput>
+
                 </mat-form-field>
                 <mat-form-field class="full-width">
-                    <input type="text" formControlName="finishing_position" tabindex="6" class="form-control" placeholder="Event Detail Finishing Position" required matInput>
-        
+                    <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" formControlName="finishing_position" tabindex="6" class="form-control" placeholder="Event Detail Finishing Position" required matInput>
+
                   </mat-form-field>
-                  <mat-form-field class="full-width">
-                      <input type="text" formControlName="first_timer" tabindex="6" class="form-control" placeholder="First Timer" required matInput>
-          
-                    </mat-form-field>
+                  First Timer
+                  <!-- <mat-form-field class="full-width"> -->
+                      <mat-radio-group class="full-width" formControlName="first_timer"  placeholder="First Timer" matInput required >
+                        <mat-radio-button value="False">False</mat-radio-button>
+                        <mat-radio-button  value="True">True</mat-radio-button>
+                      </mat-radio-group>
+                    <!-- </mat-form-field> -->
         </div>
       </div>
 

@@ -80,6 +80,7 @@ namespace HWBTournament.API.Controllers
             if (_event != null)
             {
                 _eventRepository.Delete(_event);
+                _eventRepository.Commit();
                 EventViewModel _eventVM = _mapper.Map<Event, EventViewModel>(_event);
                 Log.Information("Event {@_eventVM} Deleted from database", _eventVM);
                 return new OkObjectResult(new ResultVM() { Status = Status.Success, Message = "Succesfully Deleted Event: " + _eventVM.event_name, Data = _eventVM });
