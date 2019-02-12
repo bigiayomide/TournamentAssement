@@ -11,6 +11,7 @@ import { TournamentModule } from '../Tournaments/tournament.module';
 import { EventModule } from '../events/event.module';
 import { EventDetailModule } from '../event-details/event-detail.module';
 import { EventStatusModule } from '../event-status/event-status.module';
+import { HomeModule } from '../Home/home.module';
 export const appRoutes: Routes = [
     { path: '', component: LandingPageComponent },
 ]
@@ -27,6 +28,7 @@ export const appRoutes: Routes = [
     DashboardWidgetModule,
     TournamentModule,
     EventModule,
+    HomeModule,
     EventDetailModule,
     EventStatusModule
   ],

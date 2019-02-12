@@ -26,6 +26,7 @@ export const appRoutes: Routes = [{
          { path: 'event-status', loadChildren: '../../../@pages/event-status/event-status.module#EventStatusModule'  }, //fix this
          { path: 'tournament',loadChildren: '../../../@pages/Tournaments/tournament.module#TournamentModule' }, //fix this
          { path: 'event-detail', loadChildren: '../../../@pages/event-details/event-detail.module#EventDetailModule'  }, //fix this
+         { path: 'home', loadChildren: '../../../@pages/Home/home.module#HomeModule'  }, //fix this
         { path: 'guarded-routes', loadChildren: '../../../@pages/landing/landingpage.module#LandingPageModule'  },
         // { path: 'editor', loadChildren: '../../../@pages/editor/editor.module#EditorModule' }, 
         // { path: 'scrumboard', loadChildren: '../../../@pages/scrumboard/scrumboard.module#ScrumboardModule' },

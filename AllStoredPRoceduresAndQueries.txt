@@ -1,0 +1,86 @@
+Please note do not run this queries They will run automatically on startup 
+
+CREATE TRIGGER EventDetailInsertTrigger  
+ON hwb.EventDetail  
+AFTER INSERT,UPDATE   
+AS
+BEGIN
+ DECLARE @id INT;
+ SELECT @id= i.EventDetailID from inserted i
+ select dbo.GetHttp('http://localhost:52940/NotificationEventDetail'+CAST(@id as varchar(600)))
+END
+
+CREATE FUNCTION GetHttp
+(
+    @url varchar(8000)      
+)
+returns varchar(8000)
+as
+BEGIN
+    DECLARE @win int 
+    DECLARE @hr  int 
+    DECLARE @text varchar(8000)
+
+    EXEC @hr=sp_OACreate 'WinHttp.WinHttpRequest.5.1',@win OUT 
+    IF @hr <> 0 EXEC sp_OAGetErrorInfo @win
+
+    EXEC @hr=sp_OAMethod @win, 'Open',NULL,'GET',@url,'false'
+    IF @hr <> 0 EXEC sp_OAGetErrorInfo @win
+
+    EXEC @hr=sp_OAMethod @win,'Send'
+    IF @hr <> 0 EXEC sp_OAGetErrorInfo @win
+
+    EXEC @hr=sp_OAGetProperty @win,'ResponseText',@text OUTPUT
+    IF @hr <> 0 EXEC sp_OAGetErrorInfo @win
+
+    EXEC @hr=sp_OADestroy @win 
+    IF @hr <> 0 EXEC sp_OAGetErrorInfo @win 
+
+    RETURN @text
+END
+
+CREATE TABLE[Log](
+   [Id] int IDENTITY(1, 1) NOT NULL,
+   [Message] nvarchar(max) NULL,
+   [MessageTemplate] nvarchar(max) NULL,
+   [Level] nvarchar(128) NULL,
+   [TimeStamp] datetimeoffset(7) NOT NULL,
+   [Exception] nvarchar(max) NULL,
+   [Properties] xml NULL,
+   [LogEvent] nvarchar(max) NULL
+   CONSTRAINT[PK_Log]
+     PRIMARY KEY CLUSTERED([Id] ASC)
+)
+CREATE PROCEDURE PI_Insert_Event_Detail(
+   @event_id INT,
+   @event_status_id INT, 
+   @event_detail_name VARCHAR(50),
+   @event_detail_number SMALLINT,
+   @event_detail_odd DECIMAL,
+   @finishing_position SMALLINT,
+   @first_timer BIT
+  )
+  AS 
+  
+  BEGIN
+  INSERT INTO hwb.EventDetail
+  SELECT @event_id, @event_status_id,@event_detail_name,@event_detail_number,@event_detail_odd,@finishing_position,@first_timer
+  
+  END
+
+CREATE PROCEDURE PI_Insert_Event(
+   @tournament_id INT,
+   @event_name VARCHAR(100), 
+   @event_number VARCHAR(50),
+   @event_date_time DATETIME,
+   @event_end_date_time DATETIME,
+   @auto_close BIT
+  )
+  AS 
+  
+  BEGIN
+  INSERT INTO hwb.Event
+  SELECT @tournament_id, @event_name,@event_number,@event_date_time,@event_end_date_time,@auto_close
+  
+  END
+

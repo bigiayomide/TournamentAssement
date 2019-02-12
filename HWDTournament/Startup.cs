@@ -4,6 +4,7 @@ using System.Security.Claims;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using HWBTournament.API.Core;
+using HWBTournament.API.Hubs;
 using HWBTournament.Data;
 using HWBTournament.Data.Contracts;
 using HWBTournament.Data.Repositories;
@@ -100,7 +101,7 @@ namespace HWBTournament
             });
 
             services.AddAutoMapper();
-
+            services.AddSignalR();
             services.AddCors();
 
             return services.BuildServiceProvider();
@@ -121,6 +122,10 @@ namespace HWBTournament
              .AllowAnyHeader()
              .AllowCredentials());
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<NotifyHub>("/NotifyEventDetail");
+            });
 
             app.UseExceptionHandler(
               builder =>

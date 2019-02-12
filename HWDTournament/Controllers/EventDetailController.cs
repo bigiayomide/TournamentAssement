@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using HWBTournament.API.Hubs;
 using HWBTournament.API.ViewModels;
 using HWBTournament.Data.Contracts;
 using HWBTournament.Model.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -17,17 +19,19 @@ namespace HWBTournament.API.Controllers
     //[ProducesResponseType(201)]
     //[ProducesResponseType(200)]
     //[ProducesResponseType(400)]
-    [Authorize(Policy = "Bearer")]
+    //[Authorize(Policy = "Bearer")]
     public class EventDetailController : Controller
     {
         private readonly IEventDetailRepository _eventDetailRepository;
         private readonly IMapper _mapper;
+        private IHubContext<NotifyHub, ITypedHubClient> _hubContext;
 
-        public EventDetailController(IEventDetailRepository eventDetailRepository, IMapper mapper)
+        public EventDetailController(IEventDetailRepository eventDetailRepository, IMapper mapper, IHubContext<NotifyHub, ITypedHubClient> hubContext)
         {
 
             _eventDetailRepository = eventDetailRepository;
             _mapper = mapper;
+            _hubContext = hubContext;
         }
 
         [HttpGet("{id}")]
@@ -86,6 +90,25 @@ namespace HWBTournament.API.Controllers
                 Log.Information("Error Occured Deleting Event Detail from database");
                 return NotFound(new ResultVM() { Status = Status.Error, Message = "An Error Occured: ", Data = null });
             }
+        }
+        //[Route("/")]
+        [HttpGet("/NotificationEventDetail/{id}")]
+        public async Task<IActionResult> NotifyEventDetail(int id)
+        {
+            EventDetail _eventdetail = _eventDetailRepository.GetSingle(u => u.Id == id);
+            if (_eventdetail != null)
+            {
+                EventDetailViewModel _eventDetailVM = _mapper.Map<EventDetail, EventDetailViewModel>(_eventdetail);
+                await _hubContext.Clients.All.BroadcastMessage(_eventDetailVM);
+                Log.Information("Event Detail {@_eventDetailVM} retrieved from database", _eventDetailVM);
+                return new OkObjectResult(new ResultVM() { Status = Status.Success, Data = _eventDetailVM });
+            }
+            else
+            {
+                Log.Information("Could not find Event Detail wit Id  {@id}", id);
+                return NotFound();
+            }
+
         }
 
         [HttpGet (Name = "EventDetail")]

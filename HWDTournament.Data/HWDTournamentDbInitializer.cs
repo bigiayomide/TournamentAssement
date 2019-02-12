@@ -61,7 +61,6 @@ namespace HWBTournament.Data
                     new Event  { event_name="Race", event_number=6, event_date_time=DateTime.Now, auto_close = true }
                 });
 
-                context.Database.ExecuteSqlCommand("ALTER DATABASE HWB SET ENABLE_BROKER WITH ROLLBACK IMMEDIATE ;");
                 context.Database.ExecuteSqlCommand(@"
                                                     CREATE TABLE[Log](
                                                        [Id] int IDENTITY(1, 1) NOT NULL,
@@ -109,6 +108,61 @@ namespace HWBTournament.Data
                                                    SELECT @tournament_id, @event_name,@event_number,@event_date_time,@event_end_date_time,@auto_close
                                                    
                                                    END");
+                context.Database.ExecuteSqlCommand(@"
+                                                    CREATE FUNCTION GetHttp
+                                                    (
+                                                        @url varchar(8000)      
+                                                    )
+                                                    returns varchar(8000)
+                                                    as
+                                                    BEGIN
+                                                        DECLARE @win int 
+                                                        DECLARE @hr  int 
+                                                        DECLARE @text varchar(8000)
+                                                    
+                                                        EXEC @hr=sp_OACreate 'WinHttp.WinHttpRequest.5.1',@win OUT 
+                                                        IF @hr <> 0 EXEC sp_OAGetErrorInfo @win
+                                                    
+                                                        EXEC @hr=sp_OAMethod @win, 'Open',NULL,'GET',@url,'false'
+                                                        IF @hr <> 0 EXEC sp_OAGetErrorInfo @win
+                                                    
+                                                        EXEC @hr=sp_OAMethod @win,'Send'
+                                                        IF @hr <> 0 EXEC sp_OAGetErrorInfo @win
+                                                    
+                                                        EXEC @hr=sp_OAGetProperty @win,'ResponseText',@text OUTPUT
+                                                        IF @hr <> 0 EXEC sp_OAGetErrorInfo @win
+                                                    
+                                                        EXEC @hr=sp_OADestroy @win 
+                                                        IF @hr <> 0 EXEC sp_OAGetErrorInfo @win 
+                                                       RETURN @text
+                                                    END
+                                                    
+                                                    ");
+                context.Database.ExecuteSqlCommand(@"sp_configure 'show advanced options', 1 
+
+                                                   GO 
+                                                   RECONFIGURE; 
+                                                   GO 
+                                                   sp_configure 'Ole Automation Procedures', 1 
+                                                   GO 
+                                                   RECONFIGURE; 
+                                                   GO 
+                                                   sp_configure 'show advanced options', 1 
+                                                   GO 
+                                                   RECONFIGURE
+                                                 ");
+                context.Database.ExecuteSqlCommand(@"CREATE TRIGGER EventDetailInsertTrigger  
+                                                    ON hwb.EventDetail  
+                                                    AFTER INSERT,UPDATE   
+                                                    AS
+                                                    BEGIN
+                                                     DECLARE @id INT;
+                                                     SELECT @id= i.EventDetailID from inserted i
+                                                     select dbo.GetHttp('http://localhost:52940/NotificationEventDetail'+CAST(@id as varchar(600)))
+                                                    END
+                                                   ");
+
+
 
                 context.Roles.Add(new Microsoft.AspNetCore.Identity.IdentityRole() {Name="Admin", NormalizedName="Admin"  });
                 context.Tournaments.AddRange(jockey, vaal);

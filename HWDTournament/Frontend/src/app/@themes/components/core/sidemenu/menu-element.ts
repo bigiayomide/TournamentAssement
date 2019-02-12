@@ -1,6 +1,6 @@
 export const menus = [
     {
-        'name': 'Dashboard','icon': 'home', 'link': '/auth/landing', 'open': false,
+        'name': 'Dashboard','icon': 'home', 'link': '/auth/home', 'open': false,
     },
     
     {
