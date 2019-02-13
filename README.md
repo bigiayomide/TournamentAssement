@@ -3,7 +3,7 @@ HI There and welcome to the cool API
 
 This helps to create,read, and update (event, eventdetail, tournaments. EventStatus)
 
-This uses `SignalR` to update data in realtime when an EventDaetail is being updated/inserted in the database
+This uses `SignalR` to update data in realtime when an EventDaetail is being updated/inserted in the database which then updates the Home page
 
 # Additional implementation:
 
