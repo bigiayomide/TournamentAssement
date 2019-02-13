@@ -27,13 +27,13 @@ export class EventStatusUpdateDialogComponent implements OnInit {
       }),    
        this.eventdetailstatus = {
         event_detail_status_name:'',
-        Id:0
+        id:0
        }
    }
    
 
   ngOnInit() {
-    debugger;
+    ;
     var viewdata= this._dialogMessage.data as IEventDetailStatus;
     if(viewdata !== undefined){
       this.eventdetailstatus = this._dialogMessage.data;

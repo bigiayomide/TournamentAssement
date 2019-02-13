@@ -38,24 +38,24 @@ namespace HWBTournament.Data.Repositories
 
         public IEnumerable<EventDetail> GetEventDetails()
         {
-            return GetAll();
+            return _context.EventDetails.Include(x=>x.Event).Include(x=>x.event_detail_status);
         }
 
         public EventDetail UpdateEventDetail(EventDetail updateEventDetail)
         {
-            var eventdetail = GetSingle(updateEventDetail.Id);
+            _context.Database.ExecuteSqlCommand(@" EXEC PU_Update_EventDetail  @EventDetailID ,@FK_EventID,@FK_EventDetailStatusID ,
+                                                                               @EventDetailName ,@EventDetailNumber,@EventDetailOdd ,
+                                                                               @FinishingPosition ,@FirstTimer",
+                                                 new SqlParameter("@EventDetailID", updateEventDetail.Id),
+                                                 new SqlParameter("@FK_EventID", updateEventDetail.event_id),
+                                                 new SqlParameter("@FK_EventDetailStatusID", updateEventDetail.event_status_id),
+                                                 new SqlParameter("@EventDetailName", updateEventDetail.event_detail_name),
+                                                 new SqlParameter("@EventDetailNumber", updateEventDetail.event_detail_number),
+                                                 new SqlParameter("@EventDetailOdd", updateEventDetail.event_detail_odd),
+                                                 new SqlParameter("@FinishingPosition", updateEventDetail.finishing_position),
+                                                 new SqlParameter("@FirstTimer", updateEventDetail.first_timer));
 
-            eventdetail.event_detail_name = updateEventDetail.event_detail_name;
-            eventdetail.event_detail_number = updateEventDetail.event_detail_number;
-            eventdetail.event_detail_odd = updateEventDetail.event_detail_odd;
-            eventdetail.event_detail_status = updateEventDetail.event_detail_status;
-            eventdetail.finishing_position = updateEventDetail.finishing_position;
-            eventdetail.first_timer = updateEventDetail.first_timer;
-
-            Update(updateEventDetail);
-            Commit();
-
-            return updateEventDetail;
+            return GetSingle(updateEventDetail.Id);
         }
     }
 }

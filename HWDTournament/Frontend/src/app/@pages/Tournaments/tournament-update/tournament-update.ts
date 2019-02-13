@@ -32,7 +32,7 @@ export class TournamentUpdateDialogComponent implements OnInit {
    
 
   ngOnInit() {
-    debugger;
+    ;
     var viewdata= this._dialogMessage.data as ITournament;
     if(viewdata !== undefined){
       this.tournament = this._dialogMessage.data;

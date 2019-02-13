@@ -6,83 +6,74 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { IResultVM , IAuthDetails, IEvent} from '../interfaces/interfaces';
 import { ConfigService } from '../utils/config.service';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class EventDataService {
 
     _baseUrl: string = '';
 
-    constructor(private http: Http,
+    constructor(private http: HttpClient,
         private configService: ConfigService) {
         this._baseUrl = configService.getApiURI();
     }
 
     GetAllEvents(): Observable<IResultVM> {
-        const headers = new Headers();
-        var userdata = JSON.parse(localStorage.getItem("auth")) as IAuthDetails;
-        headers.append('Content-Type', 'application/json');     
-        headers.append('Authorization', 'Bearer '+ userdata.token);     
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', 'application/json');
         return this.http.get(this._baseUrl + 'Event', {
-            headers: headers, 
+            headers: headers,
         })
-        .map((res:Response) => res.json())
+        .map((res:IResultVM) => res)
         .catch(this.handleError);
     }
 
     GetEvent(id: number): Observable<IResultVM> {
-        const headers = new Headers();
-        var userdata = JSON.parse(localStorage.getItem("auth")) as IAuthDetails;
-        headers.append('Content-Type', 'application/json');     
-        headers.append('Authorization', 'Bearer '+ userdata.token);     
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', 'application/json');
         return this.http.get(this._baseUrl + 'Event/'+ id ,{
             headers: headers,
         })
-        .map((res:Response) => res.json())
+        .map((res:IResultVM) => res)
         .catch(this.handleError);
     }
 
     DeleteEvent(id: number): Observable<IResultVM> {
-        const headers = new Headers();
-        var userdata = JSON.parse(localStorage.getItem("auth")) as IAuthDetails;
-        headers.append('Content-Type', 'application/json');     
-        headers.append('Authorization', 'Bearer '+ userdata.token);     
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', 'application/json');
         return this.http.delete(this._baseUrl + 'Event/'+ id ,{
             headers: headers,
         })
-        .map((res:Response) => res.json())
+        .map((res:IResultVM) => res)
         .catch(this.handleError);
     }
 
     UpdateEvent(event:IEvent): Observable<IResultVM> {
-        const headers = new Headers();
-        var userdata = JSON.parse(localStorage.getItem("auth")) as IAuthDetails;
-        headers.append('Content-Type', 'application/json');     
-        headers.append('Authorization', 'Bearer '+ userdata.token);     
-        return this.http.patch(this._baseUrl + 'Event/' ,JSON.stringify(event), {
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', 'application/json');
+        return this.http.patch(this._baseUrl + 'Event/' ,event, {
             headers: headers,
         })
-        .map((res:Response) => res.json())
+        .map((res:IResultVM) => res)
         .catch(this.handleError);
     }
 
     CreateEvent(event:IEvent): Observable<IResultVM> {
-        const headers = new Headers();
-        var userdata = JSON.parse(localStorage.getItem("auth")) as IAuthDetails;
-        headers.append('Content-Type', 'application/json');     
-        headers.append('Authorization', 'Bearer '+ userdata.token);     
-        return this.http.post(this._baseUrl + 'Event/',JSON.stringify(event), {
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this._baseUrl + 'Event/',event, {
             headers: headers,
         })
-        .map((res:Response) => res.json())
+        .map((res:IResultVM) => res)
         .catch(this.handleError);
     }
 
-    private handleError(error: any) {      
+    private handleError(error: any) {
         const applicationError = error.headers.get('Application-Error');
         const serverError = error.json();
         let modelStateErrors: string = '';
 
-        if (!serverError.type) {          
+        if (!serverError.type) {
             for (const key in serverError) {
                 if (serverError[key]) {
                         modelStateErrors += serverError[key] + '\n';

@@ -14,7 +14,7 @@ import { Ng2OdometerModule } from 'ng2-odometer';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
 import { ToasterService,ToasterModule } from 'angular2-toaster';
 import { TournamentDataService } from '../../shared/services/tournament.data.service';
-import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonToggleModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonToggleModule, MatDatepickerModule, MatNativeDateModule, MatPaginatorModule, MatTableModule, MatOptionModule, MatSelectModule, MatRadioModule } from '@angular/material';
 import { EventAlertDialogComponent } from './event-alert/event-alert';
 import { EventComponent } from './EventView/event.component';
 import { EventUpdateDialogComponent } from './event-update/event-update';
@@ -36,8 +36,14 @@ export const appRoutes: Routes = [
     MatDialogModule,
     MatTabsModule,
     MatToolbarModule,
+    MatPaginatorModule,
+    MatRadioModule,
     MatListModule,
+    MatListModule,
+    MatTableModule,
     Ng2OdometerModule,
+    MatOptionModule,
+    MatSelectModule,
     RoundProgressModule,
     MatMenuModule,
     MatChipsModule,
@@ -67,6 +73,7 @@ export const appRoutes: Routes = [
   providers:[
     ToasterService,
     EventDataService,
+    TournamentDataService,
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}}
   ],
   entryComponents: [

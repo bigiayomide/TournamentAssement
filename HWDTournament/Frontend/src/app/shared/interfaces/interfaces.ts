@@ -49,7 +49,7 @@ export interface RegisterVM {
 
 
 export interface ITournament {
-    Id?: number;
+    id?: number;
     tournament_name: string;
     // Events: Array<Event>
 }
@@ -60,30 +60,37 @@ export interface IDialogMessage{
     valid:boolean;
 }
 export interface IEvent {
-    Id: number;
+    id: number;
     tournament_id: number;
     event_name: string;
     event_number: number;
     event_date_time: Date;
     event_end_date_time: Date;
     auto_close: boolean;
+    tournament?:ITournament;    
     //  event_details :Array<EventDetail>
 }
 
 export interface IEventDetail{
-    Id :number
+    id :number
     event_id :number;
     event_status_id :number;
     event_detail_name :string;
     event_detail_number :number;
     event_detail_odd :number;
     finishing_position :number;
-    first_timer :boolean
+    first_timer :boolean,
+    event_detail_status?: IEventDetailStatus,
+    _event?:IEvent,
+    color?:string,
+    backgroundColor?:string;
+    order?:number;
+
 }
 
 export interface IEventDetailStatus{
 
-     Id :number;
+     id :number;
 
      event_detail_status_name :string
     //  eventdetails :Array<IEventDetail>

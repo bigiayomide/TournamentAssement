@@ -32,14 +32,10 @@ namespace HWBTournament.Data.Repositories
 
         public Tournament UpdateTournament(Tournament updateTournament)
         {
-            var tournament = GetSingle(updateTournament.Id);
-
-            tournament.tournament_name = updateTournament.tournament_name;
-
-            Update(tournament);
+            Update(updateTournament);
             Commit();
 
-            return tournament;
+            return updateTournament;
         }
     }
 }

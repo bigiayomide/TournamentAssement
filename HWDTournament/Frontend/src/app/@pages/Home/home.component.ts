@@ -4,6 +4,7 @@ import { IEventDetail, IResultVM, StatusEnum } from '../../shared/interfaces/int
 import { ConfigService } from '../../shared/utils/config.service';
 import { EventDetailDataService } from '../../shared/services/eventdetail.data.service';
 import { ToasterConfig, Toast, BodyOutputType, ToasterService } from 'angular2-toaster';
+import { trigger, state, style } from '@angular/animations';
 
 @Component({
     selector: 'hwb-home',
@@ -56,41 +57,35 @@ import { ToasterConfig, Toast, BodyOutputType, ToasterService } from 'angular2-t
           })
           
         this._hubConnection.on('BroadcastMessage', (payload: any ) => {
-            debugger;
+            ;
             this.showLoader = true;
-            // this.GetEventDetails();
-            this.eventDetail={
-                id:payload.id,
-                event_id : payload.event_id,
-                event_status_id :payload.event_status_id,
-                event_detail_name :payload.event_detail_name,
-                event_detail_number :payload.event_detail_number,
-                event_detail_odd :payload.event_detail_odd,
-                finishing_position :payload.finishing_position,
-                first_timer :payload.first_timer
-                
-            }
-          var index = this.eventDetails.findIndex(x=>x.id==payload.id);
-          if(index==-1){
-              
-            this.eventDetails.push(this.eventDetail);
-          }
-          else{
-            this.eventDetails[index] = this.eventDetail;
-          }
+            this.GetEventDetails();
+
+            var index = this.eventDetails.findIndex(x=>x.id==payload.id);
+
+            let newvalue = this.eventDetails[index];
+            const oldbackgroundcolor = newvalue.backgroundColor;
+            const color = newvalue.color;
+            newvalue.backgroundColor="white";
+            newvalue.color="black";
+            this.eventDetails[index] = newvalue;
+ 
           setTimeout(() => {
+            this.eventDetails[index].backgroundColor = oldbackgroundcolor
+            this.eventDetails[index].color = color
             this.showLoader = false;
-        },2000)
+        },5000)
         });
       }
 
       GetEventDetails(){
 
-        this.dataService.GetAllEvents().subscribe((result: any) => {
+        this.dataService.GetAllEventDetails().subscribe((result: any) => {
             this.showLoader = true;
             const loginResult = result as IResultVM;
             if (loginResult.status === StatusEnum.Success) {
               this.eventDetails = loginResult.data as IEventDetail[];
+              this.SetColors();
             } else if (loginResult.status === StatusEnum.Error) {
 
                 this.showToast('error', 'Event Error', 'Error occurred while Loading Events');
@@ -107,6 +102,23 @@ import { ToasterConfig, Toast, BodyOutputType, ToasterService } from 'angular2-t
 
       makeToast() {
         this.showToast(this.type, this.title, this.content);
+    }
+
+    SetColors(){
+        let order = 0;
+        this.eventDetails.forEach(x=>{
+   
+            x.order=order;
+            if(order %2 == 0){
+               x.backgroundColor = "darkslateblue";
+               x.color = "white"
+            }
+            else{
+              x.backgroundColor = "#efd121"
+              x.color = "black"
+            }
+            order++;
+        })
     }
 
     private showToast(type: string, title: string, body: string) {

@@ -15,7 +15,7 @@ namespace HWBTournament.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/Event")]
-    //[Authorize]
+    [Authorize(Policy ="Bearer")]
     [ProducesResponseType(201)]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
@@ -112,11 +112,11 @@ namespace HWBTournament.API.Controllers
         [HttpPatch]
         public IActionResult Update([FromBody] EventViewModel eventvm)
         {
-            Event _event = _eventRepository.GetSingle(u => u.Id == eventvm.Id);
+            Event _event = _eventRepository.GetSingle(u => u.Id == eventvm.id);
             if (_event != null)
             {
                 Event _updatedevent = _mapper.Map<EventViewModel, Event>(eventvm);
-                _eventRepository.Update(_updatedevent);
+                _eventRepository.UpdateEvent(_updatedevent);
                 EventViewModel _eventVM = _mapper.Map<Event, EventViewModel>(_event);
                 Log.Information("Event {@_eventVM} Updated to database", _eventVM);
                 return new OkObjectResult(new ResultVM() { Data = _eventVM, Status = Status.Success });

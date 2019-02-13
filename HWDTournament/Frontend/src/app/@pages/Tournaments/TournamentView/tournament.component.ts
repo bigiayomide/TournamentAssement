@@ -135,7 +135,7 @@ export class TournamentComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((dialogresult: IDialogMessage)=>  {
-        debugger;
+        ;
         if (dialogresult.valid === true) {
             this.dataService.UpdateTournament(dialogresult.data)
             .subscribe((result: any) => {

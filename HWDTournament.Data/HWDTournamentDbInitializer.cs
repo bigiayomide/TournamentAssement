@@ -42,9 +42,9 @@ namespace HWBTournament.Data
 
                 vaal.Events.AddRange(new List<Event>()
                 {
-                    new Event { event_name="Race", event_number=1, event_date_time=DateTime.Now,  auto_close = true },
-                    new Event  { event_name="Race", event_number=2, event_date_time=DateTime.Now, auto_close = true },
-                    new Event  { event_name="Race", event_number=3, event_date_time=DateTime.Now, auto_close = true,
+                    new Event { event_name="Race", event_number=1, event_date_time=DateTime.Now, event_end_date_time=DateTime.Now.AddDays(4),  auto_close = true },
+                    new Event  { event_name="Race", event_number=2, event_date_time=DateTime.Now, event_end_date_time=DateTime.Now.AddDays(4),  auto_close = true },
+                    new Event  { event_name="Race", event_number=3, event_date_time=DateTime.Now, event_end_date_time=DateTime.Now.AddDays(4),  auto_close = true,
                                   event_details = new List<EventDetail>()
                                   {
                                        new EventDetail() { event_detail_name= "Auriferous",  event_detail_odd= 8.330000M, finishing_position = 1, event_status_id=1, first_timer = false },
@@ -56,10 +56,15 @@ namespace HWBTournament.Data
                                        new EventDetail() { event_detail_name= "Royal Stock", event_detail_odd= 50.000000M, finishing_position = 1,event_status_id=1, first_timer = false,  },
                                   }
                     },
-                    new Event  { event_name="Race", event_number=4, event_date_time=DateTime.Now, auto_close = true },
-                    new Event  { event_name="Race", event_number=5, event_date_time=DateTime.Now, auto_close = true },
-                    new Event  { event_name="Race", event_number=6, event_date_time=DateTime.Now, auto_close = true }
+                    new Event  { event_name="Race", event_number=4, event_date_time=DateTime.Now, event_end_date_time=DateTime.Now.AddDays(4),  auto_close = true },
+                    new Event  { event_name="Race", event_number=5, event_date_time=DateTime.Now, event_end_date_time=DateTime.Now.AddDays(4), auto_close = true },
+                    new Event  { event_name="Race", event_number=6, event_date_time=DateTime.Now, event_end_date_time=DateTime.Now.AddDays(4), auto_close = true }
                 });
+
+
+                context.Roles.Add(new Microsoft.AspNetCore.Identity.IdentityRole() { Name = "Admin", NormalizedName = "Admin" });
+                context.Tournaments.AddRange(jockey, vaal);
+                context.SaveChanges();
 
                 context.Database.ExecuteSqlCommand(@"
                                                     CREATE TABLE[Log](
@@ -138,17 +143,60 @@ namespace HWBTournament.Data
                                                     END
                                                     
                                                     ");
-                context.Database.ExecuteSqlCommand(@"sp_configure 'show advanced options', 1 
+                context.Database.ExecuteSqlCommand(@"
+                                                    CREATE PROCEDURE PU_Update_Event(
+                                                      @event_id INT,
+                                                      @tournament_id INT,
+                                                      @event_name VARCHAR(100), 
+                                                      @event_number SMALLINT,
+                                                      @event_date_time DATETIME,
+                                                      @event_end_date_time DATETIME,
+                                                      @auto_close BIT
+                                                     )
+                                                     AS 
+                                                     
+                                                     BEGIN
+                                                     UPDATE hwb.Event
+                                                      SET fk_tournamentid = @tournament_id,
+                                                          eventname = @event_name,
+                                                    	  eventnumber = @event_number,
+                                                    	  eventdatetime = @event_date_time,
+                                                    	  eventenddatetime = @event_end_date_time,
+                                                    	  autoclose = @auto_close
+                                                     WHERE 
+                                                     	  eventid = @event_id
+                                                     END");
+                context.Database.ExecuteSqlCommand(@"
+                                                     CREATE PROCEDURE PU_Update_EventDetail(
+                                                       @EventDetailID INT,
+                                                       @FK_EventID INT,
+                                                       @FK_EventDetailStatusID INT, 
+                                                       @EventDetailName VARCHAR(50),
+                                                       @EventDetailNumber SMALLINT,
+                                                       @EventDetailOdd DECIMAL,
+                                                       @FinishingPosition SMALLINT,
+                                                       @FirstTimer BIT
+                                                      )
+                                                      AS 
+                                                      BEGIN
+                                                      UPDATE hwb.EventDetail
+                                                       SET FK_EventID = @FK_EventID,
+                                                     	  FK_EventDetailStatusID = @FK_EventDetailStatusID,
+                                                     	  EventDetailName = @EventDetailName,
+                                                     	  EventDetailNumber = @EventDetailNumber,
+                                                     	  EventDetailOdd = @EventDetailOdd,
+                                                     	  FinishingPosition= @FinishingPosition,
+                                                     	  FirstTimer=@FirstTimer
+                                                      WHERE 
+                                                      	  EventDetailID = @EventDetailID
+                                                      END
+                                                     ");
 
-                                                   GO 
+                context.Database.ExecuteSqlCommand(@"EXEC sp_configure 'show advanced options', 1 
                                                    RECONFIGURE; 
-                                                   GO 
-                                                   sp_configure 'Ole Automation Procedures', 1 
-                                                   GO 
+                                                   EXEC sp_configure 'Ole Automation Procedures', 1 
                                                    RECONFIGURE; 
-                                                   GO 
-                                                   sp_configure 'show advanced options', 1 
-                                                   GO 
+                                                   EXEC sp_configure 'show advanced options', 1 
                                                    RECONFIGURE
                                                  ");
                 context.Database.ExecuteSqlCommand(@"CREATE TRIGGER EventDetailInsertTrigger  
@@ -158,15 +206,9 @@ namespace HWBTournament.Data
                                                     BEGIN
                                                      DECLARE @id INT;
                                                      SELECT @id= i.EventDetailID from inserted i
-                                                     select dbo.GetHttp('http://localhost:52940/NotificationEventDetail'+CAST(@id as varchar(600)))
+                                                     select dbo.GetHttp('http://localhost:52940/NotificationEventDetail/'+CAST(@id as varchar(600)))
                                                     END
                                                    ");
-
-
-
-                context.Roles.Add(new Microsoft.AspNetCore.Identity.IdentityRole() {Name="Admin", NormalizedName="Admin"  });
-                context.Tournaments.AddRange(jockey, vaal);
-                context.SaveChanges();
             }
 
         }

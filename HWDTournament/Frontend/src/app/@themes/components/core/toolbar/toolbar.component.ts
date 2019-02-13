@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ToolbarHelpers } from './toolbar.helpers';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SearchService } from '../../../../shared/services/search.service';
 
 @Component({
   selector: 'hwb-toolbar',
@@ -22,14 +21,8 @@ export class ToolbarComponent implements OnInit {
 		currentUser : any;
 		cansearch: boolean = false;
 		constructor(protected router: Router,private activatedRoute: ActivatedRoute,
-			private searchservice: SearchService,) 
-		{ 
-			 this.searchservice.getCanSearch().subscribe(
-				cansearch => { 
-					this.cansearch = cansearch; 
-						//this.loadAccountsView() ;
-					// this. SearchAccounts();
-				});    
+			) 
+		{   
 		}
 
   	ngOnInit() {			

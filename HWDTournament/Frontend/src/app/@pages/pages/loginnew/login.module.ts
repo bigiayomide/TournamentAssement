@@ -9,7 +9,8 @@ import {
         MatButtonToggleModule,
         MatInputModule,
         MatToolbarModule,
-        MatIconModule
+        MatIconModule,
+        MatProgressBarModule
        } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -35,7 +36,8 @@ const routes: Routes = [
         FormsModule,
         ReactiveFormsModule,
         ParticlesModule,   
-        ToasterModule,     
+        ToasterModule,  
+        MatProgressBarModule,   
         RouterModule.forChild(routes)       
     ],
     declarations: [   

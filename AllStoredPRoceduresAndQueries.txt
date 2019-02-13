@@ -84,3 +84,25 @@ CREATE PROCEDURE PI_Insert_Event(
   
   END
 
+  CREATE PROCEDURE PU_Update_Event(
+  @event_id INT,
+  @tournament_id INT,
+  @event_name VARCHAR(100), 
+  @event_number SMALLINT,
+  @event_date_time DATETIME,
+  @event_end_date_time DATETIME,
+  @auto_close BIT
+ )
+ AS 
+ 
+ BEGIN
+ UPDATE hwb.Event
+  SET fk_tournamentid = @tournament_id,
+      eventname = @event_name,
+	  eventnumber = @event_number,
+	  eventdatetime = @event_date_time,
+	  eventenddatetime = @event_end_date_time,
+	  autoclose = @auto_close
+ WHERE 
+ 	  eventid = @event_id
+ END

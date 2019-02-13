@@ -9,7 +9,7 @@ namespace HWBTournament.API.ViewModels
     public class TournamentViewModel
     {
 
-        public int Id { get; set; }
+        public int id { get; set; }
         public string tournament_name { get; set; }
         //public List<Event> Events { get; set; }
     }

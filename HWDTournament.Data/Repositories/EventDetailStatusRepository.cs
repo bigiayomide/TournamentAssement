@@ -31,11 +31,7 @@ namespace HWBTournament.Data.Repositories
 
         public EventDetailStatus UpdateEventStatusDetail(EventDetailStatus neweventdetailstatus)
         {
-            var eventdetailstatus = GetSingle(neweventdetailstatus.Id);
-
-            eventdetailstatus.event_detail_status_name = neweventdetailstatus.event_detail_status_name;
-
-            Update(eventdetailstatus);
+            Update(neweventdetailstatus);
             Commit();
 
             return neweventdetailstatus;

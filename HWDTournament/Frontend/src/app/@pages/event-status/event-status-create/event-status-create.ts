@@ -27,7 +27,7 @@ export class EventStatusCreateDialogComponent implements OnInit {
         ]
       }),    
        this.eventstatus = {
-        Id :0,
+        id :0,
         event_detail_status_name :''
        }
    }

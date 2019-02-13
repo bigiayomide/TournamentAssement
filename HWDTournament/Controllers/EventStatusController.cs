@@ -2,6 +2,7 @@
 using HWBTournament.API.ViewModels;
 using HWBTournament.Data.Contracts;
 using HWBTournament.Model.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace HWBTournament.API.Controllers
     [ProducesResponseType(201)]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    //[Authorize]
+    [Authorize(Policy = "Bearer")]
     public class EventStatusController : Controller
     {
         
@@ -108,11 +109,10 @@ namespace HWBTournament.API.Controllers
         [HttpPatch]
         public IActionResult Update([FromBody] EventStatusViewModel eventstatusvm)
         {
-            EventDetailStatus _eventStatus = _eventStatusRepository.GetSingle(u => u.Id == eventstatusvm.Id);
-            if (_eventStatus != null)
+            if (eventstatusvm != null)
             {
-                EventDetailStatus _newEventStatus= _mapper.Map<EventStatusViewModel, EventDetailStatus>(eventstatusvm);
-                _eventStatusRepository.Update(_newEventStatus);
+                EventDetailStatus _eventStatus = _mapper.Map<EventStatusViewModel, EventDetailStatus>(eventstatusvm);
+                _eventStatusRepository.Update(_eventStatus);
                 _eventStatusRepository.Commit();
                 EventStatusViewModel _eventStatusVM = _mapper.Map<EventDetailStatus, EventStatusViewModel>(_eventStatus);
                 return new OkObjectResult(new ResultVM() { Data = _eventStatusVM, Status = Status.Success });

@@ -19,7 +19,7 @@ namespace HWBTournament.API.Controllers
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
     [ProducesResponseType(404)]
-    //[Authorize]
+    [Authorize(Policy = "Bearer")]
     public class TournamentController : Controller
     {
         private readonly ITournamentRepository _tournamentRepository;
@@ -113,13 +113,12 @@ namespace HWBTournament.API.Controllers
         [HttpPatch]
         public IActionResult Update([FromBody] TournamentViewModel tournamentvm)
         {
-            Tournament _tournament = _tournamentRepository.GetSingle(u => u.Id == tournamentvm.Id);
-            if (_tournament != null)
+            if (tournamentvm != null)
             {
-                Tournament _newtournament = _mapper.Map(tournamentvm, _tournament);
+                Tournament _newtournament = _mapper.Map<TournamentViewModel, Tournament>(tournamentvm);
                 _tournamentRepository.Update(_newtournament);
                 _tournamentRepository.Commit();
-                TournamentViewModel _tournamentVM = _mapper.Map<Tournament, TournamentViewModel>(_tournament);
+                TournamentViewModel _tournamentVM = _mapper.Map<Tournament, TournamentViewModel>(_newtournament);
                 Log.Information("Tournament {@_tournamentVM} Updated to database", _tournamentVM);
                 return new OkObjectResult(new ResultVM() { Data = _tournamentVM, Status = Status.Success });
             }

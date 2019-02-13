@@ -67,14 +67,15 @@ export class EventDetailComponent implements OnInit {
         this.GetEventdetails();
     }
     GetEventdetails() {
-        this.dataService.GetAllEvents().subscribe((result: any) => {
+        this.dataService.GetAllEventDetails().subscribe((result: any) => {
             this.showLoader = true;
             const loginResult = result as IResultVM;
+            ;
             if (loginResult.status === StatusEnum.Success) {
               this.eventdetailsDataSource = new MatTableDataSource<IEventDetail>(loginResult.data as IEventDetail[]);
               this.eventdetailsDataSource.paginator = this.paginator;
+              
             } else if (loginResult.status === StatusEnum.Error) {
-
                 this.showToast('error', 'Event Error', 'Error occurred while Loading Events');
             }
             setTimeout(() => {
@@ -97,7 +98,7 @@ export class EventDetailComponent implements OnInit {
         dialogRef.afterClosed().subscribe((dialogresult: IDialogMessage)=> {
             // this.eventdetails = this.eventdetails.filter(x => x.Id != id);
             if (dialogresult.valid === true) {
-                this.dataService.DeleteEvent(dialogresult.data.id).subscribe((result: any) => {
+                this.dataService.DeleteEventDetail(dialogresult.data.id).subscribe((result: any) => {
                     this.showLoader = true;
                     const eventdetailResult = result as IResultVM;
                     const eventdetail = eventdetailResult.data as IEventDetail
@@ -128,8 +129,9 @@ export class EventDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((dialogresult: IDialogMessage)=>  {
         if (dialogresult.valid === true) {
-            this.dataService.CreateEvent(dialogresult.data)
+            this.dataService.CreateEventDetail(dialogresult.data)
             .subscribe((result: any) => {
+                ;
                 this.showLoader = true;
                 const eventdetailResult = result as IResultVM;
                 const eventdetail = eventdetailResult.data as IEventDetail
@@ -160,9 +162,8 @@ export class EventDetailComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((dialogresult: IDialogMessage)=>  {
-        debugger;
         if (dialogresult.valid === true) {
-            this.dataService.UpdateEvent(dialogresult.data)
+            this.dataService.UpdateEventDetail(dialogresult.data)
             .subscribe((result: any) => {
                 this.showLoader = true;
                 const eventdetailResult = result as IResultVM;

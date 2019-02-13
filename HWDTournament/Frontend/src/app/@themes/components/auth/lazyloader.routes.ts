@@ -8,12 +8,12 @@ import { EventDetailComponent } from '../../../@pages/event-details/EventDetailV
 
 export const appRoutes: Routes = [{
     path: '', component: AuthComponent, children: [
-        { path: 'dashboard', component: DashboardCrmComponent },
-        { path: 'accounts', loadChildren: '../../../@pages/accounts/accounts.module#AccountsModule' },
+        // { path: 'dashboard', component: DashboardCrmComponent },
+        // { path: 'accounts', loadChildren: '../../../@pages/accounts/accounts.module#AccountsModule' },
         { path: 'landing', loadChildren: '../../../@pages/landing/landingpage.module#LandingPageModule' },
         // { path: 'material-widgets', loadChildren: '../../../@pages/material-widgets/material-widgets.module#MaterialWidgetsModule' },
         // { path: 'reactivexjs', loadChildren: '../../../@pages/reactivexjs/rxjs.module#RxjsModule' },
-        { path: 'tables', loadChildren: '../../../@pages/tables/tables.module#TablesModule' },
+        // { path: 'tables', loadChildren: '../../../@pages/tables/tables.module#TablesModule' },
     //    { path: 'maps', loadChildren: '../../../@pages/maps/maps.module#MapsModule' },
     //    { path: 'charts', loadChildren: '../../../@pages/charts/charts.module#ChartsModule' },
     //    { path: 'chats', loadChildren: '../../../@pages/chats/chat.module#ChatsModule' }, // fix this

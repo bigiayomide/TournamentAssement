@@ -1,4 +1,4 @@
-<h1  mat-dialog-title>Create New Event</h1>
+<h1 mat-dialog-title>Create New Event</h1>
 <div mat-dialog-content>
   <toaster-container [toasterconfig]="config"></toaster-container>
   <form [formGroup]="eventForm" (ngSubmit)="onSubmitclick()" fxflex="80" fxflex.gt-sm="30" fxflex.sm="60" novalidate=""
@@ -6,41 +6,52 @@
     <mat-card class="mat-elevation-z12 box-content-inner mat-card" fxlayout="column" fxlayoutalign="center center"
       style="flex-direction: column; box-sizing: border-box; max-width: 100%; place-content: center; align-items: center;">
       <div class="row">
-          <div fxFlex.xs="100" fxFlex.xl="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" style="padding:10px;">
-                         
-            <mat-form-field class="full-width">
-              <input type="text" formControlName="tournament_id" tabindex="2" class="form-control" placeholder="Tournament" required matInput>
-  
-            </mat-form-field>
-            <mat-form-field class="full-width">
-                <input type="text" formControlName="event_name" tabindex="3" class="form-control" placeholder="Event Name" required matInput>
-    
-              </mat-form-field>
-              <mat-form-field class="full-width">
-                  <input type="number" formControlName="event_number" tabindex="4" class="form-control" placeholder="Event Nummber" required matInput>
-      
-                </mat-form-field>
-                <mat-form-field class="full-width">
-                    <input class="form-control" matInput formControlName="event_date_time" tabindex="5"  placeholder="Start Date" required [matDatepicker]="event_date_time">
-                    <mat-datepicker-toggle matSuffix [for]="event_date_time"></mat-datepicker-toggle>
-                    <mat-datepicker #event_date_time></mat-datepicker>
-                  </mat-form-field>
-                  <mat-form-field class="full-width">
-                      <input class="form-control" matInput formControlName="event_end_date_time" tabindex="5"  placeholder="End Date" required [matDatepicker]="event_end_date_time">
-                      <mat-datepicker-toggle matSuffix [for]="event_end_date_time"></mat-datepicker-toggle>
-                      <mat-datepicker #event_end_date_time></mat-datepicker>
-                    </mat-form-field>
-                    <mat-form-field class="full-width">
-                        <input type="text" formControlName="auto_close" tabindex="6" class="form-control" placeholder="Auto Close" required matInput>
-            
-                      </mat-form-field>
-          </div>
-        </div>
+        <div fxFlex.xs="100" fxFlex.xl="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" style="padding:10px;">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Tournament" [formControl]="tournament_id" required>
+              <mat-option *ngFor="let tournament of tournaments" [value]="tournament">
+                {{tournament.tournament_name}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="tournament_id.hasError('required')">Please choose a Tournament</mat-error>
+            <mat-hint>{{tournament_id.value?.sound}}</mat-hint>
 
-  </mat-card>
-</form>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input type="text" formControlName="event_name" tabindex="3" class="form-control" placeholder="Event Name"
+              required matInput>
+
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input type="number" formControlName="event_number" tabindex="4" class="form-control" placeholder="Event Nummber"
+              required matInput>
+
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input class="form-control" matInput formControlName="event_date_time" tabindex="5" placeholder="Start Date"
+              required [matDatepicker]="event_date_time">
+            <mat-datepicker-toggle matSuffix [for]="event_date_time"></mat-datepicker-toggle>
+            <mat-datepicker #event_date_time></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input class="form-control" matInput formControlName="event_end_date_time" tabindex="5" placeholder="End Date"
+              required [matDatepicker]="event_end_date_time">
+            <mat-datepicker-toggle matSuffix [for]="event_end_date_time"></mat-datepicker-toggle>
+            <mat-datepicker #event_end_date_time></mat-datepicker>
+          </mat-form-field>
+
+          <mat-radio-group class="full-width" formControlName="auto_close" placeholder="Auto Close" matInput required>
+            <mat-radio-button value="False">False</mat-radio-button>
+            <mat-radio-button value="True">True</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+
+    </mat-card>
+  </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-raised-button color="primary"  [mat-dialog-close]="_dialogMessage" [disabled]="!eventForm.valid" (click)="onSubmitclick()">Submit</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="_dialogMessage" [disabled]="!eventForm.valid" (click)="onSubmitclick()">Submit</button>
   <button mat-raised-button color="accent" [mat-dialog-close]="_dialogMessage" cdkFocusInitial>Close</button>
 </div>

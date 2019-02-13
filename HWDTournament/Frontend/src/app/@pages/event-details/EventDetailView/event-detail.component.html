@@ -20,34 +20,21 @@
       [bufferValue]="'10'">
   </mat-progress-bar>
 <mat-list >
-<!-- <mat-list-item *ngFor="let eventstatus of eventdetails"   >
-    <h3  > {{eventstatus.event_detail_name}} </h3>
-    <span class="pull-right"></span>
-    <mat-chip-list    >
-        <button mat-icon-button color="warn" (click)="onDeleteEventdetails(eventstatus)" matTooltip="delete Tournament">
-              <mat-icon>delete</mat-icon>
-            </button>
-            <button  mat-icon-button color="accent" (click)="onViewEventdetails(eventstatus)"  matTooltip="View Tournament">
-                <mat-icon>remove_red_eye</mat-icon>
-              </button>
-    </mat-chip-list>
-</mat-list-item>
-</mat-list>  -->
 
 <table flex mat-table [dataSource]="eventdetailsDataSource" class="mat-elevation-z8" matSort>
 
   <ng-container matColumnDef="select">cd
   </ng-container>
   <ng-container matColumnDef="Event_Id">
-    <th mat-header-cell *matHeaderCellDef><strong>Event Id</strong> </th>
+    <th mat-header-cell *matHeaderCellDef><strong>Event</strong> </th>
     <td mat-cell *matCellDef="let element">
-      {{element.event_id}}
+      {{element._event?.event_name}}
     </td>
   </ng-container>
     <ng-container matColumnDef="event_status_id">
       <th mat-header-cell *matHeaderCellDef><strong>Event Status</strong> </th>
       <td mat-cell *matCellDef="let element">
-        {{element.event_status_id}}
+        {{element.event_detail_status.event_detail_status_name}}
       </td>
     </ng-container>
 

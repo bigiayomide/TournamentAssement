@@ -16,9 +16,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ToolbarNotificationComponent } from './toolbar-notification/toolbar-notification.component';
+// import { ToolbarNotificationComponent } from './toolbar-notification/toolbar-notification.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { SearchBarComponent } from './search-bar/search-bar.component';
 import { FullscreenComponent } from './fullscreen/fullscreen.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { UserMenuComponent } from './user-menu/user-menu.component';
@@ -28,7 +27,7 @@ import {
     MatProgressBarModule,
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToolbarSearchComponent } from './toolbar-search/toolbar-search.component';
+// import { ToolbarSearchComponent } from './toolbar-search/toolbar-search.component';
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -40,10 +39,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     declarations: [
         SidemenuComponent,
         SidemenuItemComponent,
-        ToolbarNotificationComponent,
+        // ToolbarNotificationComponent,
         ToolbarComponent,
-        ToolbarSearchComponent,
-        SearchBarComponent,
+        // ToolbarSearchComponent,
         FullscreenComponent,
         SidebarComponent,
         UserMenuComponent
@@ -74,10 +72,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     exports: [
         SidemenuComponent,
         SidemenuItemComponent,
-        ToolbarNotificationComponent,
+        // ToolbarNotificationComponent,
         ToolbarComponent,
-        SearchBarComponent,
-        ToolbarSearchComponent,
+        // SearchBarComponent,
+        // ToolbarSearchComponent,
         FullscreenComponent,
         SidebarComponent,
         UserMenuComponent

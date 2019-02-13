@@ -7,7 +7,7 @@ namespace HWBTournament.API.ViewModels
 {
     public class EventViewModel
     {
-        public int Id { get; set; }
+        public int id { get; set; }
 
         public int tournament_id { get; set; }
 
@@ -22,6 +22,6 @@ namespace HWBTournament.API.ViewModels
         public bool auto_close { get; set; }
         //public List<eventdetail> event_details { get; set; }
 
-        //public tournament tournament { get; set; }
+        public TournamentViewModel tournament { get; set; }
     }
 }

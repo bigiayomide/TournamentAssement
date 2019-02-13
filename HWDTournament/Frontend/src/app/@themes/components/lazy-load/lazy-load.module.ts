@@ -29,7 +29,7 @@ const routes: Routes = [
     // {path: 'editor', loadChildren: '../editor/editor.module#EditorModule'},
 
    // {path: '**', redirectTo: 'auth/dashboard'},
-   {path: '**', redirectTo: 'auth/landing'},
+   {path: '**', redirectTo: 'auth/home'},
 ]
 
 @NgModule({

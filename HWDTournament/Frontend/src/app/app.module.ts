@@ -15,6 +15,8 @@ import { HwbTokenService, HwbTokenStorage, HwbAuthService, HwbTokenLocalStorage,
          HwbAuthModule, HwbAuthTokenParceler ,HwbPasswordAuthStrategy,HwbOAuth2ResponseType} from './shared/auth';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatInputModule } from '@angular/material';
 import { AgmCoreModule } from '@agm/core';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './@pages/helpers/jwt.interceptors';
 
 
 @NgModule({
@@ -46,7 +48,9 @@ import { AgmCoreModule } from '@agm/core';
   ],
   providers: [
     ConfigService,
-    ItemsService, StateService
+    ItemsService, 
+    StateService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
 
     
     // { provide: HwbTokenStorage, useClass: HwbTokenLocalStorage },

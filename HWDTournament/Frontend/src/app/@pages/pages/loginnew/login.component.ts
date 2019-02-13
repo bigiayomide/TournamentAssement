@@ -21,11 +21,11 @@ export class LoginSComponent {
     myParams: object = {};
     width: number = 100;
     height: number = 100;
+    spinnerOn = false;
 
     _loginresponse :LoginResponseVM;
     constructor(public http: Http, 
         private toasterService: ToasterService, public dataService: UserDataService,
-               /* @Inject('BASE_URL') public baseUrl: string,*/
                 private configService: ConfigService,
                 private renderer2: Renderer2 ,
                 public router: Router, public stateService: StateService) {
@@ -100,6 +100,7 @@ export class LoginSComponent {
     }
 
     Login() {
+      this.spinnerOn = true;
         localStorage.clear();
         this.dataService.login(this.user)
         .subscribe((result: any) => {
@@ -112,15 +113,15 @@ export class LoginSComponent {
               };
                 localStorage.clear();
                 localStorage.setItem('auth', JSON.stringify(auth));
-                this.router.navigate(['./auth/landing']);
+                this.router.navigate(['./auth/home']);
             } else if (loginResult.status === StatusEnum.Error) {
-               // this.errors = loginResult.data.toString();
+              this.spinnerOn = false;
                 this.showToast('error', 'Login Error', 'Error occurred while logging in, please try again with valid credentials!');
             }
         },
         error => {
-            console.log(error);
-           this.showToast('error', 'Login Error', 'Error occurred while logging in, please try again with valid credentials!');
+          this.spinnerOn = false;
+           this.showToast('error', 'Login Error', error);
         });  
      }
 

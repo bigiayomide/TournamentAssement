@@ -6,6 +6,7 @@ using HWBTournament.Model.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace HWBTournament.API.Controllers
     //[ProducesResponseType(201)]
     //[ProducesResponseType(200)]
     //[ProducesResponseType(400)]
-    //[Authorize(Policy = "Bearer")]
+    [Authorize(Policy = "Bearer")]
     public class EventDetailController : Controller
     {
         private readonly IEventDetailRepository _eventDetailRepository;
@@ -93,6 +94,7 @@ namespace HWBTournament.API.Controllers
         }
         //[Route("/")]
         [HttpGet("/NotificationEventDetail/{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> NotifyEventDetail(int id)
         {
             EventDetail _eventdetail = _eventDetailRepository.GetSingle(u => u.Id == id);
@@ -120,6 +122,8 @@ namespace HWBTournament.API.Controllers
             {
                 IEnumerable<EventDetailViewModel> _eventdetailVM = _mapper.Map<IEnumerable<EventDetail>, IEnumerable<EventDetailViewModel>>(_event);
                 Log.Information("Event Detail {@_eventdetailVM} retrieved from database", _eventdetailVM);
+                var m = new ResultVM() { Data = _eventdetailVM, Status = Status.Success };
+                var g= JsonConvert.SerializeObject(m);
                 return new OkObjectResult(new ResultVM() { Data = _eventdetailVM, Status = Status.Success });
             }
             else
@@ -132,11 +136,11 @@ namespace HWBTournament.API.Controllers
         [HttpPatch]
         public IActionResult Update([FromBody] EventDetailViewModel eventvm)
         {
-            EventDetail _eventdetail = _eventDetailRepository.GetSingle(u => u.Id == eventvm.Id);
+            EventDetail _eventdetail = _eventDetailRepository.GetSingle(u => u.Id == eventvm.id);
             if (_eventdetail != null)
             {
                 EventDetail _neweventdetail = _mapper.Map<EventDetailViewModel,EventDetail >(eventvm);
-                _eventDetailRepository.Update(_neweventdetail);
+                _eventDetailRepository.UpdateEventDetail(_neweventdetail);
                 EventDetailViewModel _eventdetailVM = _mapper.Map<EventDetail, EventDetailViewModel>(_eventdetail);
                 Log.Information("Event Detail {@_eventdetailVM} Updated to database", _eventdetailVM);
                 return new OkObjectResult(new ResultVM() { Data = _eventdetailVM, Status = Status.Success });

@@ -1,36 +1,13 @@
  <toaster-container [toasterconfig]="config"></toaster-container>
-<!--<div fxLayout="row" fxFlex="100"  fxLayoutGap="10px">
-<mat-toolbar >
 
-    <mat-toolbar-row>
-        <span>Tournaments</span>
-        <span class="pull-right"></span>
-        <button mat-icon-button>
-            <mat-icon (click)="GetEventDetails();">refresh</mat-icon>
-        </button>
-    </mat-toolbar-row>
-</mat-toolbar>
-<mat-progress-bar *ngIf="showLoader" [color]="'primary'" [mode]="'indeterminate'" [value]="90" [bufferValue]="'10'">
-</mat-progress-bar>
-
-<div fxLayout="column" fxFlex="25" fxLayoutGap="10px" *ngFor="let eventdeail of eventDetails" >
-    <mat-card class="example-card" >
-        <mat-card-header>
-          <mat-card-title>   {{eventdeail.event_detail_name}}  </mat-card-title>
-          <mat-card-subtitle>   {{eventdeail.event_detail_odd}} </mat-card-subtitle>
-        </mat-card-header>
-      </mat-card>
-</div>
-</div> -->
-
-<div fxLayout="row" fxFlex.xs="25" *ngFor="let eventdeail of eventDetails"   fxLayout.lt-sm="column" fxLayoutGap="2px" style="display:block;overflow: auto;margin-right: 20px;">
-    <div fxFlex.xs="25" fxFlex.lg="25" fxFlex.md="25" fxFlex.sm="25" style="padding:5px;">
+ <div fxLayout="row" fxFlex.xs="100" *ngFor="let eventdetail of eventDetails "   fxLayout.lt-sm="column" fxLayoutGap="2px" style="display:block;overflow: auto;margin-right: 20px;">
+    <div fxFlex.xs="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" style="padding:5px;">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2px">
-            <mat-card style="background-color:#a9a64f;color:black; width:100%">
+            <mat-card [style.background-color]='eventdetail.backgroundColor' [style.color] = "eventdetail.color" style="width:100%">
                 <mat-card-content>
                     <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row">
-                        <h3 class="pull-right" style="padding: 10px">{{eventdeail.event_detail_name}} </h3>
-                        <h3 style="padding: 10px" > {{eventdeail.event_detail_odd}} </h3>
+                        <h3 class="pull-right" style="padding: 10px">{{eventdetail.event_detail_name}} </h3>
+                        <h3 style="padding: 10px" > {{eventdetail.event_detail_odd}} </h3>
                     </div>
                 </mat-card-content>
             </mat-card>

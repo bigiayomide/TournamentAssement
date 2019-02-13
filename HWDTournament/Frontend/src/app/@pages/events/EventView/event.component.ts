@@ -1,15 +1,15 @@
-import { Component, OnInit, Injectable } from '@angular/core';
-import { IEventDetailStatus, IResultVM, StatusEnum, IDialogMessage } from '../../../shared/interfaces/interfaces';
+import { Component, OnInit, Injectable, ViewChild } from '@angular/core';
+import {  IResultVM, StatusEnum, IDialogMessage, IEventDetail, IEvent } from '../../../shared/interfaces/interfaces';
 import { Http } from '@angular/http';
 import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
-import { EventDetailDataService } from '../../../shared/services/eventdetail.data.service';
+import { EventDataService } from '../../../shared/services/event.data.service';
 import { ConfigService } from '../../../shared/utils/config.service';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { EventAlertDialogComponent } from '../../events/event-alert/event-alert';
-import { EventCreateDialogComponent } from '../../events/event-create/event-create';
-import { EventUpdateDialogComponent } from '../../events/event-update/event-update';
-import { EventDataService } from '../../../shared/services/event.data.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatPaginator, MatTableDataSource,MatSort, PageEvent } from '@angular/material';
+import { EventAlertDialogComponent } from '../event-alert/event-alert';
+import { EventCreateDialogComponent } from '../event-create/event-create';
+import { EventUpdateDialogComponent } from '../event-update/event-update';
+
 
 @Component({
     selector: 'hwb-event-list',
@@ -19,6 +19,41 @@ import { EventDataService } from '../../../shared/services/event.data.service';
 
 @Injectable()
 export class EventComponent implements OnInit {
+    public showLoader: boolean = false;
+    public eventdetails: IEvent[];
+    public eventdetail: IEvent;
+
+    config: ToasterConfig;
+    position: string = 'toast-top-full-width';
+    animationType: string = 'slideDown';
+    title: string = 'HI there!';
+    content: string = `I'm cool toaster!`;
+    timeout: number = 5000;
+    toastsLimit: number = 5;
+    type: string = 'default';
+    isNewestOnTop: boolean = true;
+    isHideOnClick: boolean = true;
+    isDuplicatesPrevented: boolean = false;
+    isCloseButton: boolean = true;
+    Id: number;
+    tournament_id: number;
+    event_name: string;
+    event_number: number;
+    event_date_time: Date;
+    event_end_date_time: Date;
+    auto_close: boolean;
+    displayedColumns: string[] = ['tournament_id', 'event_name', 'event_date_time', 'event_end_date_time', 'auto_close','actions'];
+    eventDataSource: MatTableDataSource<IEvent>;
+
+    resultsLength  = 0;
+    pageSize = 10;
+    pageIndex = 0;
+    pageSizeOptions: number[] = [10, 20, 30, 50];
+    pageEvent: PageEvent;
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
+    
     _dialogMessage: IDialogMessage = {
          message: "Are you sure you want to delete this",
           valid: false,
@@ -31,10 +66,6 @@ export class EventComponent implements OnInit {
         private configService: ConfigService,
         public router: Router,
         public dialog: MatDialog) { }
-
-    public showLoader: boolean = false;
-    public events: IEventDetailStatus[];
-    public event: IEventDetailStatus;
     ngOnInit() {
         this.GetEvent()
     }
@@ -46,8 +77,10 @@ export class EventComponent implements OnInit {
         this.dataService.GetAllEvents().subscribe((result: any) => {
             this.showLoader = true;
             const loginResult = result as IResultVM;
-            this.events = loginResult.data as IEventDetailStatus[]
             if (loginResult.status === StatusEnum.Success) {
+                ;
+              this.eventDataSource = new MatTableDataSource<IEvent>(loginResult.data as IEvent[]);
+              this.eventDataSource.paginator = this.paginator;
             } else if (loginResult.status === StatusEnum.Error) {
 
                 this.showToast('error', 'Event Error', 'Error occurred while Loading Events');
@@ -62,24 +95,24 @@ export class EventComponent implements OnInit {
             });
     }
 
-    onDeleteEvent(eventdata:IEventDetailStatus) {
-        this._dialogMessage.data= eventdata;
+    onDeleteEvent(eventdetaildata:IEvent) {
+        this._dialogMessage.data= eventdetaildata;
         const dialogRef = this.dialog.open(EventAlertDialogComponent, {
             width: '250px',
             data: this._dialogMessage
         });
 
         dialogRef.afterClosed().subscribe((dialogresult: IDialogMessage)=> {
-            // this.events = this.events.filter(x => x.Id != id);
+            // this.eventdetails = this.eventdetails.filter(x => x.Id != id);
             if (dialogresult.valid === true) {
                 this.dataService.DeleteEvent(dialogresult.data.id).subscribe((result: any) => {
                     this.showLoader = true;
-                    const eventResult = result as IResultVM;
-                    var event = eventResult.data as IEventDetailStatus
-                    if (eventResult.status === StatusEnum.Success) {
+                    const eventdetailResult = result as IResultVM;
+                    const eventdetail = eventdetailResult.data as IEvent
+                    if (eventdetailResult.status === StatusEnum.Success) {
                         this.GetEvent();
-                        this.showToast('success', 'Event Success', 'Deleted ' + event.event_detail_status_name + ' Successfuly');
-                    } else if (eventResult.status === StatusEnum.Error) {
+                        this.showToast('success', 'Event Success', 'Deleted ' + eventdetail.event_name + ' Successfuly');
+                    } else if (eventdetailResult.status === StatusEnum.Error) {
                         this.showToast('error', 'Event Error', 'Error occurred while Loading Events');
                     }
                     setTimeout(() => {
@@ -105,13 +138,14 @@ export class EventComponent implements OnInit {
         if (dialogresult.valid === true) {
             this.dataService.CreateEvent(dialogresult.data)
             .subscribe((result: any) => {
+                ;
                 this.showLoader = true;
-                const eventResult = result as IResultVM;
-                var event = eventResult.data as IEventDetailStatus
-                if (eventResult.status === StatusEnum.Success) {
+                const eventdetailResult = result as IResultVM;
+                const eventdetail = eventdetailResult.data as IEvent
+                if (eventdetailResult.status === StatusEnum.Success) {
                     this.GetEvent();
-                    this.showToast('success', 'Event Success', 'Created Tournamnet ' + event.event_detail_status_name + ' Successfuly');
-                } else if (eventResult.status === StatusEnum.Error) {
+                    this.showToast('success', 'Event Success', 'Created Tournamnet ' + eventdetail.event_name + ' Successfuly');
+                } else if (eventdetailResult.status === StatusEnum.Error) {
                     this.showToast('error', 'Event Error', 'Error occurred while Loading Events');
                 }
                 setTimeout(() => {
@@ -127,25 +161,25 @@ export class EventComponent implements OnInit {
     });
 
    }
-   onViewEvent(eventdata:IEventDetailStatus){
-    this._dialogMessage.data= eventdata;
+   onViewEvent(eventdetaildata:IEvent){
+    this._dialogMessage.data= eventdetaildata;
     const dialogRef = this.dialog.open(EventUpdateDialogComponent, {
         width: '500px',
         data: this._dialogMessage
     });
 
     dialogRef.afterClosed().subscribe((dialogresult: IDialogMessage)=>  {
-        debugger;
+        ;
         if (dialogresult.valid === true) {
             this.dataService.UpdateEvent(dialogresult.data)
             .subscribe((result: any) => {
                 this.showLoader = true;
-                const eventResult = result as IResultVM;
-                var event = eventResult.data as IEventDetailStatus
-                if (eventResult.status === StatusEnum.Success) {
+                const eventdetailResult = result as IResultVM;
+                const eventdetail = eventdetailResult.data as IEvent
+                if (eventdetailResult.status === StatusEnum.Success) {
                     this.GetEvent();
-                    this.showToast('success', 'Event Success', 'Created Events ' + event.event_detail_status_name + ' Successfuly');
-                } else if (eventResult.status === StatusEnum.Error) {
+                    this.showToast('success', 'Event Success', 'Created Tournamnet ' + eventdetail.event_name + ' Successfuly');
+                } else if (eventdetailResult.status === StatusEnum.Error) {
                     this.showToast('error', 'Event Error', 'Error occurred while Loading Events');
                 }
                 setTimeout(() => {
@@ -159,18 +193,6 @@ export class EventComponent implements OnInit {
         }
     });
    }
-    config: ToasterConfig;
-    position: string = 'toast-top-full-width';
-    animationType: string = 'slideDown';
-    title: string = 'HI there!';
-    content: string = `I'm cool toaster!`;
-    timeout: number = 5000;
-    toastsLimit: number = 5;
-    type: string = 'default';
-    isNewestOnTop: boolean = true;
-    isHideOnClick: boolean = true;
-    isDuplicatesPrevented: boolean = false;
-    isCloseButton: boolean = true;
 
     makeToast() {
         this.showToast(this.type, this.title, this.content);

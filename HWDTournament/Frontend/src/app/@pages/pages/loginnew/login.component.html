@@ -5,7 +5,7 @@
       <form #loginForm="ngForm" fxflex="80" fxflex.gt-sm="30" fxflex.sm="60" novalidate="" class="ng-pristine ng-invalid ng-touched" style="flex: 1 1 100%; box-sizing: border-box;margin:auto !important">
          <mat-card class="p-0 mat-elevation-z24 box mat-card">
             <div class="bg-primary box-header" fxlayout="column" fxlayoutalign="center center" style="flex-direction: column; box-sizing: border-box; display: flex; max-width: 100%; place-content: center; align-items: center;">
-               <img _ngcontent-c1="" src="./assets/Traqtioncollect.png" width="170px">  
+               <img _ngcontent-c1="" src="./assets/images/hollywoodlogo.png" width="170px">  
                <a mat-button="" routerlink="/#/registers" class="mat-button" href="/#/registers" tabindex="0" aria-disabled="false">
                   <span class="mat-button-wrapper">Don't have an account? Sign up now!</span>
                   <div class="mat-button-ripple mat-ripple" matripple=""></div>
@@ -27,6 +27,7 @@
                <div class="mat-button-ripple mat-ripple" matripple=""></div>
                <div class="mat-button-focus-overlay"></div>
                </button>
+               <mat-progress-bar mode="buffer" *ngIf="spinnerOn"></mat-progress-bar>
             </mat-card-content>
          </mat-card>
       </form>

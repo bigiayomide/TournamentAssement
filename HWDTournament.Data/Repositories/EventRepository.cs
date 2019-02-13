@@ -35,23 +35,22 @@ namespace HWBTournament.Data.Repositories
 
         public IEnumerable<Event> GetEvents()
         {
-            return GetAll();
+            return AllIncluding(x=>x.tournament);
         }
 
         public Event UpdateEvent(Event updateEvent)
         {
-            var Event = GetSingle(updateEvent.Id);
 
-            Event.auto_close = updateEvent.auto_close;
-            Event.event_date_time = updateEvent.event_date_time;
-            Event.event_number = updateEvent.event_number;
-            Event.event_end_date_time = updateEvent.event_end_date_time;
-            Event.event_name = updateEvent.event_name;
+            _context.Database.ExecuteSqlCommand(@"EXEC PU_Update_Event @event_id,@tournament_id,@event_name,@event_number,@event_date_time,@event_end_date_time,@auto_close",
+                                               new SqlParameter("@event_id", updateEvent.Id),
+                                               new SqlParameter("@tournament_id", updateEvent.tournament_id),
+                                               new SqlParameter("@event_name", updateEvent.event_name),
+                                               new SqlParameter("@event_number", updateEvent.event_number),
+                                               new SqlParameter("@event_date_time", updateEvent.event_date_time),
+                                               new SqlParameter("@event_end_date_time", updateEvent.event_end_date_time),
+                                               new SqlParameter("@auto_close", updateEvent.auto_close));
 
-            Update(Event);
-            Commit();
-
-            return Event;
+            return GetSingle(updateEvent.Id);
         }
     }
 }

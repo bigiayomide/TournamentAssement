@@ -9,7 +9,7 @@ namespace HWBTournament.API.ViewModels
 {
     public class EventDetailViewModel
     {
-        public int Id { get; set; }
+        public int id { get; set; }
 
         public int event_id { get; set; }
 
@@ -23,7 +23,7 @@ namespace HWBTournament.API.ViewModels
 
         public short finishing_position { get; set; }
         public bool first_timer { get; set; }
-        //public Event Event { get; set; }
-        //public eventdetailstatus event_detail_status { get; set; }
+        public EventViewModel _event { get; set; }
+        public EventStatusViewModel event_detail_status { get; set; }
     }
 }

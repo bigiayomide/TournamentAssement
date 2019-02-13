@@ -7,92 +7,73 @@ import 'rxjs/add/operator/catch';
 import { IResultVM , IAuthDetails, IEvent, IEventDetail} from '../interfaces/interfaces';
 import { ItemsService } from '../utils/items.service';
 import { ConfigService } from '../utils/config.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class EventDetailDataService {
 
     _baseUrl: string = '';
 
-    constructor(private http: Http,
+    constructor(private http: HttpClient,
         private itemsService: ItemsService,
         private configService: ConfigService) {
         this._baseUrl = configService.getApiURI();
     }
 
-    GetAllEvents(): Observable<IResultVM> {
-        const headers = new Headers();
-        var userdata = JSON.parse(localStorage.getItem("auth")) as IAuthDetails;
-        headers.append('Content-Type', 'application/json');     
-        headers.append('Authorization', 'Bearer '+ userdata.token);     
-        return this.http.get(this._baseUrl + 'EventDetail', {
-            headers: headers, 
+    GetAllEventDetails(): Observable<IResultVM> {
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', 'application/json');
+        return this.http.get(this._baseUrl + 'EventDetail/', {
+            headers: headers,
         })
-        .map((res:Response) => res.json())
+        .map((res:IResultVM) => res)
         .catch(this.handleError);
     }
 
-    GetEvent(id: number): Observable<IResultVM> {
-        const headers = new Headers();
-        var userdata = JSON.parse(localStorage.getItem("auth")) as IAuthDetails;
-        headers.append('Content-Type', 'application/json');     
-        headers.append('Authorization', 'Bearer '+ userdata.token);     
+    GetEventDetail(id: number): Observable<IResultVM> {
+      const headers = new HttpHeaders();
+        headers.append('Content-Type', 'application/json');
         return this.http.get(this._baseUrl + 'EventDetail/'+ id ,{
             headers: headers,
         })
-        .map((res:Response) => res.json())
+        .map((res:IResultVM) => res)
         .catch(this.handleError);
     }
 
-    DeleteEvent(id: number): Observable<IResultVM> {
-        const headers = new Headers();
-        var userdata = JSON.parse(localStorage.getItem("auth")) as IAuthDetails;
-        headers.append('Content-Type', 'application/json');     
-        headers.append('Authorization', 'Bearer '+ userdata.token);     
+    DeleteEventDetail(id: number): Observable<IResultVM> {
+      const headers = new HttpHeaders();
+        headers.append('Content-Type', 'application/json');
         return this.http.delete(this._baseUrl + 'EventDetail/'+ id ,{
             headers: headers,
         })
-        .map((res:Response) => res.json())
+        .map((res:IResultVM) => res)
         .catch(this.handleError);
     }
 
-    UpdateEvent(event:IEventDetail): Observable<IResultVM> {
-        const headers = new Headers();
-        var userdata = JSON.parse(localStorage.getItem("auth")) as IAuthDetails;
-        headers.append('Content-Type', 'application/json');     
-        headers.append('Authorization', 'Bearer '+ userdata.token);     
-        return this.http.patch(this._baseUrl + 'EventDetail/' ,JSON.stringify(event), {
+    UpdateEventDetail(event:IEventDetail): Observable<IResultVM> {
+      const headers = new HttpHeaders();
+        headers.append('Content-Type', 'application/json');
+        return this.http.patch(this._baseUrl + 'EventDetail/' ,event, {
             headers: headers,
         })
-        .map((res:Response) => res.json())
+        .map((res:IResultVM) => res)
         .catch(this.handleError);
     }
 
-    CreateEvent(event:IEventDetail): Observable<IResultVM> {
-        const headers = new Headers();
-        var userdata = JSON.parse(localStorage.getItem("auth")) as IAuthDetails;
-        headers.append('Content-Type', 'application/json');     
-        headers.append('Authorization', 'Bearer '+ userdata.token);     
-        return this.http.post(this._baseUrl + 'EventDetail/',JSON.stringify(event), {
+    CreateEventDetail(event:IEventDetail): Observable<IResultVM> {
+      const headers = new HttpHeaders();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this._baseUrl + 'EventDetail/',event, {
             headers: headers,
         })
-        .map((res:Response) => res.json())
+        .map((res:IResultVM) => res)
         .catch(this.handleError);
     }
 
-    private handleError(error: any) {      
+    private handleError(error: any) {
         const applicationError = error.headers.get('Application-Error');
-        const serverError = error.json();
-        let modelStateErrors: string = '';
-
-        if (!serverError.type) {          
-            for (const key in serverError) {
-                if (serverError[key]) {
-                        modelStateErrors += serverError[key] + '\n';
-                }
-            }
-        }
-
-        modelStateErrors = modelStateErrors = '' ? null : modelStateErrors;
-        return throwError(applicationError || modelStateErrors || 'Server error');
+        ;
+        console.error(error.message || error);
+        return Observable.throw(error.message || error);
     }
 }

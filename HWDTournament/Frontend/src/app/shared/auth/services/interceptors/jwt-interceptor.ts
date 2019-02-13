@@ -17,7 +17,7 @@ export class HwbAuthJWTInterceptor implements HttpInterceptor {
     return this.authService.getToken()
       .pipe(
         switchMap((token: HwbAuthJWTToken) => {
-          debugger;
+          ;
           if (token.isValid()) {
             const JWT = `Bearer ${token.getValue()}`;
             req = req.clone({

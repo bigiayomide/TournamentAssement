@@ -1,66 +1,71 @@
-<h1  mat-dialog-title>Create New Event Detail</h1>
+<h1 mat-dialog-title>Update Event Detail</h1>
 <div mat-dialog-content>
   <toaster-container [toasterconfig]="config"></toaster-container>
-  <form [formGroup]="eventDetailForm" (ngSubmit)="onSubmitclick()" fxflex="80" fxflex.gt-sm="30" fxflex.sm="60" novalidate=""
-    class="ng-pristine ng-invalid ng-touched" style="flex: 1 1 100%; box-sizing: border-box;margin:auto !important;">
+  <form [formGroup]="eventDetailForm" (ngSubmit)="onSubmitclick()" fxflex="80" fxflex.gt-sm="30" fxflex.sm="60"
+    novalidate="" class="ng-pristine ng-invalid ng-touched" style="flex: 1 1 100%; box-sizing: border-box;margin:auto !important;">
     <mat-card class="mat-elevation-z12 box-content-inner mat-card" fxlayout="column" fxlayoutalign="center center"
       style="flex-direction: column; box-sizing: border-box; max-width: 100%; place-content: center; align-items: center;">
 
       <div class="row">
         <div fxFlex.xs="100" fxFlex.xl="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" style="padding:10px;">
-            <mat-form-field class="full-width">
-              <mat-select placeholder="Event" [formControl]="event_id" required>
-                <mat-option *ngFor="let event of events" [value]="event">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Event" [formControl]="event_id" required>
+              <mat-option *ngFor="let event of events" [value]="event">
                 {{event.event_name}}
-                </mat-option>
-                </mat-select>
-                <mat-error *ngIf="event_status_id.hasError('required')">Please choose an Event</mat-error>
-                <mat-hint>{{event_id.value?.sound}}</mat-hint>
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="event_status_id.hasError('required')">Please choose an Event</mat-error>
+            <mat-hint>{{event_id.value?.sound}}</mat-hint>
 
-              </mat-form-field>
+          </mat-form-field>
 
-              <mat-form-field class="full-width">
+          <mat-form-field class="full-width">
 
 
-                <mat-select placeholder="Status" [formControl]="event_status_id" required>
-                <mat-option *ngFor="let eventstatus of eventstatuses" [value]="eventstatus">
+            <mat-select placeholder="Status" [formControl]="event_status_id" required>
+              <mat-option *ngFor="let eventstatus of eventstatuses" [value]="eventstatus">
                 {{eventstatus.event_detail_status_name}}
-                </mat-option>
-                </mat-select>
-                <mat-error *ngIf="event_status_id.hasError('required')">Please choose a Status</mat-error>
-                <mat-hint>{{event_status_id.value?.sound}}</mat-hint>
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="event_status_id.hasError('required')">Please choose a Status</mat-error>
+            <mat-hint>{{event_status_id.value?.sound}}</mat-hint>
 
           </mat-form-field>
           <mat-form-field class="full-width">
-              <input type="text" formControlName="event_detail_name" tabindex="3" class="form-control" placeholder="Event Detail Name" required matInput>
+            <input type="text" formControlName="event_detail_name" tabindex="3" class="form-control" placeholder="Event Detail Name"
+              required matInput>
 
-            </mat-form-field>
-            <mat-form-field class="full-width">
-                <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" formControlName="event_detail_number" tabindex="4" class="form-control" placeholder="Event Detail Nummber" required matInput>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" formControlName="event_detail_number"
+              tabindex="4" class="form-control" placeholder="Event Detail Nummber" required matInput>
 
-              </mat-form-field>
-              <mat-form-field class="full-width">
-                  <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" formControlName="event_detail_odd" tabindex="5" class="form-control" placeholder="Event Detail Odd" required matInput>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" formControlName="event_detail_odd"
+              tabindex="5" class="form-control" placeholder="Event Detail Odd" required matInput>
 
-                </mat-form-field>
-                <mat-form-field class="full-width">
-                    <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" formControlName="finishing_position" tabindex="6" class="form-control" placeholder="Event Detail Finishing Position" required matInput>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" formControlName="finishing_position"
+              tabindex="6" class="form-control" placeholder="Event Detail Finishing Position" required matInput>
 
-                  </mat-form-field>
-                  First Timer
-                  <!-- <mat-form-field class="full-width"> -->
-                      <mat-radio-group class="full-width" formControlName="first_timer"  placeholder="First Timer" matInput required >
-                        <mat-radio-button value="False">False</mat-radio-button>
-                        <mat-radio-button  value="True">True</mat-radio-button>
-                      </mat-radio-group>
-                    <!-- </mat-form-field> -->
+          </mat-form-field>
+          First Timer
+          <!-- <mat-form-field class="full-width"> -->
+          <mat-radio-group class="full-width" formControlName="first_timer" placeholder="First Timer" matInput required>
+            <mat-radio-button value="False">False</mat-radio-button>
+            <mat-radio-button value="True">True</mat-radio-button>
+          </mat-radio-group>
+          <!-- </mat-form-field> -->
         </div>
       </div>
 
-  </mat-card>
-</form>
+    </mat-card>
+  </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-raised-button color="primary"  [mat-dialog-close]="_dialogMessage" [disabled]="!eventDetailForm.valid" (click)="onSubmitclick()">Submit</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="_dialogMessage" [disabled]="!eventDetailForm.valid"
+    (click)="onSubmitclick()">Update</button>
   <button mat-raised-button color="accent" [mat-dialog-close]="_dialogMessage" cdkFocusInitial>Close</button>
 </div>

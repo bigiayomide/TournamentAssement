@@ -60,7 +60,7 @@ export class EventDetailCreateDialogComponent implements OnInit {
         ],
       }),
        this.eventdetail = {
-        Id :0,
+        id :0,
         event_id :0,
         event_status_id :0,
         event_detail_name :'',
@@ -95,7 +95,7 @@ export class EventDetailCreateDialogComponent implements OnInit {
     this._dialogMessage.valid=false;
   }
   onSubmitclick(){
-debugger;
+
       this._dialogMessage.valid=true;
       this.spinnerOn = true;
       this.eventdetail.event_id = this.event_id.value.id;
