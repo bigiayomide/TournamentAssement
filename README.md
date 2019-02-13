@@ -1,22 +1,22 @@
-##HWB cool api with Realtime database Updates 
+# HWB cool api with Realtime database Updates 
 HI There and welcome to the cool API
 
 This helps to create,read, and update (event, eventdetail, tournaments. EventStatus)
 
 This uses `SignalR` to update data in realtime when an EventDaetail is being updated/inserted in the database
 
-#Additional implementation:
+# Additional implementation:
 
 `Swagger Documentation`
 `Policy Based Authentication`
 `Role Based Authentication`
 
-##Please Note 
-##Pre-Requisite
+# Please Note 
+# Pre-Requisite
 .Net Core 2.0
 This appplication is build on `.net core 2.0` Please make sure you have .Net core 2.0 on the PC/Server to run this application.
 
-#Configuration
+# Configuration
 
 Please make sure you change the connection string to an `sql server` connectionstring
 

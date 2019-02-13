@@ -1,4 +1,4 @@
-## HI There and welcome to the cool frontend
+# HI There and welcome to the cool frontend
 
 This helps to create,read, and update (event, eventdetail, tournaments. EventStatus)
 
