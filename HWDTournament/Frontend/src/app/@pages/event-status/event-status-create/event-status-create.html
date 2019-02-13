@@ -1,24 +1,26 @@
-<h1  mat-dialog-title>Create New Event Status</h1>
+<h1 mat-dialog-title>Create New Event Status</h1>
 <div mat-dialog-content>
   <toaster-container [toasterconfig]="config"></toaster-container>
-  <form [formGroup]="eventstatusForm" (ngSubmit)="onSubmitclick()" fxflex="80" fxflex.gt-sm="30" fxflex.sm="60" novalidate=""
-    class="ng-pristine ng-invalid ng-touched" style="flex: 1 1 100%; box-sizing: border-box;margin:auto !important;">
+  <form [formGroup]="eventstatusForm" (ngSubmit)="onSubmitclick()" fxflex="80" fxflex.gt-sm="30" fxflex.sm="60"
+    novalidate="" class="ng-pristine ng-invalid ng-touched" style="flex: 1 1 100%; box-sizing: border-box;margin:auto !important;">
     <mat-card class="mat-elevation-z12 box-content-inner mat-card" fxlayout="column" fxlayoutalign="center center"
       style="flex-direction: column; box-sizing: border-box; max-width: 100%; place-content: center; align-items: center;">
 
       <div class="row">
         <div fxFlex.xs="100" fxFlex.xl="100" fxFlex.lg="50" fxFlex.md="100" fxFlex.sm="50" style="padding:10px;">
           <mat-form-field class="full-width">
-            <input type="text" formControlName="event_detail_status_name" tabindex="1" class="form-control" placeholder="Event Status Name" required matInput>
+            <input type="text" formControlName="event_detail_status_name" tabindex="1" class="form-control" placeholder="Event Status Name"
+              required matInput>
 
           </mat-form-field>
         </div>
       </div>
 
-  </mat-card>
-</form>
+    </mat-card>
+  </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-raised-button color="primary"  [mat-dialog-close]="_dialogMessage" [disabled]="!eventstatusForm.valid" (click)="onSubmitclick()">Submit</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="_dialogMessage" [disabled]="!eventstatusForm.valid"
+    (click)="onSubmitclick()">Submit</button>
   <button mat-raised-button color="accent" [mat-dialog-close]="_dialogMessage" cdkFocusInitial>Close</button>
 </div>

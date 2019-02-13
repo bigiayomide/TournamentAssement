@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { FullscreenComponent } from './fullscreen.component';
+import { FullscreenComponent } from "./fullscreen.component";
 
-describe('FullscreenComponent', () => {
+describe("FullscreenComponent", () => {
   let component: FullscreenComponent;
   let fixture: ComponentFixture<FullscreenComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FullscreenComponent ]
-    })
-    .compileComponents();
+      declarations: [FullscreenComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('FullscreenComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

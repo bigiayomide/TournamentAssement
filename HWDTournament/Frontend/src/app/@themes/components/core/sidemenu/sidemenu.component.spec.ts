@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { SidemenuComponent } from './sidemenu.component';
+import { SidemenuComponent } from "./sidemenu.component";
 
-describe('SidemenuComponent', () => {
+describe("SidemenuComponent", () => {
   let component: SidemenuComponent;
   let fixture: ComponentFixture<SidemenuComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidemenuComponent ]
-    })
-    .compileComponents();
+      declarations: [SidemenuComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('SidemenuComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

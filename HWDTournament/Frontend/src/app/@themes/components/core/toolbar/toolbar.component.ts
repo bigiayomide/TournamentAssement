@@ -1,66 +1,57 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ToolbarHelpers } from './toolbar.helpers';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Input } from "@angular/core";
+import { ToolbarHelpers } from "./toolbar.helpers";
+import { Router, ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'hwb-toolbar',
-  templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.scss']
+  selector: "hwb-toolbar",
+  templateUrl: "./toolbar.component.html",
+  styleUrls: ["./toolbar.component.scss"]
 })
 export class ToolbarComponent implements OnInit {
-	
   @Input() sidenav;
-	@Input() sidebar;
-	@Input() drawer;
-	@Input() matDrawerShow;
+  @Input() sidebar;
+  @Input() drawer;
+  @Input() matDrawerShow;
 
-	isOpen: boolean = false;
-  
-	searchOpen: boolean = false;
-		toolbarHelpers = ToolbarHelpers;
-		currentUser : any;
-		cansearch: boolean = false;
-		constructor(protected router: Router,private activatedRoute: ActivatedRoute,
-			) 
-		{   
-		}
+  isOpen: boolean = false;
 
-  	ngOnInit() {			
+  searchOpen: boolean = false;
+  toolbarHelpers = ToolbarHelpers;
+  currentUser: any;
+  cansearch: boolean = false;
+  constructor(
+    protected router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
-			let  mycurrentUser = JSON.parse(localStorage.getItem('currentUser')); 
-			let  currentUser;
-			if (mycurrentUser != null)
-			{
-				  currentUser = {
-					photoURL: '',
-					currentUserName: mycurrentUser.currentUserName
-				};
-			}
-			else{
-				currentUser = {
-					photoURL: '',
-					currentUserName: ''
-				};
-			}
-					
-			if (currentUser != null) {			
-				this.currentUser = currentUser;
-			}
-			else
-			{			
-				this.router.navigate(['./logins']);  
-			}
-		}
-		
-		mouseenter (event) {   
-    
-      //this.renderer2.addClass(event.target, 'mat-elevation-z10');
- }
-   
- mouseleave (event) {
-  //   this.renderer2.removeClass(event.target, 'mat-elevation-z10');
-   //  this.renderer2.addClass(event.target, 'mat-elevation-z2');
- }
+  ngOnInit() {
+    const mycurrentUser = JSON.parse(localStorage.getItem("currentUser"));
+    let currentUser;
+    if (mycurrentUser != null) {
+      currentUser = {
+        photoURL: "",
+        currentUserName: mycurrentUser.currentUserName
+      };
+    } else {
+      currentUser = {
+        photoURL: "",
+        currentUserName: ""
+      };
+    }
 
+    if (currentUser != null) {
+      this.currentUser = currentUser;
+    } else {
+      this.router.navigate(["./logins"]);
+    }
+  }
 
+  mouseenter(event) {
+    //this.renderer2.addClass(event.target, 'mat-elevation-z10');
+  }
+
+  mouseleave(event) {
+    //   this.renderer2.removeClass(event.target, 'mat-elevation-z10');
+    //  this.renderer2.addClass(event.target, 'mat-elevation-z2');
+  }
 }

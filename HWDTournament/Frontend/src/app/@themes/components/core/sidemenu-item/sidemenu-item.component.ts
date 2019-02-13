@@ -1,31 +1,28 @@
-import { Component, OnInit, Input ,Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 
 @Component({
-    selector: 'hwb-sidemenu-item',
-    templateUrl: './sidemenu-item.component.html',
-    styleUrls: ['./sidemenu-item.component.scss']
+  selector: "hwb-sidemenu-item",
+  templateUrl: "./sidemenu-item.component.html",
+  styleUrls: ["./sidemenu-item.component.scss"]
 })
 export class SidemenuItemComponent implements OnInit {
+  @Input() menu;
+  @Input() iconOnly: boolean;
+  @Input() secondaryMenu = false;
+  @Output() onLinkClick: EventEmitter<any> = new EventEmitter();
+  constructor() {}
 
-    @Input() menu;
-    @Input() iconOnly: boolean;
-    @Input() secondaryMenu = false;
-    @Output() onLinkClick: EventEmitter<any> = new EventEmitter();
-    constructor() { }
+  ngOnInit() {}
 
-    ngOnInit() {
-    }
+  openLink() {
+    this.menu.open = this.menu.open;
+  }
 
-    openLink() {
-        this.menu.open = this.menu.open;
-    }
+  clicklink() {
+    this.onLinkClick.emit();
+  }
 
-    clicklink() {    
-        this.onLinkClick.emit();    
-      }
-
-    chechForChildMenu() {
-        return (this.menu && this.menu.sub) ? true : false;
-    }
-
+  chechForChildMenu() {
+    return this.menu && this.menu.sub ? true : false;
+  }
 }

@@ -1,16 +1,17 @@
- <toaster-container [toasterconfig]="config"></toaster-container>
+<toaster-container [toasterconfig]="config"></toaster-container>
 
- <div fxLayout="row" fxFlex.xs="100" *ngFor="let eventdetail of eventDetails "   fxLayout.lt-sm="column" fxLayoutGap="2px" style="display:block;overflow: auto;margin-right: 20px;">
-    <div fxFlex.xs="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" style="padding:5px;">
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2px">
-            <mat-card [style.background-color]='eventdetail.backgroundColor' [style.color] = "eventdetail.color" style="width:100%">
-                <mat-card-content>
-                    <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row">
-                        <h3 class="pull-right" style="padding: 10px">{{eventdetail.event_detail_name}} </h3>
-                        <h3 style="padding: 10px" > {{eventdetail.event_detail_odd}} </h3>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
+<div fxLayout="row" fxFlex.xs="100" *ngFor="let eventdetail of eventDetails " fxLayout.lt-sm="column" fxLayoutGap="2px"
+  style="display:block;overflow: auto;margin-right: 20px;">
+  <div fxFlex.xs="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" style="padding:5px;">
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2px">
+      <mat-card [style.background-color]='eventdetail.backgroundColor' [style.color]="eventdetail.color" style="width:100%">
+        <mat-card-content>
+          <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row">
+            <h3 class="pull-right" style="padding: 10px">{{eventdetail.event_detail_name}} </h3>
+            <h3 style="padding: 10px"> {{eventdetail.event_detail_odd}} </h3>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
+  </div>
 </div>

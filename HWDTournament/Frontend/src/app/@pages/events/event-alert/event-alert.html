@@ -3,6 +3,6 @@
   <p class="mat-typography">Are you sure you want to delete {{ this._dialogMessage.data.event_name}}? </p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-raised-button  [mat-dialog-close]="_dialogMessage" (click)="onOkclick();" color="accent">Ok</button>
-  <button mat-raised-button   [mat-dialog-close]="_dialogMessage" color="warn">Cancel</button>
+  <button mat-raised-button [mat-dialog-close]="_dialogMessage" (click)="onOkclick();" color="accent">Ok</button>
+  <button mat-raised-button [mat-dialog-close]="_dialogMessage" color="warn">Cancel</button>
 </mat-dialog-actions>

@@ -1,32 +1,9 @@
-# Hwb Admin - FREE PREMIUM ANGULAR 6+ MATERIAL DESIGN+FLEX LAYOUT ADMIN PANEL
+# HI There and welcome to the cool frontend
 
+This helps to create,read, and update (event, eventdetail, tournaments. EventStatus)
 
-DEMO:https://test.firebaseapp.com
+Also it provides real time updates of EventDetails Data. 
+Meaning that whenever a value (i.e eventdetail) is being updated in database it reflects in the home page in `realtime` `without no refresh`
 
-contact: taona.madawo@interativesa.com
+it uses `SignalR` to get update from whatever server/socket endpoint it is connected to. 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.0.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

@@ -1,35 +1,40 @@
 <particles [params]="myParams" [style]="myStyle" [width]="width" [height]="height"></particles>
 <div style="position: absolute;margin: 0 auto; height: 100%;width: 100%">
-   <toaster-container [toasterconfig]="config"></toaster-container>
-   <div class="h-100" fxlayout="row" fxlayoutalign="center center" style="flex-direction: row; box-sizing: border-box; display: flex; max-height: 100%; place-content: center; align-items: center;">
-      <form #loginForm="ngForm" fxflex="80" fxflex.gt-sm="30" fxflex.sm="60" novalidate="" class="ng-pristine ng-invalid ng-touched" style="flex: 1 1 100%; box-sizing: border-box;margin:auto !important">
-         <mat-card class="p-0 mat-elevation-z24 box mat-card">
-            <div class="bg-primary box-header" fxlayout="column" fxlayoutalign="center center" style="flex-direction: column; box-sizing: border-box; display: flex; max-width: 100%; place-content: center; align-items: center;">
-               <img _ngcontent-c1="" src="./assets/images/hollywoodlogo.png" width="170px">  
-               <a mat-button="" routerlink="/#/registers" class="mat-button" href="/#/registers" tabindex="0" aria-disabled="false">
-                  <span class="mat-button-wrapper">Don't have an account? Sign up now!</span>
-                  <div class="mat-button-ripple mat-ripple" matripple=""></div>
-                  <div class="mat-button-focus-overlay"></div>
-               </a>
-            </div>
-            <mat-card-content class="box-content mat-card-content" fxlayout="column" fxlayoutalign="end center" style="flex-direction: column; box-sizing: border-box; display: flex; max-width: 100%; place-content: center flex-end; align-items: center;">
-               <mat-card class="mat-elevation-z12 box-content-inner mat-card" fxlayout="column" fxlayoutalign="center center" style="flex-direction: column; box-sizing: border-box; display: flex; max-width: 100%; place-content: center; align-items: center;">
-                  <span class="box-content-header">member login</span>
-                  <mat-form-field class="full-width">
-                     <input type="email" name="userName" id="userName" [(ngModel)]="user.userName" tabindex="1" class="form-control" placeholder="userName" value="" required matInput>
-                  </mat-form-field>
-                  <mat-form-field class="full-width">
-                     <input type="password"  name="password" id="password" [(ngModel)]="user.password" tabindex="2" class="form-control" placeholder="password" required matInput>
-                  </mat-form-field>
-               </mat-card>
-               <button  style="position:absolute;" class="mat-elevation-z12 box-button mat-raised-button mat-primary" color="primary" mat-raised-button="" type="submit"
-               (click)='Login()' [disabled]="!loginForm.form.valid"><span class="mat-button-wrapper">SIGN IN</span>
-               <div class="mat-button-ripple mat-ripple" matripple=""></div>
-               <div class="mat-button-focus-overlay"></div>
-               </button>
-               <mat-progress-bar mode="buffer" *ngIf="spinnerOn"></mat-progress-bar>
-            </mat-card-content>
-         </mat-card>
-      </form>
-   </div>
+  <toaster-container [toasterconfig]="config"></toaster-container>
+  <div class="h-100" fxlayout="row" fxlayoutalign="center center" style="flex-direction: row; box-sizing: border-box; display: flex; max-height: 100%; place-content: center; align-items: center;">
+    <form #loginForm="ngForm" fxflex="80" fxflex.gt-sm="30" fxflex.sm="60" novalidate="" class="ng-pristine ng-invalid ng-touched"
+      style="flex: 1 1 100%; box-sizing: border-box;margin:auto !important">
+      <mat-card class="p-0 mat-elevation-z24 box mat-card">
+        <div class="bg-primary box-header" fxlayout="column" fxlayoutalign="center center" style="flex-direction: column; box-sizing: border-box; display: flex; max-width: 100%; place-content: center; align-items: center;">
+          <img _ngcontent-c1="" src="./assets/images/hollywoodlogo.png" width="170px">
+          <a mat-button="" routerlink="/#/registers" class="mat-button" href="/#/registers" tabindex="0" aria-disabled="false">
+            <span class="mat-button-wrapper">Don't have an account? Sign up now!</span>
+            <div class="mat-button-ripple mat-ripple" matripple=""></div>
+            <div class="mat-button-focus-overlay"></div>
+          </a>
+        </div>
+        <mat-card-content class="box-content mat-card-content" fxlayout="column" fxlayoutalign="end center" style="flex-direction: column; box-sizing: border-box; display: flex; max-width: 100%; place-content: center flex-end; align-items: center;">
+          <mat-card class="mat-elevation-z12 box-content-inner mat-card" fxlayout="column" fxlayoutalign="center center"
+            style="flex-direction: column; box-sizing: border-box; display: flex; max-width: 100%; place-content: center; align-items: center;">
+            <span class="box-content-header">member login</span>
+            <mat-form-field class="full-width">
+              <input type="email" name="userName" id="userName" [(ngModel)]="user.userName" tabindex="1" class="form-control"
+                placeholder="userName" value="" required matInput>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input type="password" name="password" id="password" [(ngModel)]="user.password" tabindex="2" class="form-control"
+                placeholder="password" required matInput>
+            </mat-form-field>
+          </mat-card>
+          <button style="position:absolute;" class="mat-elevation-z12 box-button mat-raised-button mat-primary" color="primary"
+            mat-raised-button="" type="submit" (click)='Login()' [disabled]="!loginForm.form.valid"><span class="mat-button-wrapper">SIGN
+              IN</span>
+            <div class="mat-button-ripple mat-ripple" matripple=""></div>
+            <div class="mat-button-focus-overlay"></div>
+          </button>
+          <mat-progress-bar mode="buffer" *ngIf="spinnerOn"></mat-progress-bar>
+        </mat-card-content>
+      </mat-card>
+    </form>
+  </div>
 </div>

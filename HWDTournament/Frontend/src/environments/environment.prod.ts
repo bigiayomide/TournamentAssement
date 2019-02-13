@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  baseUrl: 'http://172.16.20.82:5008' ,
+  baseUrl: 'http://localhost:52940' ,
   firebase: {
     apiKey: 'A',
     authDomain: '',
