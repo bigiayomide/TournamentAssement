@@ -111,7 +111,6 @@ export class EventDetailComponent implements OnInit {
         }, 2000);
       },
       error => {
-        console.log(error);
         this.showToast(
           "error",
           "Event Error",
@@ -154,7 +153,6 @@ export class EventDetailComponent implements OnInit {
             }, 2000);
           },
           error => {
-            console.log(error);
             this.showToast(
               "error",
               "Event Error",
@@ -199,7 +197,6 @@ export class EventDetailComponent implements OnInit {
             }, 2000);
           },
           error => {
-            console.log(error);
             this.showToast(
               "error",
               "Event Error",
@@ -245,7 +242,7 @@ export class EventDetailComponent implements OnInit {
             }, 2000);
           },
           error => {
-            console.log(error);
+
             this.showToast(
               "error",
               "Event Error",

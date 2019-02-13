@@ -9,7 +9,7 @@ import { HttpModule } from "@angular/http";
 import { FormsModule } from "@angular/forms";
 import { DateFormatPipe } from "./shared/pipes/date-format.pipe";
 import { MatInputModule } from "@angular/material";
-import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { JwtInterceptor } from "./@pages/helpers/jwt.interceptors";
 
 @NgModule({
@@ -21,6 +21,7 @@ import { JwtInterceptor } from "./@pages/helpers/jwt.interceptors";
     LazyLoadModule,
     CoreModule,
     MatInputModule,
+    HttpClientModule,
     BrowserAnimationsModule
   ],
   providers: [

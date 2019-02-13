@@ -6,10 +6,10 @@
     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2px">
       <mat-card [style.background-color]='eventdetail.backgroundColor' [style.color]="eventdetail.color" style="width:100%">
         <mat-card-content>
-          <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row">
-            <h3 class="pull-right" style="padding: 10px">{{eventdetail.event_detail_name}} </h3>
-            <h3 style="padding: 10px"> {{eventdetail.event_detail_odd}} </h3>
-          </div>
+          <!-- <div fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayout.sm="row"> -->
+            <h3 class="pull-right" style="padding: 10px; display: inline">{{eventdetail.event_detail_name}} </h3>
+            <h3 style="padding: 10px;float: right; display: inline;margin-top: -4px;" > {{eventdetail.event_detail_odd}} </h3>
+          <!-- </div> -->
         </mat-card-content>
       </mat-card>
     </div>
